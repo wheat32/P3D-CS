@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Convert a VB.NET Pokemon3D Attack-move file to C# (.NET 10).
-Follows AGENTS.md conventions for the P3D C# port.
 
 Usage:
     python3 convert_move.py SomeMove.vb > SomeMove.cs

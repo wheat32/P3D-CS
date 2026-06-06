@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """
 Convert a VB.NET Pokemon3D Item subclass file to C# (.NET 10).
-Follows AGENTS.md conventions for the P3D C# port.
 
 Usage:
     python3 convert_item.py SomeItem.vb > SomeItem.cs

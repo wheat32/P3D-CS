@@ -319,3 +319,9 @@ p3d/log.dat
 
 # JetBrains
 .idea
+
+# LLM tools
+.claude
+
+# Python Cache
+__pycache__

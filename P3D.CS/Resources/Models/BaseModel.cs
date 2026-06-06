@@ -5,7 +5,19 @@ namespace P3D;
 // TODO Phase 7: full BaseModel port
 public class BaseModel
 {
+    public static readonly BaseModel BillModel = new BaseModel();
+    public static readonly BaseModel FloorModel = new BaseModel();
+
     public int ID;
+
+    public static BaseModel GetModelByID(int id)
+    {
+        if (id == 0)
+        {
+            return FloorModel;
+        }
+        return BillModel;
+    }
     public VertexBuffer? VertexBuffer { get; protected set; }
 
     protected void Setup(VertexPositionNormalTexture[] vertexData)

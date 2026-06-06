@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using P3D.Items;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace P3D.BattleSystem.Moves.Normal;
@@ -112,9 +113,9 @@ public class NaturalGift : Attack
 
         if (p.Item != null)
         {
-            if (p.Item.isBerry == true)
+            if (p.Item.IsBerry == true)
             {
-                return BattleSystem.GameModeElementLoader.GetElementByID((Items.Berry)p.Item.Type);
+                return BattleSystem.GameModeElementLoader.GetElementByID(((Berry)p.Item).type);
             }
         }
 
@@ -138,7 +139,7 @@ public class NaturalGift : Attack
         }
         else
         {
-            if (p.Item.isBerry == false)
+            if (p.Item.IsBerry == false)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject(Name + " failed!"));
                 return true;

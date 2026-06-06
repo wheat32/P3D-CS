@@ -268,7 +268,7 @@ public class Entity : BaseEntity
         return 0;
     }
 
-    protected void LoadSeasonTextures()
+    internal void LoadSeasonTextures()
     {
         if (String.IsNullOrEmpty(SeasonColorTexture) == true)
         {

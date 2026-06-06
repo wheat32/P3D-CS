@@ -71,7 +71,7 @@ public class Entrainment : Attack
         if (bannedAbilitiesOpp.Contains(op.Ability.Name.ToLower()) == false && bannedAbilitiesOwn.Contains(p.Ability.Name.ToLower()) == false)
         {
             op.Ability = Ability.GetAbilityByID(p.Ability.ID);
-            battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " acquired " + Localization.GetString("ability_name_" + op.Ability.ID.ToString(), op.Ability.Name()) + "!"));
+            battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " acquired " + Localization.GetString("ability_name_" + op.Ability.ID.ToString(), op.Ability.Name) + "!"));
         }
         else
         {

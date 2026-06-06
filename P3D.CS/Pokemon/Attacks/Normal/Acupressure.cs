@@ -108,7 +108,7 @@ public class Acupressure : Attack
         }
         else
         {
-            battleScreen.Battle.RaiseStat(own, own, battleScreen, statstoboost(Core.Random.Next(0, statstoboost.Count)), 2, "", "move:acupressure");
+            battleScreen.Battle.RaiseStat(own, own, battleScreen, statstoboost[Core.Random.Next(0, statstoboost.Count)], 2, "", "move:acupressure");
         }
     }
 

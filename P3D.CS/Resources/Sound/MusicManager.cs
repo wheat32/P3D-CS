@@ -6,8 +6,20 @@ public static class MusicManager
     public static float MasterVolume = 0.5f;
     public static bool Muted;
     public static bool EnableLooping = true;
+    public static String ForceMusic = "";
+    public static String _currentSongName = "";
+    public static SongContainer? CurrentSong { get; private set; }
 
     public static void Setup() { }
     public static void Update() { }
     public static void PlayMusic(String name, bool loop = true) { }
+    public static void Play(String name, bool loop = true, float fadeIn = 0f) { _currentSongName = name; }
+    public static SongContainer? GetSong(String name) => null;
+    public static void Stop() { }
+}
+
+// TODO Phase 7: full SongContainer port
+public class SongContainer
+{
+    public String Name { get; set; } = "";
 }

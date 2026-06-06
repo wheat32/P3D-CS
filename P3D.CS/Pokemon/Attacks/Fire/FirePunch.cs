@@ -85,13 +85,13 @@ public class FirePunch : Attack
         while (currentAmount <= maxAmount)
         {
             Texture2D Texture = TextureManager.GetTexture(@"Textures\Battle\Fire\Ember", new Rectangle(0, 64, 32, 32), "");
-            Object xDest = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
-            Object yDest = 0.375F;
-            Object zDest = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
+            float xDest = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
+            float yDest = 0.375F;
+            float zDest = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
 
             Vector3 Destination = new Vector3(xDest, yDest, zDest);
 
-            Vector3 Position = new Vector3(0, -0.1, 0);
+            Vector3 Position = new Vector3(0, -0.1f, 0);
 
             Vector3 Scale = new Vector3(0.375F);
             double startDelay = 1.5 * Core.Random.NextDouble();
@@ -99,7 +99,7 @@ public class FirePunch : Attack
 
             MoveAnimation.AnimationMove(FlameEntity, false, Destination.X, Destination.Y, Destination.Z, 0.02F, false, false, (float)(startDelay), 0.0F, 0.0075F);
             MoveAnimation.AnimationFade(FlameEntity, true, 0.4F, 0.0F, (float)(startDelay) + 1.5F, 0);
-            System.Threading.Interlocked.Increment(currentAmount);
+            System.Threading.Interlocked.Increment(ref currentAmount);
         }
 
         Object FistEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Fire\FirePunch_Fist"), new Vector3(0.5F), 1.0F, 0, 2);

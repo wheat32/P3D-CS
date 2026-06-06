@@ -7,10 +7,10 @@ namespace P3D;
 
 public class Classified
 {
-    public static String Remote_Texture_URL = "";
-    public const String GameJolt_Game_ID = "";
-    public const String GameJolt_Game_Key = "";
-    public static String Encryption_Password = "";
+    public static String Remote_Texture_URL = ""; // CLASSIFIED — remote texture server URL
+    public const String GameJolt_Game_ID = "";    // CLASSIFIED — GameJolt API game ID
+    public const String GameJolt_Game_Key = "";   // CLASSIFIED — GameJolt API private key
+    public static String Encryption_Password = ""; // CLASSIFIED — save/network encryption password
 }
 
 /// <summary>Controls the game's main workflow.</summary>

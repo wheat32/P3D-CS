@@ -73,6 +73,33 @@ public class BattleScreen : Screen
     public NPC? Trainer;
     public List<QueryObject> BattleQuery { get; } = [];
     public BattleMenu BattleMenu { get; } = new BattleMenu();
+
+    // Battle rule flags (set per-map via SetBattleVariables)
+    public static bool CanRun = true;
+    public static bool CanAlwaysRun;
+    public static bool CanCatch = true;
+    public static bool CanBlackout = true;
+    public static bool CanReceiveEXP = true;
+    public static bool CanUseItems = true;
+    public static bool DiveBattle;
+    public static bool IsInverseBattle;
+    public static String CustomBattleMusic = "";
+    public static bool CanGainLoseMoney = true;
+    public static bool RoamingBattle;
+    public static Pokemon? RoamingPokemonStorage;
+
+    public BattleScreen(Pokemon wildPokemon, Screen preScreen, Spawner.EncounterMethods method)
+    {
+        PreScreen = preScreen;
+        Identification = Identifications.BattleScreen;
+        OpponentPokemon = wildPokemon;
+    }
+
+    public BattleScreen(Trainer trainer, Screen preScreen, int introType)
+    {
+        PreScreen = preScreen;
+        Identification = Identifications.BattleScreen;
+    }
 }
 
 // ---- FieldEffects ----
@@ -90,8 +117,8 @@ public class FieldEffects
     public int TrickRoom;
     public int TempTripleKick;
     public bool MovesFirst(bool own) => false;
-    public Dictionary<int, int> StolenFromSelfItems = [];
-    public Dictionary<int, int> StolenFromOpponentItems = [];
+    public Dictionary<int, Item?> StolenFromSelfItems = [];
+    public Dictionary<int, Item?> StolenFromOpponentItems = [];
 
     // --- Per-side counters: (Self, Opponent) ---
     public (int Self, int Opponent) AquaRing;
@@ -114,7 +141,7 @@ public class FieldEffects
     public (int Self, int Opponent) EchoedVoice;
     public (int Self, int Opponent) Embargo;
     public (int Self, int Opponent) Encore;
-    public (int Self, int Opponent) EncoreMove;
+    public (Attack? Self, Attack? Opponent) EncoreMove;
     public (int Self, int Opponent) Endure;
     public (int Self, int Opponent) FirePledge;
     public (int Self, int Opponent) FireSpin;
@@ -129,7 +156,7 @@ public class FieldEffects
     public (int Self, int Opponent) GeomancyCounter;
     public (int Self, int Opponent) GrassPledge;
     public (int Self, int Opponent) HealBlock;
-    public (int Self, int Opponent) HealingWish;
+    public (bool Self, bool Opponent) HealingWish;
     public (int Self, int Opponent) IceBallCounter;
     public (int Self, int Opponent) IceBurnCounter;
     public (int Self, int Opponent) Infestation;
@@ -260,7 +287,8 @@ public class Battle
     public void DoAttackRound(BattleScreen battleScreen, bool own, Attack move) { }
     public void UseBerry(bool target, bool own, Item? item, BattleScreen battleScreen,
                           String message, String caller) { }
-    public void WildHasEscaped(BattleScreen battleScreen) { }
+    public bool WildHasEscaped { get; set; }
+    public void SetWildHasEscaped(BattleScreen battleScreen) { }
 }
 
 // ---- BattleCalculation (extended) ----
@@ -272,6 +300,7 @@ public static class BattleCalculation
                                        Attack? typeEffectivenessAttack = null) => attack.Power;
     public static bool CanSwitch(BattleScreen battleScreen, bool own) => true;
     public static bool CanRun(BattleScreen battleScreen, bool own) => true;
+    public static bool CanRun(bool own, BattleScreen battleScreen, bool checkTrapped) => true;
     public static int DetermineBattleAttack(bool own, BattleScreen battleScreen) => 0;
     public static int DetermineBattleSpeed(bool own, BattleScreen battleScreen) => 0;
     public static int FieldEffectTurns(BattleScreen battleScreen, bool own,
@@ -332,8 +361,13 @@ public class AnimationQueryObject : QueryObject
     public AnimationQueryObject(Entity entity, bool battleFlip) { }
     public AnimationQueryObject(NPC entity, bool battleFlip) { }
     public AnimationQueryObject(Entity entity, bool battleFlip, String extraParam) { }
+    public AnimationQueryObject(NPC entity, bool battleFlip, bool drawBeforeEntities)
+    {
+        DrawBeforeEntities = drawBeforeEntities;
+    }
 
     public void AnimationPlaySound(String sound, double minPitch, double maxPitch) { }
+    public void AnimationPlaySound(String sound, double minPitch, double maxPitch, bool loop) { }
 
     // SpawnEntity returns Entity (params Object[] accepts any arg combination)
     public Entity SpawnEntity(params Object[] args) => null!;
@@ -349,4 +383,20 @@ public class AnimationQueryObject : QueryObject
     public void AnimationChangeTexture(params Object[] args) { }
     public void AnimationBackground(params Object[] args) { }
     public void AnimationTurnNPC(params Object[] args) { }
+}
+
+// TODO Phase 5: full Trainer port
+public class Trainer
+{
+    public static int FrontierTrainer;
+
+    public String IntroMessage { get; set; } = "";
+    public String DefeatMessage { get; set; } = "";
+    public int IntroType { get; set; }
+
+    public Trainer(String id) { }
+
+    public bool IsBeaten() => false;
+    public String GetInSightMusic() => "";
+    public String GetIniMusicName() => "";
 }

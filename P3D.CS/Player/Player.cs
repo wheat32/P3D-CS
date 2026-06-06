@@ -183,6 +183,7 @@ public class Player : HashSecureBase
     public bool StartThirdPerson;
     public bool StartSurfing;
     public bool StartRiding;
+    public int SurfPokemon;
     public bool EnableExpAll;
 
     public String FilePrefix = "nilllzz";
@@ -955,6 +956,36 @@ public class Player : HashSecureBase
     }
 
     // Step events (TODO Phase 4)
+
+    public void HealParty()
+    {
+        foreach (Pokemon p in Pokemons)
+        {
+            p.HP = p.MaxHP;
+            p.Status = Pokemon.StatusProblems.None;
+            foreach (BattleSystem.Attack atk in p.Attacks)
+            {
+                atk.CurrentPP = atk.MaxPP;
+            }
+        }
+    }
+
+    public void HealParty(int[] members)
+    {
+        foreach (int idx in members)
+        {
+            if (idx >= 0 && idx < Pokemons.Count)
+            {
+                Pokemon p = Pokemons[idx];
+                p.HP = p.MaxHP;
+                p.Status = Pokemon.StatusProblems.None;
+                foreach (BattleSystem.Attack atk in p.Attacks)
+                {
+                    atk.CurrentPP = atk.MaxPP;
+                }
+            }
+        }
+    }
 
     public void StepEvent(int stepAmount)
     {

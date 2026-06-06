@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace P3D;
 
@@ -47,8 +48,37 @@ public class WarpBlock : Entity
 public class Floor : Entity
 {
     public bool IsIce;
+    public bool hasSnow;
+    public bool hasSand;
 
-    public void Initialize(bool a, bool b, bool c) => base.Initialize();
+    public Floor() { }
+
+    public Floor(float x, float y, float z,
+                 Texture2D[] textures, int[] textureIndex,
+                 bool collision, int rotation, Vector3 scale,
+                 BaseModel model, int action, String additionalValue,
+                 bool visible, Vector3 shader,
+                 bool hasSnow, bool hasIce, bool hasSand)
+    {
+        Position = new Vector3(x, y, z);
+        Textures = textures;
+        Collision = collision;
+        Scale = scale;
+        BaseModel = model;
+        ActionValue = action;
+        AdditionalValue = additionalValue;
+        Visible = visible;
+        this.hasSnow = hasSnow;
+        IsIce = hasIce;
+        this.hasSand = hasSand;
+        Initialize(hasSnow, hasSand, hasIce);
+    }
+
+    public static void ClearFloorTemp() { }
+
+    public void SetRotation(int rotation) { }
+
+    public void Initialize(bool hasSnowVal, bool hasSandVal, bool hasIceVal) => base.Initialize();
 }
 
 public class StepBlock : Entity
@@ -74,6 +104,11 @@ public class Grass : Entity
 public class BerryPlant : Entity
 {
     public new void Initialize() => base.Initialize();
+
+    public void Initialize(int berryID, int stage, String plantDate, String harvestData, bool drenched)
+    {
+        base.Initialize();
+    }
 }
 
 public class LoamySoil : Entity
@@ -162,7 +197,11 @@ public class HoleBlock : Entity
 public class NPC : Entity
 {
     public bool IsTrainer;
+    public int NPCID { get; set; }
     public List<Pokemon> Pokemons { get; } = [];
+    public int faceRotation;
+
+    public bool CheckInSight() => false;
 
     /// <summary>Number of Pokémon that can still battle (not fainted, not egg).</summary>
     public int CountUseablePokemon
@@ -184,6 +223,11 @@ public class NPC : Entity
     {
         base.Initialize();
     }
+
+    public void SetupSprite(String textureID, String extra, bool update) { }
+
+    public static void AddNPCData(String data) { }
+    public static void RemoveNPCData(String id) { }
 }
 
 // TODO Phase 4: full MessageBulb port
@@ -210,4 +254,11 @@ public class MessageBulb : Entity
     }
 
     public NotificationTypes NotificationType;
+
+    public MessageBulb(Microsoft.Xna.Framework.Vector3 position, NotificationTypes notificationType)
+    {
+        Position = position;
+        NotificationType = notificationType;
+        EntityID = "MessageBulb";
+    }
 }

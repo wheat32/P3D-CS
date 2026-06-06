@@ -81,7 +81,7 @@ public class Sketch : Attack
                 {
                     if (a.ID == 166)
                     {
-                        p.Attacks.Remove[a];
+                        p.Attacks.Remove(a);
                         break;
                     }
                 }

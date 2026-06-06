@@ -69,7 +69,7 @@ public class SheerCold : Attack
         }
 
         int acc = ((p.Level - op.Level) + 30);
-        if (p.IsType == false(Element.Types.Ice))
+        if (p.IsType(Element.Types.Ice) == false)
         {
             acc = (int)(acc * 0.8F);
         }

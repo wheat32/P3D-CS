@@ -65,7 +65,7 @@ public class Rest : Attack
         {
             p = battleScreen.OpponentPokemon;
         }
-        StatusProblems status = p.Status;
+        Pokemon.StatusProblems status = p.Status;
 
         int healBlock = battleScreen.FieldEffects.HealBlock.Self;
         if (own == false)

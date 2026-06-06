@@ -72,7 +72,7 @@ public class Conversion2 : Attack
         }
 
         // Conversion 2 will fail if the last move the target used was Struggle or if there is no type that resists that move.
-        if (lastMove == null || lastMove.Name.ToLower == "struggle")
+        if (lastMove == null || "struggle".Equals(lastMove.Name.ToLower()))
         {
             battleScreen.BattleQuery.Add(new TextQueryObject(Name + " failed!"));
         }
@@ -83,7 +83,7 @@ public class Conversion2 : Attack
 
             for (int i = 0; i <= 18; i++)
             {
-                AllTypes.Add(new Element(i));
+                AllTypes.Add(new Element((Element.Types)i));
             }
 
             // Conversion 2 will not change the user to its current type. So Remove that combination.
@@ -104,7 +104,7 @@ public class Conversion2 : Attack
 
             if (ConsideredTypes.Count > 0)
             {
-                Element SelectedType = ConsideredTypes(Core.Random.Next(0, ConsideredTypes.Count - 1));
+                Element SelectedType = ConsideredTypes[Core.Random.Next(0, ConsideredTypes.Count - 1)];
 
                 p.OriginalType1 = p.Type1;
                 p.OriginalType2 = p.Type2;

@@ -66,7 +66,7 @@ public class HealingWish : Attack
         }
 
         battleScreen.Battle.ReduceHP(p.HP, own, own, battleScreen, "", "move:healingwish");
-        battleScreen.Battle.FaintPokemon(own, battleScreen, "");
+        battleScreen.Battle.FaintPokemon(own, own, battleScreen, "", "move:healingwish");
 
         if (own == true)
         {

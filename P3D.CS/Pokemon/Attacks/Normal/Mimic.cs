@@ -67,7 +67,7 @@ public class Mimic : Attack
             op = battleScreen.SelfPokemon;
         }
 
-        Attack moveToCopy = BattleSystem.Attack.GetAttackByID(op.Attacks.Last.ID);
+        Attack moveToCopy = BattleSystem.Attack.GetAttackByID(op.Attacks.Last().ID);
 
         int[] failsMoves = {165, 166, 118, 448};
 

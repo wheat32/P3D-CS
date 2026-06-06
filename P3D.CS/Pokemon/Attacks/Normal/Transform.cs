@@ -81,7 +81,7 @@ public class Transform : Attack
             p.OriginalType1 = new Element(p.Type1.Type);
             p.OriginalType2 = new Element(p.Type2.Type);
             p.OriginalStats = [p.Attack, p.Defense, p.SpAttack, p.SpDefense, p.Speed];
-            p.OriginalShiny = (int)(p.IsShiny.ToNumberString());
+            p.OriginalShiny = p.IsShiny == true ? 1 : 0;
             p.OriginalMoves = new List<BattleSystem.Attack>();
             p.OriginalMoves.AddRange(p.Attacks.ToArray());
 

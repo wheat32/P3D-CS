@@ -57,7 +57,7 @@ public class WeatherBall : Attack
 
     public override Element GetAttackType(bool own, BattleScreen battleScreen)
     {
-        WeatherTypes a = battleScreen.FieldEffects.Weather;
+        BattleWeather.WeatherTypes a = battleScreen.FieldEffects.Weather;
         switch (a)
         {
             case BattleWeather.WeatherTypes.Sunny:

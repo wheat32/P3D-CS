@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using P3D.Items;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace P3D.BattleSystem.Moves.Bug;
@@ -66,7 +67,7 @@ public class BugBite : Attack
 
         if (op.Item != null)
         {
-            if (op.Item.isBerry == true)
+            if (op.Item.IsBerry == true)
             {
                 String ItemID = "";
                 if (op.Item.IsGameModeItem == true)

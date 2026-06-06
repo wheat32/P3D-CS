@@ -22,4 +22,18 @@
     <ProjectReference Include="..\lib\kolben\Kolben\Kolben.csproj" />
   </ItemGroup>
 
+  <!--
+    Copy the shared game content (raw PNG/OGG/dat/poke/etc.) from the original
+    project's Content directory to this project's output directory at build time.
+    No MGCB compilation is needed for these files — they are loaded at runtime
+    as raw streams by TextureManager / SoundManager.  Files that DO require
+    pipeline compilation (shaders, fonts, 3D models) live in
+    lib/P3D.ContentPipeline and are handled separately in Phase 11.
+  -->
+  <ItemGroup>
+    <Content Include="..\P3D\Content\**\*"
+             CopyToOutputDirectory="PreserveNewest"
+             Link="Content\%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+
 </Project>

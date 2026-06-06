@@ -85,10 +85,10 @@ public class IcePunch : Attack
         while (currentAmount <= maxAmount)
         {
             Texture2D Texture = TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(0, 0, 16, 16), "");
-            Object xPos = (float)(Core.Random.Next(-4, 4) / 8);
-            Object zPos = (float)(Core.Random.Next(-4, 4) / 8);
+            float xPos = (float)(Core.Random.Next(-4, 4) / 8);
+            float zPos = (float)(Core.Random.Next(-4, 4) / 8);
 
-            Vector3 Position = new Vector3(xPos, -0.25, zPos);
+            Vector3 Position = new Vector3(xPos, -0.25f, zPos);
             Vector3 Destination = new Vector3(xPos - xPos * 2, 0, zPos - zPos * 2);
             Vector3 Scale = new Vector3(0.25F);
             double startDelay = 5.0 * Core.Random.NextDouble();
@@ -99,7 +99,7 @@ public class IcePunch : Attack
             MoveAnimation.AnimationChangeTexture(IceEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(16, 0, 16, 16), ""), (float)(startDelay + 1.5), 0);
             MoveAnimation.AnimationRotate(IceEntity, true, 0, 0, 0.125, 0, 0, 3, (float)(startDelay), 0, false);
 
-            System.Threading.Interlocked.Increment(currentAmount);
+            System.Threading.Interlocked.Increment(ref currentAmount);
         }
         Object FistEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Fist"), new Vector3(0.5F), 1, 5, 3);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Ice\IcePunch_Fist", 5, 0);

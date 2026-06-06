@@ -31,6 +31,8 @@ namespace P3D
         public static String GetPokemonDataFileName(int number, String additionalData, bool fullPath) => number.ToString();
         public static String GetPokemonDataFile(int number, String additionalData) => "";
         public static String GetOverworldSpriteName(Pokemon p, bool shiny) => p.Number.ToString();
+        public static String[]? GetAdditionalDataForms(int number) => null;
+        public static String GetAdditionalValueFromDataFile(String dataFileName) => "";
         public static void Initialize() { }
     }
 
@@ -48,26 +50,12 @@ namespace P3D
     {
         public static void PlayPokemonCry(int number, float pitch, float pan, String crySuffix = "") { }
         public static void PlayPokemonCry(int number, float pitch, float pan, float volume, String crySuffix = "") { }
-        public static void PlaySound(String name, bool loop) { }
     }
 
     // EggCreator stub
     public static class EggCreator
     {
         public static Texture2D? CreateEggSprite(Pokemon p, Texture2D baseSprite, Texture2D template) => baseSprite;
-    }
-
-    // ScriptConversion stub
-    public static class ScriptConversion
-    {
-        public static int ToInteger(Object obj)
-        {
-            if (int.TryParse(obj?.ToString() ?? "0", out int result))
-            {
-                return result;
-            }
-            return 0;
-        }
     }
 
     // GameModeManager extensions needed by Pokemon
@@ -111,14 +99,8 @@ namespace P3D
         }
     }
 
-    // ScriptVersion2 stub needed by Pokemon
-    namespace ScriptVersion2
-    {
-        public static class ScriptCommander
-        {
-            public static Object Parse(String input) => input;
-        }
-    }
+    // ScriptVersion2.ScriptCommander.Parse is now in
+    // World/ActionScript/V2/ScriptStubs.cs (full partial class).
 
     // TODO Phase 5: remove once battle system is fully ported (these are
     // PascalCase aliases for the camelCase public fields on Pokemon, needed

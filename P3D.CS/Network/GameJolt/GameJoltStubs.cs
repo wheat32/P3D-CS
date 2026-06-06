@@ -45,12 +45,26 @@ public static class StaffProfile
 public static class Emblem
 {
     public static void DrawNewEmblems() { }
+    public static void AchieveEmblem(String emblemID) { }
     public static int GetPlayerLevel(int points) => 0;
     public static String GetPlayerSpriteFile(int level, String id, String gender) => "Hilbert";
     public static void Draw(String username, String id, int points, String gender,
                              String emblem, Microsoft.Xna.Framework.Vector2 position,
                              int scale, Object? sprite) { }
     public static void GetAchievedEmblems() { }
+}
+
+// TODO Phase 8: full LogInScreen port
+public class LogInScreen : P3D.Screen
+{
+    public LogInScreen(P3D.Screen preScreen) { PreScreen = preScreen; }
+    public static bool UserBanned(String gameJoltID) => false;
+}
+
+// TODO Phase 8: full GTSMainScreen port
+public class GTSMainScreen : P3D.Screen
+{
+    public GTSMainScreen(P3D.Screen preScreen) { PreScreen = preScreen; }
 }
 
 public static class API
@@ -80,4 +94,17 @@ public class APICall
     public APICall(ResponseHandler handler) { }
     public void SetStorageData(String key, String data, bool useUsername) { }
     public void SetStorageData(String[] keys, String[] data, bool[] useUsername) { }
+}
+
+// TODO Phase 8: full PokegearScreen port
+public static class PokegearScreen
+{
+    public class RadioStation
+    {
+        public String Music { get; set; } = "";
+        public String Name { get; set; } = "";
+    }
+
+    public static String Call_Flag = "";
+    public static bool StationCanPlay(RadioStation? station) => false;
 }

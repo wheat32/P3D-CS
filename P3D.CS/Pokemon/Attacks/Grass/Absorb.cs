@@ -118,7 +118,7 @@ public class Absorb : Attack
             Object AbsorbEntity = MoveAnimation.SpawnEntity(new Vector3(0.0f, 0.0f, 0.0f), TextureManager.GetTexture(@"Textures\Battle\Grass\Absorb"), new Vector3(0.35F), 1, (float)(currentAmount * 0.8));
             MoveAnimation.AnimationMove(AbsorbEntity, true, -1.5, yPos, zPos, 0.03, false, true, (float)(currentAmount * 0.8), 0.0, 0.1, 0.5, 0.005F);
 
-            System.Threading.Interlocked.Increment(currentAmount);
+            System.Threading.Interlocked.Increment(ref currentAmount);
         }
 
         battleScreen.BattleQuery.Add(MoveAnimation);

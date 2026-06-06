@@ -64,9 +64,9 @@ public class PsychoShift : Attack
             p = battleScreen.OpponentPokemon;
             o = battleScreen.SelfPokemon;
         }
-        StatusProblems status = p.Status;
+        Pokemon.StatusProblems status = p.Status;
 
-        if (o.status != Pokemon.StatusProblems.None)
+        if (o.Status != Pokemon.StatusProblems.None)
         {
             fails = true;
         }
@@ -74,22 +74,22 @@ public class PsychoShift : Attack
         switch (p.Status)
         {
             case Pokemon.StatusProblems.Poison:
-                fails = battleScreen.Battle.InflictPoison == false(own == false, own, battleScreen, false, "", "move:psychoshift");
+                fails = battleScreen.Battle.InflictPoison(own == false, own, battleScreen, false, "", "move:psychoshift") == false;
                 break;
             case Pokemon.StatusProblems.BadPoison:
-                fails = battleScreen.Battle.InflictPoison == false(own == false, own, battleScreen, true, "", "move:psychoshift");
+                fails = battleScreen.Battle.InflictPoison(own == false, own, battleScreen, true, "", "move:psychoshift") == false;
                 break;
             case Pokemon.StatusProblems.Sleep:
-                fails = battleScreen.Battle.InflictSleep == false(own == false, own, battleScreen, -1, "", "move:psychoshift");
+                fails = battleScreen.Battle.InflictSleep(own == false, own, battleScreen, -1, "", "move:psychoshift") == false;
                 break;
             case Pokemon.StatusProblems.Paralyzed:
-                fails = battleScreen.Battle.InflictParalysis == false(own == false, own, battleScreen, "", "move:psychoshift");
+                fails = battleScreen.Battle.InflictParalysis(own == false, own, battleScreen, "", "move:psychoshift") == false;
                 break;
             case Pokemon.StatusProblems.Freeze:
-                fails = battleScreen.Battle.InflictFreeze == false(own == false, own, battleScreen, "", "move:psychoshift");
+                fails = battleScreen.Battle.InflictFreeze(own == false, own, battleScreen, "", "move:psychoshift") == false;
                 break;
             case Pokemon.StatusProblems.Burn:
-                fails = battleScreen.Battle.InflictBurn == false(own == false, own, battleScreen, "", "move:psychoshift");
+                fails = battleScreen.Battle.InflictBurn(own == false, own, battleScreen, "", "move:psychoshift") == false;
                 break;
             default:
                 fails = true;

@@ -102,12 +102,12 @@ public class Clamp : Attack
     public override void InternalOpponentPokemonMoveAnimation(BattleScreen battleScreen, bool battleFlip, Pokemon currentPokemon, NPC currentEntity)
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
-        float offsetLeft = -0.35;
-        float offsetRight = 0.35;
+        float offsetLeft = -0.35f;
+        float offsetRight = 0.35f;
         if (battleFlip == true)
         {
-            offsetLeft = 0.35;
-            offsetRight = -0.35;
+            offsetLeft = 0.35f;
+            offsetRight = -0.35f;
         }
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Clamp", 0, 0);
         Object ClampEntityLeft = MoveAnimation.SpawnEntity(new Vector3(offsetLeft, -0.1f, offsetLeft), TextureManager.GetTexture(@"Textures\Battle\Water\Clamp_Left", new Rectangle(0, 0, 24, 64), ""), new Vector3(0.28F, 0.75F, 0.28F), 0.75F);

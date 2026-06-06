@@ -78,7 +78,7 @@ public class PayDay : Attack
         {
             if (mysteryEvent.EventType == MysteryEventScreen.EventTypes.MoneyMultiplier)
             {
-                coinAmount = (int)(coinAmount * (double)(mysteryEvent.Value.Replace(".", GameController.DecSeparator)));
+                coinAmount = (int)(coinAmount * double.Parse(mysteryEvent.Value.Replace(".", GameController.DecSeparator), System.Globalization.CultureInfo.InvariantCulture));
             }
         }
 

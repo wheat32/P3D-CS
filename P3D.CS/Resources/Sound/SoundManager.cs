@@ -8,5 +8,6 @@ public static partial class SoundManager
 
     public static void Update() { }
     public static void PlaySound(String name) { }
+    public static void PlaySound(String name, bool stopMusic) { }
     public static void PlaySound(String name, float x, float y, float volume, bool stopMusic) { }
 }

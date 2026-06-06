@@ -43,6 +43,17 @@ public class ChooseBox
         _positionY = Core.windowSize.Height;
     }
 
+    public void Show(String[] options, int defaultIndex, bool showTextBox)
+    {
+        ResultID = 0;
+        Options = options;
+        Index = defaultIndex;
+        ReadyForResult = false;
+        Showing = true;
+        ActionScript = true;
+        _positionY = Core.windowSize.Height;
+    }
+
     public void Update() { }
     public void Draw() { }
 }

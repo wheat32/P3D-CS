@@ -68,15 +68,15 @@ public class Disable : Attack
         }
         if (LastMove != null)
         {
-            if (LastMove.Name.ToLower != "struggle" && LastMove.Disabled == 0)
+            if ("struggle".Equals(LastMove.Name.ToLower()) == false && LastMove.Disabled == 0)
             {
-                Object HasDisabledMove = false;
+                bool hasDisabledMove = false;
                 int TargetMoveIndex = -1;
                 for (int a = 0; a <= Target.Attacks.Count - 1; a++)
                 {
                     if (Target.Attacks[a].Disabled > 0)
                     {
-                        HasDisabledMove = true;
+                        hasDisabledMove = true;
                         break;
                     }
                     if (Target.Attacks[a].ID == LastMove.ID)
@@ -84,10 +84,10 @@ public class Disable : Attack
                         TargetMoveIndex = a;
                     }
                 }
-                if (TargetMoveIndex != -1 && HasDisabledMove == false)
+                if (TargetMoveIndex != -1 && hasDisabledMove == false)
                 {
-                    Target.Attacks(TargetMoveIndex).Disabled = 4;
-                    battleScreen.BattleQuery.Add(new TextQueryObject(Target.GetDisplayName() + "'s " + Target.Attacks(TargetMoveIndex).Name + " was Disabled!"));
+                    Target.Attacks[TargetMoveIndex].Disabled = 4;
+                    battleScreen.BattleQuery.Add(new TextQueryObject(Target.GetDisplayName() + "'s " + Target.Attacks[TargetMoveIndex].Name + " was Disabled!"));
                 }
                 else
                 {

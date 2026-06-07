@@ -12,6 +12,9 @@ public class TextBox
     public static readonly Color DEFAULT_COLOR = new Color(16, 24, 32);
     public static readonly Color PLAYER_COLOR = new Color(0, 0, 180);
 
+    public static Color PlayerColor => PLAYER_COLOR;
+    public static Color DefaultColor => DEFAULT_COLOR;
+
     private const float DEFAULT_DELAY = 0.2f;
     private const float RE_DELAY_VALUE = 1.0f;
     private const float DELAY_STEP = 0.1f;

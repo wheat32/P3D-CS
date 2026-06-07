@@ -9,16 +9,19 @@ public static partial class GameModeManager
     private static List<GameMode> _gameModes = [];
 
     public static void LoadGameModes() { }
+    public static void SetGameModePointer(String gamemodeName) { }
     public static String GetMapPath(String filename) => System.IO.Path.Combine("maps", filename);
     public static String GetPokeFilePath(String filename) => System.IO.Path.Combine("maps", filename);
     public static String GetContentFilePath(String filename, String category) => filename;
     public static String GetScriptPath(String filename) => System.IO.Path.Combine("scripts", filename);
+    public static bool ContentFileExists(String path) => System.IO.File.Exists(path);
 }
 
 public class GameMode
 {
     public static String DefaultLocalizationsPath = @"\Content\Localization\";
     public String DirectoryName = "";
+    public String ContentPath = @"\Content\";
     public String LocalizationsPath => DefaultLocalizationsPath;
     public bool IsDefaultGamemode { get; set; } = true;
 }

@@ -68,9 +68,12 @@ public class OwnPlayer : NPC
 public class OverworldPokemon : Entity
 {
     public bool warped;
+    public String PokemonID { get; set; } = "";
+    public Pokemon? PokemonReference { get; set; }
 
     public OverworldPokemon(float x, float y, float z) { }
     public void ChangeRotation() { }
+    public bool IsVisible() => Visible;
 }
 
 // TODO Phase 8: full NetworkPokemon port

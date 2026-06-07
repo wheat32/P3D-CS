@@ -70,7 +70,7 @@ public class BattleScreen : Screen
     public bool IsRemoteBattle;
     public int SelfPokemonIndex;
     public int OpponentPokemonIndex;
-    public NPC? Trainer;
+    public Trainer? Trainer;
     public List<QueryObject> BattleQuery { get; } = [];
     public BattleMenu BattleMenu { get; } = new BattleMenu();
 
@@ -88,6 +88,13 @@ public class BattleScreen : Screen
     public static bool RoamingBattle;
     public static Pokemon? RoamingPokemonStorage;
 
+    public static void ResetVars()
+    {
+        CanRun = true; CanAlwaysRun = false; CanCatch = true; CanBlackout = true;
+        CanReceiveEXP = true; CanUseItems = true; DiveBattle = false; IsInverseBattle = false;
+        CustomBattleMusic = ""; CanGainLoseMoney = true;
+    }
+
     public BattleScreen(Pokemon wildPokemon, Screen preScreen, Spawner.EncounterMethods method)
     {
         PreScreen = preScreen;
@@ -99,6 +106,7 @@ public class BattleScreen : Screen
     {
         PreScreen = preScreen;
         Identification = Identifications.BattleScreen;
+        Trainer = trainer;
     }
 }
 
@@ -239,6 +247,9 @@ public class FieldEffects
 // ---- Battle (all combat logic stubs) ----
 public class Battle
 {
+    public static bool Won;
+    public static bool Caught;
+
     // Battle-round step objects accessed statically in VB (TODO Phase 5: full port)
     public static BattleStep SelfStep { get; } = new BattleStep();
     public static BattleStep OpponentStep { get; } = new BattleStep();
@@ -390,9 +401,16 @@ public class Trainer
 {
     public static int FrontierTrainer;
 
+    public String Name { get; set; } = "";
+    public String Name2 { get; set; } = "";
     public String IntroMessage { get; set; } = "";
     public String DefeatMessage { get; set; } = "";
+    public String OutroMessage { get; set; } = "";
+    public String SpriteName { get; set; } = "";
     public int IntroType { get; set; }
+
+    public List<Pokemon> Pokemons { get; set; } = [];
+    public int CountUseablePokemon => Pokemons.Count(p => p.HP > 0 && p.IsEgg == false);
 
     public Trainer(String id) { }
 

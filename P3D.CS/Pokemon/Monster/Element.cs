@@ -12,6 +12,8 @@ public class Element
     }
 
     public Types Type { get; set; }
+    public bool IsGameModeElement { get; set; }
+    public String gmOriginalName { get; set; } = "";
 
     public Element(Types type)
     {

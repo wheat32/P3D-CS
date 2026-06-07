@@ -161,6 +161,8 @@ public class Waterfall : Entity
 
 public class Whirlpool : Entity
 {
+    public static bool LoadedWaterTemp = false;
+
     public new void Initialize() => base.Initialize();
 }
 
@@ -196,12 +198,32 @@ public class HoleBlock : Entity
 
 public class NPC : Entity
 {
+    public enum Movements
+    {
+        Still = 0,
+        Looking = 1,
+        FacePlayer = 2,
+        Walk = 3,
+        Straight = 4,
+        Turning = 5,
+        Pokeball = 6
+    }
+
     public bool IsTrainer;
     public int NPCID { get; set; }
     public List<Pokemon> Pokemons { get; } = [];
     public int faceRotation;
+    public bool isDancing;
+    public String TextureID { get; set; } = "";
+    public bool MoveAsync;
+    public float MoveY;
+    public bool AnimateIdle;
+    public List<Rectangle> MoveRectangles { get; set; } = [];
+    public Movements Movement { get; set; } = Movements.Still;
+    public String Name { get; set; } = "";
 
     public bool CheckInSight() => false;
+    public bool InCameraFocus() => false;
 
     /// <summary>Number of Pokémon that can still battle (not fainted, not egg).</summary>
     public int CountUseablePokemon
@@ -212,7 +234,9 @@ public class NPC : Entity
             for (int i = 0; i < Pokemons.Count; i++)
             {
                 if (Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Pokemons[i].IsEgg == false)
+                {
                     count++;
+                }
             }
             return count;
         }

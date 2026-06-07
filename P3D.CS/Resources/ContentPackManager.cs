@@ -7,6 +7,7 @@ public static class ContentPackManager
 {
     public static void CreateContentPackFolder() { }
     public static void Load(String exceptionsPath) { }
+    public static void Load(String exceptionsPath, bool replaceExisting) { }
     public static ContentManager GetContentManager(String path, String extensions)
     {
         return Core.Content;

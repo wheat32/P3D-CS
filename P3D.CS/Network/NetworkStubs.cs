@@ -28,4 +28,5 @@ public static class Chat
     }
 
     public static void AddLine(ChatMessage message) { }
+    public static void ClearChat() { }
 }

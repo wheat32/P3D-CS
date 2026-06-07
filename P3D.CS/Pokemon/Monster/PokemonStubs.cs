@@ -43,11 +43,19 @@ namespace P3D
         public float height;
         public float weight;
         public String category = "";
+        public String color = "";
+        public String species = "";
+        public String Text { get => text; set => text = value; }
+        public float Height { get => height; set => height = value; }
+        public float Weight { get => weight; set => weight = value; }
+        public String Color { get => color; set => color = value; }
+        public String Species { get => species; set => species = value; }
     }
 
     // Sound stub for Pokemon
     public static partial class SoundManager
     {
+        public static void PlayPokemonCry(int number, String crySuffix = "") { }
         public static void PlayPokemonCry(int number, float pitch, float pan, String crySuffix = "") { }
         public static void PlayPokemonCry(int number, float pitch, float pan, float volume, String crySuffix = "") { }
     }

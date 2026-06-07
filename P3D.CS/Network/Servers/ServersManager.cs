@@ -5,6 +5,7 @@ public class ServersManager
 {
     public ServerConnection ServerConnection { get; } = new ServerConnection();
     public PlayerManager PlayerManager { get; } = new PlayerManager();
+    public int ID { get; set; }
 
     public void Update() { }
 }
@@ -20,4 +21,5 @@ public class ServerConnection
     public bool Connected;
 
     public void Abort() { }
+    public void Disconnect() { }
 }

@@ -38,6 +38,8 @@ public partial class Pokemon
         1007, 1008, 1014, 1015, 1016, 1017, 1024, 1025
     ];
 
+    public static readonly List<int> Legendaries = [144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 251, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386, 480, 481, 482, 483, 484, 485, 486, 487, 488, 489, 490, 491, 492, 493, 638, 639, 640, 641, 642, 643, 644, 645, 646, 647, 648, 649];
+
     public static int MasterShinyRate
     {
         get
@@ -47,6 +49,8 @@ public partial class Pokemon
             return shinyRate;
         }
     }
+
+    public static int GetMasterShinyRate(bool adjusted = true) => MasterShinyRate;
 
     // Events
 

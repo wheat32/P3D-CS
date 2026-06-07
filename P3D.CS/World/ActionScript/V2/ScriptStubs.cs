@@ -1,12 +1,5 @@
 namespace P3D.ScriptVersion2
 {
-    // TODO Phase 4: full ScriptLibrary port
-    public static class ScriptLibrary
-    {
-        public static void InitializeLibrary() { }
-        public static String GetHelpContent(String subClass, int maxLines) => "";
-    }
-
     // ScriptComparer base — partial class; construct/comparison routing stubs for
     // ScriptConstructs/** (DoXxx methods) are in ScriptComparer.cs when ported.
     public static partial class ScriptComparer

@@ -7,8 +7,11 @@ public class EvolutionCondition
     {
         LevelUp,
         Trade,
+        Trading = Trade,
         UseItem,
+        ItemUse = UseItem,
         Happiness,
+        None,
         Other
     }
 

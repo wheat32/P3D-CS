@@ -6,6 +6,9 @@ namespace P3D;
 public static class TextureManager
 {
     public static Dictionary<String, Texture2D> TextureList { get; } = [];
+    public static Dictionary<String, Microsoft.Xna.Framework.Rectangle> TextureRectList { get; } = [];
+
+    public static Texture2D GetTexture(Texture2D source, Microsoft.Xna.Framework.Rectangle region) => source;
     public static Texture2D? DefaultTexture { get; private set; }
 
     public static void InitializeTextures()

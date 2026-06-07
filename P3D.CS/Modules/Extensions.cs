@@ -320,4 +320,16 @@ internal static class Extensions
     {
         return s.Replace(".", GameController.DecSeparator);
     }
+
+    public static Color ColorFromName(String name)
+    {
+        System.Reflection.PropertyInfo? prop = typeof(Color).GetProperty(
+            name, System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Static
+                | System.Reflection.BindingFlags.IgnoreCase);
+        if (prop != null)
+        {
+            return (Color)prop.GetValue(null)!;
+        }
+        return Color.White;
+    }
 }

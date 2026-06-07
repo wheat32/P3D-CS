@@ -5,6 +5,7 @@ public static class MusicManager
 {
     public static float MasterVolume = 0.5f;
     public static bool Muted;
+    public static bool Paused;
     public static bool EnableLooping = true;
     public static String ForceMusic = "";
     public static String _currentSongName = "";
@@ -14,6 +15,10 @@ public static class MusicManager
     public static void Update() { }
     public static void PlayMusic(String name, bool loop = true) { }
     public static void Play(String name, bool loop = true, float fadeIn = 0f) { _currentSongName = name; }
+    public static void Play(String name, bool forceUpdate, bool loop) { _currentSongName = name; }
+    public static void Play(String name, bool forceUpdate, float fadeIn, bool loop) { _currentSongName = name; }
+    public static void SetMuted(bool value) { Muted = value; }
+    public static void SetPaused(bool value) { Paused = value; }
     public static SongContainer? GetSong(String name) => null;
     public static void Stop() { }
 }

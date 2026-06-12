@@ -71,11 +71,11 @@ public class Leer : Attack
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Leer", 0, 0);
-        Object SpawnEntity = MoveAnimation.SpawnEntity(new Vector3(0, 0.1f, 0.1f), TextureManager.GetTexture(@"Textures\Battle\Normal\Leer"), new Vector3(0.5F), 1.0F, 0, 2);
-        MoveAnimation.AnimationScale(SpawnEntity, false, 0.7, 0.7, 0.7, 0.05, 0, 0.5);
-        MoveAnimation.AnimationScale(SpawnEntity, false, 0.5, 0.5, 0.5, 0.05, 0.5, 0.5);
-        MoveAnimation.AnimationScale(SpawnEntity, false, 0.7, 0.7, 0.7, 0.05, 1.0, 0.5);
-        MoveAnimation.AnimationScale(SpawnEntity, false, 0.5, 0.5, 0.5, 0.05, 1.5, 0.5);
+        Entity SpawnEntity = MoveAnimation.SpawnEntity(new Vector3(0, 0.1f, 0.1f), TextureManager.GetTexture(@"Textures\Battle\Normal\Leer"), new Vector3(0.5F), 1.0F, 0, 2);
+        MoveAnimation.AnimationScale(SpawnEntity, false, 0.7f, 0.7f, 0.7f, 0.05f, 0, 0.5f);
+        MoveAnimation.AnimationScale(SpawnEntity, false, 0.5f, 0.5f, 0.5f, 0.05f, 0.5f, 0.5f);
+        MoveAnimation.AnimationScale(SpawnEntity, false, 0.7f, 0.7f, 0.7f, 0.05f, 1.0f, 0.5f);
+        MoveAnimation.AnimationScale(SpawnEntity, false, 0.5f, 0.5f, 0.5f, 0.05f, 1.5f, 0.5f);
         MoveAnimation.AnimationFade(SpawnEntity, true, 1.0F, 0.0F, 2, 0);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
@@ -83,7 +83,7 @@ public class Leer : Attack
     public override void InternalOpponentPokemonMoveAnimation(BattleScreen battleScreen, bool battleFlip, Pokemon currentPokemon, NPC currentEntity)
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
-        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, 0.05f), 0.035, true, 3, 0, 0.5, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, 0.05f), 0.035f, true, 3, 0, 0.5f, 0, new Vector3(0, 0, 1));
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 

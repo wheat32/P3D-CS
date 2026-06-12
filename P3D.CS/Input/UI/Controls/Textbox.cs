@@ -305,7 +305,7 @@ public class Textbox : Control
         String drawText = Text;
         if (IsPassword == true)
         {
-            drawText = "";
+            drawText = String.Empty;
             for (int i = 0; i < Text.Length; i++)
             {
                 drawText += PasswordChar.ToString();

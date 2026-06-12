@@ -71,18 +71,18 @@ public class ConfuseRay : Attack
 
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Ghost\ConfuseRay_Start", 0.0F, 0);
 
-        Object RayEntity = MoveAnimation.SpawnEntity(currentEntity.Position, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), new Vector3(0.5F), 0.0F);
+        Entity RayEntity = MoveAnimation.SpawnEntity(currentEntity.Position, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), new Vector3(0.5F), 0.0F);
         MoveAnimation.AnimationFade(RayEntity, false, 0.025F, 1.0F, 0, 0);
-        MoveAnimation.AnimationMove(RayEntity, false, 1.5, 0, 0, 0.025, false, false, 0, 0, 0.0125);
-        MoveAnimation.AnimationOscillateMove(RayEntity, true, new Vector3(0, 0.075f, 0), 0.02, true, 6, 0, 0, 1);
+        MoveAnimation.AnimationMove(RayEntity, false, 1.5f, 0, 0, 0.025f, false, false, 0, 0, 0.0125f);
+        MoveAnimation.AnimationOscillateMove(RayEntity, true, new Vector3(0, 0.075f, 0), 0.02f, true, 6, 0, 0, 1);
 
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 0.5, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 1.0, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 1.5, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 2.0, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 2.5, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 0.5f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 1.0f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 1.5f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 2.0f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 2.5f, 0);
         MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 3, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 3.5, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 3.5f, 0);
         MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 4, 0);
 
         battleScreen.BattleQuery.Add(MoveAnimation);
@@ -107,27 +107,27 @@ public class ConfuseRay : Attack
         }
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Ghost\ConfuseRay_End", 0.0F, 0);
 
-        Object RayEntity = MoveAnimation.SpawnEntity(SpawnPosition, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), new Vector3(0.5F), 1.0F);
-        MoveAnimation.AnimationMove(RayEntity, false, 1.5, 0, 0, 0.025, false, false, 0, 0, 0.0125);
-        MoveAnimation.AnimationOscillateMove(RayEntity, false, new Vector3(0, 0.075f, 0), 0.02, true, 6, 0, 0, 1);
-        MoveAnimation.AnimationOscillateMove(RayEntity, false, new Vector3(0, 0, 0.2f), 0.075, true, 7.5, 4, 0, 1);
+        Entity RayEntity = MoveAnimation.SpawnEntity(SpawnPosition, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), new Vector3(0.5F), 1.0F);
+        MoveAnimation.AnimationMove(RayEntity, false, 1.5f, 0, 0, 0.025f, false, false, 0, 0, 0.0125f);
+        MoveAnimation.AnimationOscillateMove(RayEntity, false, new Vector3(0, 0.075f, 0), 0.02f, true, 6, 0, 0, 1);
+        MoveAnimation.AnimationOscillateMove(RayEntity, false, new Vector3(0, 0, 0.2f), 0.075f, true, 7.5f, 4, 0, 1);
 
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 0.5, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 1.0, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 1.5, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 2.0, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 2.5, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 0.5f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 1.0f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 1.5f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 2.0f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 2.5f, 0);
         MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 3, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 3.5, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 3.5f, 0);
         MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 4, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 4.5, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 5.0, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 5.5, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 6.0, 0);
-        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 6.5, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 4.5f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 5.0f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 5.5f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 6.0f, 0);
+        MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(16, 0, 16, 16), ""), 6.5f, 0);
         MoveAnimation.AnimationChangeTexture(RayEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ghost\ConfuseRay", new Rectangle(0, 0, 16, 16), ""), 7, 0);
 
-        MoveAnimation.AnimationFade(RayEntity, true, 0.035, 0, 6.75, 0);
+        MoveAnimation.AnimationFade(RayEntity, true, 0.035f, 0, 6.75f, 0);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 

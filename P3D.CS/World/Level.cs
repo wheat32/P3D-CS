@@ -35,8 +35,8 @@ public class Level
 
     public WarpDataStruct WarpData;
     public PokemonEncounterDataStruct PokemonEncounterData;
-    public String BattleVariables { get; set; } = "";
-    public String SurfingBattleMapData { get; set; } = "";
+    public String BattleVariables { get; set; } = String.Empty;
+    public String SurfingBattleMapData { get; set; } = String.Empty;
 
     // Entity collections
 
@@ -75,14 +75,14 @@ public class Level
 
     // Map properties
 
-    public String BlackOutScript { get; set; } = "";
-    public String MapName { get; set; } = "";
-    public String MusicLoop { get; set; } = "";
-    public String LevelFile { get; set; } = "";
+    public String BlackOutScript { get; set; } = String.Empty;
+    public String MapName { get; set; } = String.Empty;
+    public String MusicLoop { get; set; } = String.Empty;
+    public String LevelFile { get; set; } = String.Empty;
     public String CurrentRegion { get; set; } = "Johto";
-    public String RegionalForm { get; set; } = "";
-    public String BugCatchingContestData { get; set; } = "";
-    public String BattleMapData { get; set; } = "";
+    public String RegionalForm { get; set; } = String.Empty;
+    public String BugCatchingContestData { get; set; } = String.Empty;
+    public String BattleMapData { get; set; } = String.Empty;
     public bool CanTeleport { get; set; } = true;
     public bool CanDig { get; set; }
     public bool CanFly { get; set; }
@@ -175,7 +175,7 @@ public class Level
                 field += ",StartMenus";
             }
         }
-    } = "";
+    } = String.Empty;
 
     // Constructor
 

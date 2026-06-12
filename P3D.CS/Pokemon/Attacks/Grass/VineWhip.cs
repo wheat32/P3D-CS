@@ -57,24 +57,24 @@ public class VineWhip : Attack
     public override void InternalUserPokemonMoveAnimation(BattleScreen battleScreen, bool battleFlip, Pokemon currentPokemon, NPC currentEntity)
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
-        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Grass\VineWhip_Start", 0.5, 1.25);
-        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, -0.15f), 0.035, false, 0, 0, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Grass\VineWhip_Start", 0.5f, 1.25f);
+        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, -0.15f), 0.035f, false, 0, 0, 0, 0, new Vector3(0, 0, 1));
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 
     public override void InternalOpponentPokemonMoveAnimation(BattleScreen battleScreen, bool battleFlip, Pokemon currentPokemon, NPC currentEntity)
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
-        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Grass\VineWhip_Hit", 0, 2.5);
+        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Grass\VineWhip_Hit", 0, 2.5f);
         int TextureXOffset = 0;
         if (battleFlip == true)
         {
             TextureXOffset = 32;
         }
-        Object VineWhipEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 0, 32, 32), ""), new Vector3(0.5F), 1, 0, 0.5);
-        MoveAnimation.AnimationChangeTexture(VineWhipEntity, false, TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 32, 32, 32), ""), 0.5, 0.5);
-        MoveAnimation.AnimationChangeTexture(VineWhipEntity, false, TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 64, 32, 32), ""), 1, 0.5);
-        MoveAnimation.AnimationChangeTexture(VineWhipEntity, true, TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 96, 32, 32), ""), 1.5, 0.5);
+        Entity VineWhipEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 0, 32, 32), ""), new Vector3(0.5F), 1, 0, 0.5f);
+        MoveAnimation.AnimationChangeTexture(VineWhipEntity, false, TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 32, 32, 32), ""), 0.5f, 0.5f);
+        MoveAnimation.AnimationChangeTexture(VineWhipEntity, false, TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 64, 32, 32), ""), 1, 0.5f);
+        MoveAnimation.AnimationChangeTexture(VineWhipEntity, true, TextureManager.GetTexture(@"Textures\Battle\Grass\VineWhip", new Rectangle(TextureXOffset, 96, 32, 32), ""), 1.5f, 0.5f);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 

@@ -18,7 +18,7 @@ public class ActionScript
 
         public int ScriptVersion;
         public int CurrentLine;
-        public String ScriptName = "";
+        public String ScriptName = String.Empty;
     }
 
     public static ScriptLevel CSL()
@@ -49,7 +49,7 @@ public class ActionScript
         get => _scriptTrigger;
         set { _scriptTrigger = value; }
     }
-    private static String _scriptTrigger = "";
+    private static String _scriptTrigger = String.Empty;
 
     public static bool IsInSightScript;
 
@@ -99,7 +99,7 @@ public class ActionScript
                     {
                         Logger.Debug("Unlock Camera");
                         ((OverworldCamera)Screen.Camera).YawLocked = false;
-                        GameJolt.PokegearScreen.Call_Flag = "";
+                        GameJolt.PokegearScreen.Call_Flag = String.Empty;
                     }
                     if (reDelay > 0.0f)
                     {
@@ -582,7 +582,7 @@ public class ActionScript
 
             if (removedRegisters == true)
             {
-                String s = "";
+                String s = String.Empty;
 
                 if (data.Count > 0)
                 {
@@ -662,7 +662,7 @@ public class ActionScript
     public static void UnregisterID(String i)
     {
         String[] checkData = Core.Player.RegisterData.Split(',');
-        String data = "";
+        String data = String.Empty;
 
         List<String> checkList = [..checkData];
         checkList.Remove(i);
@@ -683,7 +683,7 @@ public class ActionScript
     public static void UnregisterID(String name, String type)
     {
         String[] data = Core.Player.RegisterData.Split(',');
-        String newData = "";
+        String newData = String.Empty;
 
         foreach (String line in data)
         {
@@ -718,7 +718,7 @@ public class ActionScript
     public static void ChangeRegister(String name, String newValue)
     {
         String[] data = Core.Player.RegisterData.Split(',');
-        String newData = "";
+        String newData = String.Empty;
 
         foreach (String line in data)
         {

@@ -432,7 +432,7 @@ namespace P3D.ScriptVersion2
                     String key = (levelPath.ToLower() + "|" + levelItemIndex).ToLower();
                     if (ids.Contains(key) == true)
                     {
-                        if (Core.Player.ItemData.Split(',').Length == 1) { Core.Player.ItemData = ""; }
+                        if (Core.Player.ItemData.Split(',').Length == 1) { Core.Player.ItemData = String.Empty; }
                         else { Core.Player.ItemData = Core.Player.ItemData.Replace("," + key, ""); }
                     }
                     IsReady = true;
@@ -557,7 +557,7 @@ namespace P3D.ScriptVersion2
                     if (Core.Player.Pokemons.Count > 0)
                     {
                         Pokemon? p = null;
-                        String musicLoop = "";
+                        String musicLoop = String.Empty;
                         int introType = Core.Random.Next(0, 10);
                         int method = Screen.Level.Surfing == true ? 2 : 0;
 
@@ -937,7 +937,7 @@ namespace P3D.ScriptVersion2
                     if (showMessage == true)
                     {
                         String msg;
-                        String space = "";
+                        String space = String.Empty;
                         if (amount == 1)
                         {
                             String t = Localization.GetString("item_handed_over_single", "<Player.Name> handed over the~").Replace("<player.name>", Core.Player.Name);
@@ -1365,7 +1365,7 @@ namespace P3D.ScriptVersion2
             {
                 case "takeegg":
                 {
-                    String newData = "";
+                    String newData = String.Empty;
                     int dayCareID = Int(argument);
                     foreach (String line in Core.Player.DaycareData.SplitAtNewline())
                     {
@@ -1385,7 +1385,7 @@ namespace P3D.ScriptVersion2
                 }
                 case "takepokemon":
                 {
-                    String newData = "";
+                    String newData = String.Empty;
                     int dayCareID = Int(argument.GetSplit(0));
                     int pokemonIndex = Int(argument.GetSplit(1));
                     foreach (String line in Core.Player.DaycareData.SplitAtNewline())
@@ -1419,7 +1419,7 @@ namespace P3D.ScriptVersion2
                 }
                 case "removeegg":
                 {
-                    String newData = "";
+                    String newData = String.Empty;
                     int dayCareID = Int(argument);
                     foreach (String line in Core.Player.DaycareData.SplitAtNewline())
                     {
@@ -1435,7 +1435,7 @@ namespace P3D.ScriptVersion2
                 case "clean":
                 {
                     int daycareID = Int(argument);
-                    String newData = "";
+                    String newData = String.Empty;
                     List<String> lines = [];
                     foreach (String line in Core.Player.DaycareData.SplitAtNewline())
                     {
@@ -1456,7 +1456,7 @@ namespace P3D.ScriptVersion2
                 case "cleardata":
                 {
                     int daycareID = Int(argument);
-                    String newData = "";
+                    String newData = String.Empty;
                     foreach (String line in Core.Player.DaycareData.SplitAtNewline())
                     {
                         if (line.StartsWith(daycareID.ToString() + "|") == false)

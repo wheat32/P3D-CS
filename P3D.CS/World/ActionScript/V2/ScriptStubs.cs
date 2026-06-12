@@ -15,7 +15,7 @@ namespace P3D.ScriptVersion2
                     return "";
                 }
 
-                String output = "";
+                String output = String.Empty;
                 String input = s;
 
                 bool foundNOT = false;
@@ -256,7 +256,7 @@ namespace P3D.ScriptVersion2
             PairValue p = new PairValue();
 
             String command = inputString;
-            String argument = "";
+            String argument = String.Empty;
 
             if (command.Contains("(") == true && command.EndsWith(")") == true)
             {
@@ -327,7 +327,7 @@ namespace P3D.ScriptVersion2
     public static partial class ScriptCommander
     {
         private static ScriptV2? _scriptV2;
-        public static String Value = "";
+        public static String Value = String.Empty;
 
         private static bool IsReady
         {
@@ -359,7 +359,7 @@ namespace P3D.ScriptVersion2
             String classValue = inputString;
 
             String mainClass = classValue;
-            String subClass = "";
+            String subClass = String.Empty;
 
             int bIndex = classValue.Contains("(") == true ? classValue.IndexOf('(') : -1;
             int pIndex = classValue.Contains(".") == true ? classValue.IndexOf('.') : -1;

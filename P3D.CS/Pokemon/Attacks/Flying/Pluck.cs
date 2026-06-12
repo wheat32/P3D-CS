@@ -72,7 +72,7 @@ public class Pluck : Attack
         {
             if (op.Item.IsBerry == true)
             {
-                String ItemID = "";
+                String ItemID = String.Empty;
                 if (op.Item.IsGameModeItem)
                 {
                     ItemID = op.Item.gmID;

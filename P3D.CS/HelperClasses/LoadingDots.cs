@@ -23,7 +23,7 @@ public static class LoadingDots
     {
         get
         {
-            String p = "";
+            String p = String.Empty;
             if (_pointsDelay >= THRESHOLD_ONE_DOT)
             {
                 p += ".";

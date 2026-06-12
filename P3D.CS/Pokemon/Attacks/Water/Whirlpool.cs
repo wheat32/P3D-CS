@@ -122,7 +122,7 @@ public class Whirlpool : Attack
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip, true);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Whirlpool", 0.0F, 0);
         Entity WhirlpoolEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.3F, 0), TextureManager.GetTexture(@"Textures\Battle\Water\Whirlpool"), new Vector3(0.0F), 1.0F, 0.0F, 0.0F);
-        MoveAnimation.AnimationRotate(WhirlpoolEntity, false, (float)(MathHelper.Pi * 1.5), 0, 0, (float)(MathHelper.Pi * 1.5), 0, 0, 0, 0, false);
+        MoveAnimation.AnimationRotate(WhirlpoolEntity, false, (float)(MathHelper.Pi * 1.5f), 0, 0, (float)(MathHelper.Pi * 1.5f), 0, 0, 0, 0, false);
         MoveAnimation.AnimationRotate(WhirlpoolEntity, false, 0, 0, 0.2F, 0, 0, 10.0F, 0.0F, 0.0F, true);
         MoveAnimation.AnimationScale(WhirlpoolEntity, false, 1.0F, 1.0F, 1.0F, 0.025F, 0.0F, 0.0F);
         MoveAnimation.AnimationScale(WhirlpoolEntity, true, 0.0F, 0.0F, 0.0F, 0.025F, 5.0F, 0.0F);

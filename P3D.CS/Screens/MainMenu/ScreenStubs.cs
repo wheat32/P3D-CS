@@ -65,89 +65,6 @@ public class JoinServerScreen : Screen
     }
 }
 
-public class OverworldScreen : Screen
-{
-    public class Title
-    {
-        public String Text = "";
-        public float Delay;
-        public Color TextColor = Color.White;
-        public float Scale = 1.0f;
-        public bool IsCentered;
-        public Vector2 Position = Vector2.Zero;
-
-        public Title()
-        {
-        }
-
-        public Title(String text, float duration, Color color, float scale, Vector2 offset, bool centered)
-        {
-            Text = text;
-            Delay = duration;
-            TextColor = color;
-            Scale = scale;
-            Position = offset;
-            IsCentered = centered;
-        }
-    }
-
-    public ActionScript ActionScript { get; } = new ActionScript(null);
-    public bool TrainerEncountered { get; set; }
-    public List<Title> Titles { get; } = [];
-    public List<NotificationPopup> NotificationPopupList { get; } = [];
-
-    public static int FadeValue;
-    public static Color FadeColor = Color.Black;
-    public static int DrawRodID = -1;
-
-    public OverworldScreen()
-    {
-        Identification = Identifications.OverworldScreen;
-    }
-}
-
-// TODO Phase 4: full OverworldCamera port
-public class OverworldCamera : Camera
-{
-    public enum CameraFocusTypes
-    {
-        Player = 0,
-        NPC = 1,
-        Entity = 2
-    }
-
-    public bool ThirdPerson;
-    public Vector3 ThirdPersonOffset;
-    public Vector3 CPosition { get; set; }
-    public bool YawLocked { get; set; }
-    public bool _debugWalk;
-    public bool Fixed;
-    public bool PreventMovement;
-    public float _moved;
-    public CameraFocusTypes CameraFocusType = CameraFocusTypes.Player;
-    public int CameraFocusID = -1;
-
-    public OverworldCamera() : base("Overworld") { }
-
-    public float GetAimYawFromDirection(int direction)
-    {
-        return direction * (MathHelper.Pi / 2f);
-    }
-
-    public void SetThirdPerson(bool enabled, bool reset) { }
-    public void UpdateThirdPersonCamera() { }
-    public void UpdateFrustum() { }
-    public void UpdateViewMatrix() { }
-    public void SetupFocus(CameraFocusTypes focusType, int id) { }
-}
-
-// TODO Phase 5: full BattleCamera port
-public class BattleCamera : Camera
-{
-    public Vector3 CPosition { get; set; }
-    public BattleCamera() : base("Battle") { }
-}
-
 public class MapPreviewScreen : Screen
 {
     public static bool MapViewMode;
@@ -171,7 +88,7 @@ public class Server
 // TODO Phase 6: full InputScreen port
 public class InputScreen : Screen
 {
-    public static String LastInput = "";
+    public static String LastInput = String.Empty;
 
     public enum InputModes
     {
@@ -197,7 +114,7 @@ public class InputScreen : Screen
 // TODO Phase 6/8: full MysteryEvent and MysteryEventScreen port
 public class MysteryEventScreen : Screen
 {
-    public enum EventTypes { MoneyMultiplier, ExtraMove, ExtraItem, Unknown }
+    public enum EventTypes { MoneyMultiplier, EXPMultiplier, ExtraMove, ExtraItem, Unknown }
 
     public static int CoinsGained;
     public static List<MysteryEvent> ActivatedMysteryEvents { get; } = [];
@@ -208,23 +125,9 @@ public class MysteryEventScreen : Screen
 public class MysteryEvent
 {
     public MysteryEventScreen.EventTypes EventType { get; set; }
-    public String Value { get; set; } = "";
+    public String Value { get; set; } = String.Empty;
 }
 
-// ---- Notification popup ----
-
-public class NotificationPopup
-{
-    public DateTime _delayDate;
-
-    public void Setup(String message) { }
-    public void Setup(String message, int delay) { }
-    public void Setup(String message, int delay, int backgroundID) { }
-    public void Setup(String message, int delay, int backgroundID, int iconID) { }
-    public void Setup(String message, int delay, int backgroundID, int iconID, String sfxName) { }
-    public void Setup(String message, int delay, int backgroundID, int iconID, String sfxName, String script) { }
-    public void Setup(String message, int delay, int backgroundID, int iconID, String sfxName, String script, bool force) { }
-}
 
 // ---- Item-related Phase 6 screen stubs ----
 
@@ -232,12 +135,13 @@ public class PartyScreen : Screen
 {
     public Screens.UI.ISelectionScreen.ScreenMode Mode { get; set; }
     public bool CanExit { get; set; }
-    public String EvolutionItemID { get; set; } = "";
-    public String SelectButtonText { get; set; } = "";
+    public String EvolutionItemID { get; set; } = String.Empty;
+    public String SelectButtonText { get; set; } = String.Empty;
     public event Action<Object[]>? SelectedObject;
     public Action? ExitedSub;
 
     public static int Selected = -1;
+    public int CannotChooseIndex = -1;
 
     public PartyScreen(Screen preScreen, Items.Item item, Func<int, bool>? onSelect, String title, bool forUse)
     {
@@ -257,11 +161,20 @@ public class PartyScreen : Screen
 
 public class NewInventoryScreen : Screen
 {
-    public static String SelectedItem = "";
+    public static String SelectedItem = String.Empty;
+    public Screens.UI.ISelectionScreen.ScreenMode Mode { get; set; }
+    public bool CanExit { get; set; }
+    public event Action<Object[]>? SelectedObject;
 
     public NewInventoryScreen()
     {
         Identification = Identifications.InventoryScreen;
+    }
+
+    public NewInventoryScreen(Screen preScreen)
+    {
+        Identification = Identifications.InventoryScreen;
+        PreScreen = preScreen;
     }
 
     public NewInventoryScreen(Screen preScreen, List<String> allowedItems, bool forScript)
@@ -319,6 +232,11 @@ public class TransitionScreen : Screen
     {
         PreScreen = preScreen;
     }
+
+    public TransitionScreen(Screen preScreen, Screen nextScreen, Color color, bool fadeIn, Action afterTransition)
+    {
+        PreScreen = preScreen;
+    }
 }
 
 // EvolutionCondition is defined in Pokemon/Monster/EvolutionCondition.cs
@@ -370,6 +288,15 @@ public class BlackOutScreen : Screen
     {
         PreScreen = preScreen;
         Identification = Identifications.BlackOutScreen;
+    }
+}
+
+// TODO Phase 5: full BattleGrowStatsScreen port
+public class BattleGrowStatsScreen : Screen
+{
+    public BattleGrowStatsScreen(Screen preScreen, Pokemon pokemon, int[] oldStats)
+    {
+        PreScreen = preScreen;
     }
 }
 
@@ -465,21 +392,42 @@ public class CreditsScreen : Screen
     public void InitializeScreen(String ending, bool canBeSkipped) { }
 }
 
-public class SecretBaseScreen : Screen
+// TODO Phase 6: full SummaryScreen port
+public class SummaryScreen : Screen
 {
-    public SecretBaseScreen()
+    public SummaryScreen(Screen preScreen, Pokemon[] pokemon, int index)
     {
-        Identification = Identifications.SecretBaseScreen;
+        PreScreen = preScreen;
+        Identification = Identifications.SummaryScreen;
+    }
+}
+
+// TODO Phase 6: full NewMenuScreen port
+public class NewMenuScreen : Screen
+{
+    public NewMenuScreen(Screen preScreen)
+    {
+        PreScreen = preScreen;
+        Identification = Identifications.NewMenuScreen;
     }
 }
 
 public class PVPLobbyScreen : Screen
 {
+    public enum ScreenStates { Running, Stopped }
+
+    public static bool StoppedBattle;
+    public static String DisconnectMessage = String.Empty;
+    public static ScreenStates ScreenState = ScreenStates.Running;
+    public static bool BattleSuccessful = true;
+
     public PVPLobbyScreen(Screen preScreen, int mode, bool arg)
     {
         PreScreen = preScreen;
         Identification = Identifications.PVPLobbyScreen;
     }
+
+    public static void SetupBattleResults(BattleSystem.BattleScreen battleScreen) { }
 }
 
 public class HatchEggScreen : Screen

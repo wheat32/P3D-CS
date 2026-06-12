@@ -34,13 +34,13 @@ public class KeyboardInput
 
     public String GetInput()
     {
-        String text = "";
+        String text = String.Empty;
         return GetInput(ref text, InputModifier.AllChars, true, false);
     }
 
     public String GetInput(InputModifier modifier)
     {
-        String text = "";
+        String text = String.Empty;
         return GetInput(ref text, modifier, true, false);
     }
 

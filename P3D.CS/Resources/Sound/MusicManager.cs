@@ -7,8 +7,8 @@ public static class MusicManager
     public static bool Muted;
     public static bool Paused;
     public static bool EnableLooping = true;
-    public static String ForceMusic = "";
-    public static String _currentSongName = "";
+    public static String ForceMusic = String.Empty;
+    public static String _currentSongName = String.Empty;
     public static SongContainer? CurrentSong { get; private set; }
 
     public static void Setup() { }
@@ -26,5 +26,5 @@ public static class MusicManager
 // TODO Phase 7: full SongContainer port
 public class SongContainer
 {
-    public String Name { get; set; } = "";
+    public String Name { get; set; } = String.Empty;
 }

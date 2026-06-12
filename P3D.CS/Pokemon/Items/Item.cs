@@ -11,10 +11,10 @@ public abstract class Item
     private Texture2D? _texture;
 
     // GameMode item fields
-    public String gmID = "";
-    public String gmName = "";
-    public String gmPluralName = "";
-    public String gmDescription = "";
+    public String gmID = String.Empty;
+    public String gmName = String.Empty;
+    public String gmPluralName = String.Empty;
+    public String gmDescription = String.Empty;
     public String gmTextureSource = @"Items\GameModeItems";
     public Rectangle gmTextureRectangle;
     public bool gmIsBerry = false;
@@ -158,8 +158,8 @@ public abstract class Item
         }
     }
 
-    public virtual String Description { get; protected set; } = "";
-    public String AdditionalData { get; set; } = "";
+    public virtual String Description { get; protected set; } = String.Empty;
+    public String AdditionalData { get; set; } = String.Empty;
     public virtual int FlingDamage { get; } = 30;
     public virtual bool CanBeTraded { get; protected set; } = true;
     public virtual bool CanBeHeld { get; } = true;

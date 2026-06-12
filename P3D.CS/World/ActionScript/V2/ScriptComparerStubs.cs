@@ -20,7 +20,7 @@ namespace P3D.ScriptVersion2
                 case "gender": return Core.Player.Pokemons[Int(argument.GetSplit(0))].Gender;
                 case "genderchance":
                 {
-                    String dexID = argument.GetSplit(0); String dexAD = "";
+                    String dexID = argument.GetSplit(0); String dexAD = String.Empty;
                     if (dexID.Contains("_") == true) { dexAD = PokemonForms.GetAdditionalValueFromDataFile(dexID); dexID = dexID.GetSplit(0, "_"); }
                     return Pokemon.GetPokemonByID(Int(dexID), dexAD).IsMale;
                 }
@@ -78,7 +78,7 @@ namespace P3D.ScriptVersion2
                 {
                     int pi = Int(argument.GetSplit(0)); int maxLevel = Core.Player.Pokemons[pi].Level;
                     if (argument.Split(',').Length > 1 && argument.GetSplit(1).ToLower().Equals("-1") == false) { maxLevel = Int(argument.GetSplit(1)); }
-                    String levelMoves = "";
+                    String levelMoves = String.Empty;
                     foreach (int level in Core.Player.Pokemons[pi].attackLearns.Keys)
                     {
                         if (level <= maxLevel)
@@ -241,7 +241,7 @@ namespace P3D.ScriptVersion2
                     String[] args = argument.Split(',');
                     if (argument.Equals("") == false)
                     {
-                        String s = "";
+                        String s = String.Empty;
                         foreach (String a in args)
                         {
                             switch (a) {
@@ -280,7 +280,7 @@ namespace P3D.ScriptVersion2
                     String[] args = argument.Split(',');
                     if (argument.Equals("") == false)
                     {
-                        String s = "";
+                        String s = String.Empty;
                         foreach (String a in args)
                         {
                             switch (a)
@@ -297,7 +297,7 @@ namespace P3D.ScriptVersion2
                 case "hasbadge": return ReturnBoolean(Core.Player.Badges.Contains(Int(argument)));
                 case "hasfrontieremblem":
                 {
-                    String id = ""; bool? checkType = null;
+                    String id = String.Empty; bool? checkType = null;
                     if (argument.Equals("") == false)
                     {
                         if (argument.Split(',').Length == 1) { id = argument; }
@@ -504,7 +504,7 @@ namespace P3D.ScriptVersion2
                 case "isint": case "issng": return ReturnBoolean(ScriptConversion.IsArithmeticExpression(argument));
                 case "chrw":
                 {
-                    String[] chars = argument.Split(','); String output = "";
+                    String[] chars = argument.Split(','); String output = String.Empty;
                     foreach (String c in chars) { if (StringHelper.IsNumeric(c) == true) { output += StringHelper.GetChar(Int(c)); } }
                     return output;
                 }
@@ -529,7 +529,7 @@ namespace P3D.ScriptVersion2
                     String[] args = argument.Split(',');
                     if (args.Length > 1)
                     {
-                        String s = "";
+                        String s = String.Empty;
                         for (int i = 1; i < args.Length; i++)
                         {
                             switch (args[i])
@@ -925,7 +925,7 @@ namespace P3D.ScriptVersion2
                 case "dexseen": { int di = Int(argument); return Core.Player.Pokedexes[di].Seen + Core.Player.Pokedexes[di].Obtained; }
                 case "getheight": case "getweight": case "getentry": case "getcolor": case "getspecies": case "getname": case "getability":
                 {
-                    int id = Int(argument.GetSplit(0, ",").GetSplit(0, "_").GetSplit(0, ";")); String ad = "";
+                    int id = Int(argument.GetSplit(0, ",").GetSplit(0, "_").GetSplit(0, ";")); String ad = String.Empty;
                     String dexID = argument;
                     if (argument.Contains(";") == true) { if (Pokemon.PokemonDataExists(argument) == false) { dexID = argument.GetSplit(0, ";"); } ad = argument.GetSplit(1, ";"); }
                     else if (argument.Contains("_") == true) { ad = PokemonForms.GetAdditionalValueFromDataFile(argument); }

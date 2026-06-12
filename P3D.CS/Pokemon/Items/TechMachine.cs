@@ -18,7 +18,7 @@ public abstract class TechMachine : Item
     public override bool CanBeTraded { get; protected set; } = true;
     public override bool CanBeTossed { get; protected set; } = true;
     public override int SortValue { get; protected set; }
-    public override String Description { get; protected set; } = "";
+    public override String Description { get; protected set; } = String.Empty;
     public override ItemTypes ItemType { get; } = ItemTypes.Machines;
     public override int PokeDollarPrice { get; protected set; }
 
@@ -143,7 +143,7 @@ public abstract class TechMachine : Item
             }
             else
             {
-                String lastItemText = "";
+                String lastItemText = String.Empty;
                 if (IsTM == true && bool.Parse(GameModeManager.GetGameRuleValue("SingleUseTM", "0")) == true)
                 {
                     lastItemText = "*" + RemoveItem();

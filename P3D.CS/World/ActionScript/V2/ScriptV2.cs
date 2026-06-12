@@ -22,11 +22,11 @@ namespace P3D
         }
 
         public ScriptTypes ScriptType;
-        public String Value = "";
+        public String Value = String.Empty;
         public bool started;
         public bool IsReady;
         public bool CanContinue = true;
-        public String RawScriptLine = "";
+        public String RawScriptLine = String.Empty;
 
         public static String TempReturn = "NULL";
 
@@ -116,7 +116,7 @@ namespace P3D
         public void EndScript(bool forceEnd)
         {
             ActionScript.ScriptLevelIndex -= 1;
-            ActionScript.ScriptTrigger = "";
+            ActionScript.ScriptTrigger = String.Empty;
             if (ActionScript.ScriptLevelIndex == -1 || forceEnd == true)
             {
                 ActionScript.ScriptLevelIndex = -1;

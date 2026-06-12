@@ -102,8 +102,8 @@ public class FirePunch : Attack
             System.Threading.Interlocked.Increment(ref currentAmount);
         }
 
-        Object FistEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Fire\FirePunch_Fist"), new Vector3(0.5F), 1.0F, 0, 2);
-        MoveAnimation.AnimationOscillateMove(FistEntity, false, new Vector3(0, 0.02f, 0), 0.03, true, 7, 0, 0.5, 0, new Vector3(0, 1, 0));
+        Entity FistEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Fire\FirePunch_Fist"), new Vector3(0.5F), 1.0F, 0, 2);
+        MoveAnimation.AnimationOscillateMove(FistEntity, false, new Vector3(0, 0.02f, 0), 0.03f, true, 7, 0, 0.5f, 0, new Vector3(0, 1, 0));
         MoveAnimation.AnimationFade(FistEntity, true, 1.0F, 0.0F, 7, 0);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Fire\FirePunch", 0, 0);
 

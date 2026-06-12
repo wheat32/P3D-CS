@@ -71,7 +71,7 @@ public class Incinerate : Attack
         {
             if (op.Item.IsBerry == true || op.Item.OriginalName.ToLower().EndsWith(" gem"))
             {
-                String ItemID = "";
+                String ItemID = String.Empty;
                 if (op.Item.IsGameModeItem == true)
                 {
                     ItemID = op.Item.gmID;

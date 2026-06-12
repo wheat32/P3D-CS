@@ -121,7 +121,7 @@ public class Player : HashSecureBase
     public String LastSavePlace { get; set; } = DEFAULT_REST_PLACE;
     public String LastSavePlacePosition { get; set; } = DEFAULT_REST_POSITION;
     public int RepelSteps { get; set; }
-    public String ScriptDelayItems { get; set; } = "";
+    public String ScriptDelayItems { get; set; } = String.Empty;
     public int ScriptDelaySteps { get; set; }
     public bool ScriptDelayDisplaySteps { get; set; }
     public String SaveCreated { get; set; } = "Pre 0.21";
@@ -129,20 +129,20 @@ public class Player : HashSecureBase
     public int PoisonSteps { get; set; }
     public String GameMode { get; set; } = DEFAULT_GAMEMODE;
     public String Skin { get; set; } = DEFAULT_SKIN;
-    public String VisitedMaps { get; set; } = "";
+    public String VisitedMaps { get; set; } = String.Empty;
     public int GTSStars { get; set; } = DEFAULT_GTS_STARS;
-    public String RegisterData { get; set; } = "";
-    public String BerryData { get; set; } = "";
-    public String PokedexData { get; set; } = "";
-    public String ItemData { get; set; } = "";
-    public String BoxData { get; set; } = "";
-    public String NPCData { get; set; } = "";
-    public String ApricornData { get; set; } = "";
-    public String SecretBaseData { get; set; } = "";
-    public String DaycareData { get; set; } = "";
-    public String HallOfFameData { get; set; } = "";
-    public String RoamingPokemonData { get; set; } = "";
-    public String HistoryData { get; set; } = "";
+    public String RegisterData { get; set; } = String.Empty;
+    public String BerryData { get; set; } = String.Empty;
+    public String PokedexData { get; set; } = String.Empty;
+    public String ItemData { get; set; } = String.Empty;
+    public String BoxData { get; set; } = String.Empty;
+    public String NPCData { get; set; } = String.Empty;
+    public String ApricornData { get; set; } = String.Empty;
+    public String SecretBaseData { get; set; } = String.Empty;
+    public String DaycareData { get; set; } = String.Empty;
+    public String HallOfFameData { get; set; } = String.Empty;
+    public String RoamingPokemonData { get; set; } = String.Empty;
+    public String HistoryData { get; set; } = String.Empty;
 
     // Collection fields
 
@@ -169,8 +169,8 @@ public class Player : HashSecureBase
     public int BattleStyle;
     public bool ShowModelsInBattle = true;
     public String TempSurfSkin = DEFAULT_SKIN;
-    public String TempRideSkin = "";
-    public String Statistics = "";
+    public String TempRideSkin = String.Empty;
+    public String Statistics = String.Empty;
     public bool CheckForTrainersLater;
     public List<String> UsedItemsToCheckScriptDelayFor = [];
 
@@ -187,7 +187,7 @@ public class Player : HashSecureBase
     public bool EnableExpAll;
 
     public String FilePrefix = "nilllzz";
-    public String NewFilePrefix = "";
+    public String NewFilePrefix = String.Empty;
     public bool AutosaveUsed;
     public bool loadedSave;
 
@@ -199,7 +199,7 @@ public class Player : HashSecureBase
 
     // Step-event private state
 
-    private bool _stepEventStartedTrainer;
+    public bool stepEventStartedTrainer;
     private bool _stepEventEggHatched;
     private bool _stepEventRepelMessage;
 
@@ -653,7 +653,7 @@ public class Player : HashSecureBase
 
     private void LoadDaycare()
     {
-        DaycareData = "";
+        DaycareData = String.Empty;
         if (IsGameJoltSave == true)
         {
             DaycareData = Core.GameJoltSave.Daycare;
@@ -794,6 +794,8 @@ public class Player : HashSecureBase
         return false;
     }
 
+    public void TakeStep(int steps) { }
+
     public void AddVisitedMap(String mapFile)
     {
         List<String> maps = VisitedMaps.Split(',').ToList();
@@ -832,6 +834,16 @@ public class Player : HashSecureBase
             }
             return count;
         }
+    }
+
+    public bool CanCatchPokemon()
+    {
+        // TODO Phase 5: proper box-capacity check (mirrors VB Player.CanCatchPokemon)
+        if (Pokemons.Count < 6)
+        {
+            return true;
+        }
+        return true; // assume box space available while storage system is stubbed
     }
 
     public void ResetNewLevel()
@@ -889,8 +901,8 @@ public class Player : HashSecureBase
         Trophies.Clear();
 
         Name = DEFAULT_NAME;
-        RivalName = "";
-        RivalSkin = "";
+        RivalName = String.Empty;
+        RivalSkin = String.Empty;
         Money = 0;
         PlayTime = TimeSpan.Zero;
         GameStart = DateTime.Now;
@@ -915,12 +927,12 @@ public class Player : HashSecureBase
         LastPokemonPosition = new Vector3(999, 999, 999);
         DaycareSteps = 0;
         GameMode = DEFAULT_GAMEMODE;
-        VisitedMaps = "";
+        VisitedMaps = String.Empty;
         TempSurfSkin = DEFAULT_SKIN;
-        TempRideSkin = "";
+        TempRideSkin = String.Empty;
         GTSStars = DEFAULT_GTS_STARS;
         SandBoxMode = false;
-        Statistics = "";
+        Statistics = String.Empty;
         StartPosition = new Vector3(14, 0.1f, 10);
         StartRotation = 0;
         StartFreeCameraMode = false;
@@ -932,21 +944,21 @@ public class Player : HashSecureBase
         StartRiding = false;
         Skin = DEFAULT_SKIN;
 
-        RegisterData = "";
-        BerryData = "";
-        PokedexData = "";
-        ItemData = "";
-        BoxData = "";
-        NPCData = "";
-        ApricornData = "";
-        SecretBaseData = "";
-        DaycareData = "";
-        HallOfFameData = "";
-        RoamingPokemonData = "";
+        RegisterData = String.Empty;
+        BerryData = String.Empty;
+        PokedexData = String.Empty;
+        ItemData = String.Empty;
+        BoxData = String.Empty;
+        NPCData = String.Empty;
+        ApricornData = String.Empty;
+        SecretBaseData = String.Empty;
+        DaycareData = String.Empty;
+        HallOfFameData = String.Empty;
+        RoamingPokemonData = String.Empty;
         UsedItemsToCheckScriptDelayFor.Clear();
 
         FilePrefix = "nilllzz";
-        NewFilePrefix = "";
+        NewFilePrefix = String.Empty;
         AutosaveUsed = false;
         loadedSave = false;
         IsGameJoltSave = false;

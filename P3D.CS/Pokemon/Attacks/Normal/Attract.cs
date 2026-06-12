@@ -92,9 +92,9 @@ public class Attract : Attack
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
         for (int i = 0; i <= 6; i++)
         {
-            Object HeartEntity = MoveAnimation.SpawnEntity(null, TextureManager.GetTexture(@"Textures\Battle\Normal\Attract"), new Vector3(0.25F), 1.0F, (float)(i * 0.2));
+            Entity HeartEntity = MoveAnimation.SpawnEntity(Vector3.Zero, TextureManager.GetTexture(@"Textures\Battle\Normal\Attract"), new Vector3(0.25F), 1.0F, (float)(i * 0.2f));
 
-            MoveAnimation.AnimationMove(HeartEntity, true, 2.0, 0.0, 0.0, 0.075, false, false, (float)(i * 0.2), 0.0);
+            MoveAnimation.AnimationMove(HeartEntity, true, 2.0f, 0.0f, 0.0f, 0.075f, false, false, (float)(i * 0.2f), 0.0f);
             i += 1;
         }
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Attract", 0, 0);
@@ -108,12 +108,12 @@ public class Attract : Attack
 
         for (int i = 0; i <= 6; i++)
         {
-            Object HeartEntity = MoveAnimation.SpawnEntity(new Vector3(-2.0f, 0.0f, 0.0f), TextureManager.GetTexture(@"Textures\Battle\Normal\Attract"), new Vector3(0.25F), 1.0F, (float)(i * 0.2));
+            Entity HeartEntity = MoveAnimation.SpawnEntity(new Vector3(-2.0f, 0.0f, 0.0f), TextureManager.GetTexture(@"Textures\Battle\Normal\Attract"), new Vector3(0.25F), 1.0F, (float)(i * 0.2f));
 
-            MoveAnimation.AnimationMove(HeartEntity, false, 0.0, 0.0, 0.0, 0.06, false, false, (float)(i * 0.2), 0.0);
+            MoveAnimation.AnimationMove(HeartEntity, false, 0.0f, 0.0f, 0.0f, 0.06f, false, false, (float)(i * 0.2f), 0.0f);
             float zPos = (float)(Core.Random.Next(-2, 2) * 0.2);
-            MoveAnimation.AnimationMove(HeartEntity, false, 0.0, 0.25, zPos, 0.01, false, false, (float)(1 + i * 0.2), 0.0);
-            MoveAnimation.AnimationFade(HeartEntity, true, 0.02, 0.0, (float)(2 + i * 0.2), 0.0);
+            MoveAnimation.AnimationMove(HeartEntity, false, 0.0f, 0.25f, zPos, 0.01f, false, false, (float)(1 + i * 0.2f), 0.0f);
+            MoveAnimation.AnimationFade(HeartEntity, true, 0.02f, 0.0f, (float)(2 + i * 0.2f), 0.0f);
             i += 1;
         }
 

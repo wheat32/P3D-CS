@@ -175,7 +175,7 @@ public class Fling : Attack
                     break;
             }
 
-            String ItemID = "";
+            String ItemID = String.Empty;
             if (p.Item.IsGameModeItem == true)
             {
                 ItemID = p.Item.gmID;

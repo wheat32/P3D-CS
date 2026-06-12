@@ -78,10 +78,10 @@ public class PoisonSting : Attack
         {
             TextureYOffset = 16;
         }
-        Entity StingerEntity = MoveAnimation.SpawnEntity(null, TextureManager.GetTexture(@"Textures\Battle\Poison\Stinger", new Rectangle(0, TextureYOffset, 16, 16), ""), new Vector3(0.2F), 1.0F);
+        Entity StingerEntity = MoveAnimation.SpawnEntity(Vector3.Zero, TextureManager.GetTexture(@"Textures\Battle\Poison\Stinger", new Rectangle(0, TextureYOffset, 16, 16), ""), new Vector3(0.2F), 1.0F);
 
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Poison\PoisonSting_Start", 0, 0);
-        MoveAnimation.AnimationMove(StingerEntity, true, 2.0, 0.0, 0.0, 0.08, false, false, 0.0, 0.0);
+        MoveAnimation.AnimationMove(StingerEntity, true, 2.0f, 0.0f, 0.0f, 0.08f, false, false, 0.0f, 0.0f);
 
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
@@ -98,7 +98,7 @@ public class PoisonSting : Attack
 
         Entity StingerEntity = MoveAnimation.SpawnEntity(new Vector3(-2.0f, 0, 0.0f), TextureManager.GetTexture(@"Textures\Battle\Poison\Stinger", new Rectangle(0, TextureYOffset, 16, 16), ""), new Vector3(0.2F), 1);
 
-        MoveAnimation.AnimationMove(StingerEntity, true, 0.0, 0.0, 0.0, 0.08, false, false, 0.0, 0.0);
+        MoveAnimation.AnimationMove(StingerEntity, true, 0.0f, 0.0f, 0.0f, 0.08f, false, false, 0.0f, 0.0f);
 
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Poison\PoisonSting_Hit", 1, 0);
 

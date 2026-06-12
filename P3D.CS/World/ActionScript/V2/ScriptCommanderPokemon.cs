@@ -405,7 +405,7 @@ namespace P3D.ScriptVersion2
                 }
                 case "registerhalloffame":
                 {
-                    int count = -1; String newHallOfFameData = "";
+                    int count = -1; String newHallOfFameData = String.Empty;
                     if (Core.Player.HallOfFameData.Equals("") == false)
                     {
                         String[] data = Core.Player.HallOfFameData.SplitAtNewline();
@@ -608,7 +608,7 @@ namespace P3D.ScriptVersion2
                 case "setsteps": { int i = Int(argument.GetSplit(0, ",")); int steps = Int(argument.GetSplit(1, ",")); if (Core.Player.Pokemons.Count - 1 >= i) { Core.Player.Pokemons[i].EggSteps = steps; } break; }
                 case "hatch":
                 {
-                    int index = Int(argument.GetSplit(0, ",")); bool canRename = true; String msg = "";
+                    int index = Int(argument.GetSplit(0, ",")); bool canRename = true; String msg = String.Empty;
                     if (argument.Split(',').Length > 1) { canRename = ScriptConversion.ToBoolean(argument.GetSplit(1, ",")); if (argument.Split(',').Length > 2) { msg = argument.GetSplit(2, ","); } }
                     Pokemon? pokemon = null;
                     if (Core.Player.Pokemons.Count - 1 >= index) { pokemon = Core.Player.Pokemons[index]; Core.Player.Pokemons.Remove(pokemon); }

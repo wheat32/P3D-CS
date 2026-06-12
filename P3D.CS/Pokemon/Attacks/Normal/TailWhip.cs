@@ -71,8 +71,8 @@ public class TailWhip : Attack
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
         MoveAnimation.AnimationTurnNPC(2, 0, 0, 1, 0.6F, 1);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\TailWhip", 1, 0);
-        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, -0.075f), 0.035, true, 3, 1, 0, 0, new Vector3(0, 0, 1));
-        MoveAnimation.AnimationTurnNPC(2, 5, 0.5, 3, 0.4F, -1);
+        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, -0.075f), 0.035f, true, 3, 1, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationTurnNPC(2, 5, 0.5f, 3, 0.4F, -1);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 

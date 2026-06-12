@@ -21,8 +21,8 @@ public class Entity : BaseEntity
     private static RasterizerState? _oldRasterizerState;
 
     public int ID = -1;
-    public String EntityID = "";
-    public String MapOrigin = "";
+    public String EntityID = String.Empty;
+    public String MapOrigin = String.Empty;
     public bool IsOffsetMapContent;
     public Vector3 Offset = Vector3.Zero;
     public Vector3 Position;
@@ -31,15 +31,15 @@ public class Entity : BaseEntity
     public Texture2D[] Textures = [];
     public int[] TextureIndex = [];
     public int ActionValue;
-    public String AdditionalValue = "";
-    public String ModelPath = "";
+    public String AdditionalValue = String.Empty;
+    public String ModelPath = String.Empty;
     public bool Visible = true;
     public Vector3 Shader = Vector3.One;
     public List<Vector3> Shaders = [];
     public List<bool> ShadersDisableWhenNoLighting = [];
     public Vector3 Color = Vector3.One;
     public float CameraDistanceDelta;
-    public String SeasonColorTexture = "";
+    public String SeasonColorTexture = String.Empty;
     public int FaceDirection;
     public float Moved;
     public float Speed = 0.04f;

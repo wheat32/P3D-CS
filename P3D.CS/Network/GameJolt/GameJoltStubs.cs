@@ -4,31 +4,31 @@ namespace P3D.GameJolt;
 
 public class GamejoltSave
 {
-    public String GameJoltID = "";
+    public String GameJoltID = String.Empty;
     public String Gender = "Male";
-    public String Emblem = "";
+    public String Emblem = String.Empty;
     public int Points;
     public bool DownloadFailed;
     public bool DownloadFinished;
     public Object? DownloadedSprite;
 
     // Save file data fields (paralleling local .dat files)
-    public String Player = "";
-    public String Party = "";
-    public String Items = "";
-    public String Berries = "";
-    public String Apricorns = "";
-    public String Daycare = "";
-    public String Pokedex = "";
-    public String Register = "";
-    public String ItemData = "";
-    public String Box = "";
-    public String NPC = "";
-    public String HallOfFame = "";
-    public String SecretBase = "";
-    public String RoamingPokemon = "";
-    public String Statistics = "";
-    public String Options = "";
+    public String Player = String.Empty;
+    public String Party = String.Empty;
+    public String Items = String.Empty;
+    public String Berries = String.Empty;
+    public String Apricorns = String.Empty;
+    public String Daycare = String.Empty;
+    public String Pokedex = String.Empty;
+    public String Register = String.Empty;
+    public String ItemData = String.Empty;
+    public String Box = String.Empty;
+    public String NPC = String.Empty;
+    public String HallOfFame = String.Empty;
+    public String SecretBase = String.Empty;
+    public String RoamingPokemon = String.Empty;
+    public String Statistics = String.Empty;
+    public String Options = String.Empty;
 }
 
 public static class SessionManager
@@ -59,6 +59,7 @@ public class LogInScreen : P3D.Screen
 {
     public LogInScreen(P3D.Screen preScreen) { PreScreen = preScreen; }
     public static bool UserBanned(String gameJoltID) => false;
+    public static void KickFromOnlineScreen(P3D.Screen screen) { }
 }
 
 // TODO Phase 8: full GTSMainScreen port
@@ -70,11 +71,11 @@ public class GTSMainScreen : P3D.Screen
 public static class API
 {
     public static bool LoggedIn;
-    public static String username = "";
+    public static String username = String.Empty;
 
     public class JoltValue
     {
-        public String Value = "";
+        public String Value = String.Empty;
     }
 
     public static List<JoltValue> HandleData(String result) => [];
@@ -97,14 +98,28 @@ public class APICall
 }
 
 // TODO Phase 8: full PokegearScreen port
-public static class PokegearScreen
+public class PokegearScreen : P3D.Screen
 {
-    public class RadioStation
+    public enum EntryModes
     {
-        public String Music { get; set; } = "";
-        public String Name { get; set; } = "";
+        MainMenu = 0,
+        BattleRequest = 1,
+        TradeRequest = 2,
     }
 
-    public static String Call_Flag = "";
+    public class RadioStation
+    {
+        public String Music { get; set; } = String.Empty;
+        public String Name { get; set; } = String.Empty;
+    }
+
+    public static String Call_Flag = String.Empty;
+    public static int BattleRequestData = -1;
+    public static int TradeRequestData = -1;
     public static bool StationCanPlay(RadioStation? station) => false;
+
+    public PokegearScreen(P3D.Screen preScreen, EntryModes mode, int[] args)
+    {
+        PreScreen = preScreen;
+    }
 }

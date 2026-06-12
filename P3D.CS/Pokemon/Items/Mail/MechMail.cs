@@ -14,7 +14,7 @@ public class MechMail : MailItem
 
     public override void Use()
     {
-        String MailID = "";
+        String MailID = String.Empty;
         if (IsGameModeItem == true)
         {
             MailID = gmID;

@@ -147,7 +147,7 @@ public class PokemonInteractions
     }
 
     private static readonly List<ReactionContainer> _specialReactionList = [];
-    private static String _pickupIndividualValue = "";
+    private static String _pickupIndividualValue = String.Empty;
     private static String _pickupItemId = "-1";
 
     // -------------------------------------------------------------------------
@@ -165,7 +165,7 @@ public class PokemonInteractions
             else
             {
                 _pickupItemId = "-1";
-                _pickupIndividualValue = "";
+                _pickupIndividualValue = String.Empty;
             }
         }
 
@@ -512,7 +512,7 @@ public class PokemonInteractions
             else
             {
                 _pickupItemId = "-1";
-                _pickupIndividualValue = "";
+                _pickupIndividualValue = String.Empty;
             }
         }
     }
@@ -563,7 +563,7 @@ public class PokemonInteractions
         s += ":end";
 
         _pickupItemId = "-1";
-        _pickupIndividualValue = "";
+        _pickupIndividualValue = String.Empty;
 
         return s;
     }
@@ -1522,7 +1522,7 @@ public class PokemonInteractions
     {
         public String message;
         public MessageBulb.NotificationTypes notification = MessageBulb.NotificationTypes.AFK;
-        public String emojiString = "";
+        public String emojiString = String.Empty;
         public bool hasNotification = true;
         public List<String> mapFiles = [];
         public List<String> pokemonIds = [];

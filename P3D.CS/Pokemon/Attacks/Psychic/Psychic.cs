@@ -82,7 +82,7 @@ public class Psychic : Attack
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Psychic\Psychic", 0.0F, 0);
         MoveAnimation.AnimationBackground(TextureManager.GetTexture(@"Textures\Battle\Psychic\PsychicBackground"), 0, 0, 9.0F, 0.6F, 0.075F, 0.075F, true, 11, 2, 6);
 
-        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, 0.05f), 0.035, true, 4.5, 1, 0.5, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationOscillateMove(null, false, new Vector3(0, 0, 0.05f), 0.035f, true, 4.5f, 1, 0.5f, 0, new Vector3(0, 0, 1));
 
         battleScreen.BattleQuery.Add(MoveAnimation);
     }

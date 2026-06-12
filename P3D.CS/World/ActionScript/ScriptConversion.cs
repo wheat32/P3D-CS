@@ -54,7 +54,7 @@ public static class ScriptConversion
         List<double> stack = [];
         List<char> tokens = [..input.ToCharArray()];
 
-        String cNumber = "";
+        String cNumber = String.Empty;
 
         while (tokens.Count > 0)
         {
@@ -68,13 +68,13 @@ public static class ScriptConversion
             else if (cNumber.Length > 0)
             {
                 stack.Insert(0, InternalToDouble(cNumber));
-                cNumber = "";
+                cNumber = String.Empty;
             }
 
             if (cNumber.Length > 0 && tokens.Count == 0)
             {
                 stack.Insert(0, InternalToDouble(cNumber));
-                cNumber = "";
+                cNumber = String.Empty;
             }
 
             if (IsOperator(token) == true)
@@ -165,8 +165,8 @@ public static class ScriptConversion
         List<char> tokens = [..input.ToCharArray()];
         List<char> stack = [];
 
-        String output = "";
-        String cNumber = "";
+        String output = String.Empty;
+        String cNumber = String.Empty;
 
         while (tokens.Count > 0)
         {
@@ -180,13 +180,13 @@ public static class ScriptConversion
             else if (cNumber.Length > 0)
             {
                 output += cNumber + " ";
-                cNumber = "";
+                cNumber = String.Empty;
             }
 
             if (cNumber.Length > 0 && tokens.Count == 0)
             {
                 output += cNumber + " ";
-                cNumber = "";
+                cNumber = String.Empty;
             }
 
             if (IsOperator(token) == true)

@@ -9,6 +9,12 @@ public static class FontManager
 
     public static SpriteFont? MainFont => GetFontContainer("mainfont")?.SpriteFont;
     public static SpriteFont? ChatFont => GetFontContainer("chatfont")?.SpriteFont;
+    public static SpriteFont? TextFont => GetFontContainer("textfont")?.SpriteFont ?? MainFont;
+    public static SpriteFont? InGameFont => GetFontContainer("ingame")?.SpriteFont ?? MainFont;
+    public static SpriteFont? MiniFont => GetFontContainer("minifont")?.SpriteFont ?? MainFont;
+    public static SpriteFont? UnownFont => GetFontContainer("unown")?.SpriteFont ?? MainFont;
+    public static SpriteFont? BrailleFont => GetFontContainer("braille")?.SpriteFont ?? MainFont;
+    public static SpriteFont? VoltorbFlipFont => GetFontContainer("voltorbflipfont")?.SpriteFont ?? MainFont;
 
     public static void LoadFonts() { }
 

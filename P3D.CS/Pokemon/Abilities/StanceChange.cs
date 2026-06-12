@@ -6,13 +6,13 @@ public class StanceChange : Ability
 
     public override void SwitchOut(Pokemon parentPokemon)
     {
-        parentPokemon.AdditionalData = "";
+        parentPokemon.AdditionalData = String.Empty;
         parentPokemon.ReloadDefinitions();
     }
 
     public override void EndBattle(Pokemon parentPokemon)
     {
-        parentPokemon.AdditionalData = "";
+        parentPokemon.AdditionalData = String.Empty;
         parentPokemon.ReloadDefinitions();
     }
 

@@ -18,42 +18,16 @@ public class Particle : Entity
                     int rotation, Vector3 scale, Object model, Vector3 color)
     {
     }
-}
 
-// TODO Phase 4: full RouteSign port
-public class RouteSign
-{
-    public bool Visible { get; set; }
-    public void Setup(String mapName) { }
-    public void Hide() { Visible = false; }
-    public void Draw() { }
-    public void Update() { }
-}
-
-// TODO Phase 4: full BackdropRenderer port
-public class BackdropRenderer
-{
-    public class Backdrop
-    {
-        public Backdrop(String type, Vector3 position, Vector3 rotation,
-                        int width, int height, Texture2D texture,
-                        int animationSpeed, int frameCount)
-        {
-        }
-    }
-
-    public void Initialize() { }
-    public void Clear() { }
-    public void AddBackdrop(Backdrop backdrop) { }
-    public void Draw() { }
-    public void Update() { }
+    public void MoveWithCamera(Vector3 diff) { }
 }
 
 // TODO Phase 4: full OwnPlayer port
 public class OwnPlayer : NPC
 {
-    public String SkinName { get; set; } = "";
+    public String SkinName { get; set; } = String.Empty;
     public bool UsingGameJoltTexture { get; set; }
+    public bool DoAnimation;
 
     public OwnPlayer(float x, float y, float z, Texture2D[] textures, String skin,
                      int facing, int moveType, String script, String name, int id)
@@ -68,8 +42,9 @@ public class OwnPlayer : NPC
 public class OverworldPokemon : Entity
 {
     public bool warped;
-    public String PokemonID { get; set; } = "";
+    public String PokemonID { get; set; } = String.Empty;
     public Pokemon? PokemonReference { get; set; }
+    public float MoveSpeed;
 
     public OverworldPokemon(float x, float y, float z) { }
     public void ChangeRotation() { }
@@ -137,9 +112,14 @@ public class Shader
 }
 
 // TODO Phase 4: full RoamingPokemon port
-public static class RoamingPokemon
+public class RoamingPokemon
 {
+    public String WorldID = String.Empty;
+    public String ScriptPath = String.Empty;
+
     public static void ShiftRoamingPokemon(int shift) { }
+    public static String RemoveRoamingPokemon(RoamingPokemon storage) => String.Empty;
+    public static String ReplaceRoamingPokemon(RoamingPokemon storage) => String.Empty;
 }
 
 // TODO Phase 4: full PokemonEncounterDataStruct port
@@ -163,11 +143,10 @@ public struct WarpDataStruct
     public String WarpSound;
 }
 
-// TODO Phase 4: full OffsetMap port
 public class OffsetMap
 {
-    public String Identifier { get; private set; } = "";
-    public String MapName { get; private set; } = "";
+    public String Identifier { get; private set; } = String.Empty;
+    public String MapName { get; private set; } = String.Empty;
     public bool Loaded { get; private set; } = false;
     public List<Entity>? Entities { get; private set; }
     public List<Entity>? Floors { get; private set; }

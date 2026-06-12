@@ -62,7 +62,7 @@ public class Script
     public ScriptV1 ScriptV1 = new ScriptV1();
     public ScriptV2 ScriptV2 = new ScriptV2();
 
-    public String ScriptLine = "";
+    public String ScriptLine = String.Empty;
     public int Level;
 
     public String Value
@@ -263,12 +263,12 @@ public class Script
 
         Pokemon ownPokemon = Core.Player.Pokemons[pokeIndex];
 
-        String ownPokeID = "";
-        String ownPokeAD = "";
+        String ownPokeID = String.Empty;
+        String ownPokeAD = String.Empty;
         int ownPokeIndex = -1;
 
         String oppPokeID = SaveNPCTrade[1];
-        String oppPokeAD = "";
+        String oppPokeAD = String.Empty;
         bool ownPreventFormGeneration = false;
         bool oppPreventFormGeneration = false;
 
@@ -459,12 +459,12 @@ public class Script
             oppPokemon.NickName = SaveNPCTrade[12];
         }
 
-        String message1 = "";
+        String message1 = String.Empty;
         if (SaveNPCTrade[13].Equals("") == false)
         {
             message1 = SaveNPCTrade[13];
         }
-        String message2 = "";
+        String message2 = String.Empty;
         if (SaveNPCTrade[14].Equals("") == false)
         {
             message2 = SaveNPCTrade[14];
@@ -472,7 +472,7 @@ public class Script
 
         String register = SaveNPCTrade[15];
 
-        String afterTradeMessage = "";
+        String afterTradeMessage = String.Empty;
         if (SaveNPCTrade.Length > 16 && SaveNPCTrade[16].Equals("") == false)
         {
             afterTradeMessage = SaveNPCTrade[16]
@@ -540,7 +540,7 @@ public class Script
         List<String> arguments = [];
         bool stringDeclaration = false;
         String data = inputString;
-        String cArg = "";
+        String cArg = String.Empty;
 
         while (data.Length > 0)
         {
@@ -554,7 +554,7 @@ public class Script
                 else
                 {
                     arguments.Add(cArg);
-                    cArg = "";
+                    cArg = String.Empty;
                 }
             }
             else if (c == '"')

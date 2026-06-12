@@ -14,8 +14,8 @@ public abstract class Berry : MedicineItem
     }
 
     public int PhaseTime;
-    public String Size = "";
-    public String Firmness = "";
+    public String Size = String.Empty;
+    public String Firmness = String.Empty;
     public int BerryIndex;
     public int minBerries;
     public int maxBerries;
@@ -41,7 +41,7 @@ public abstract class Berry : MedicineItem
     public override int FlingDamage { get; } = 10;
     public override ItemTypes ItemType { get; } = ItemTypes.Plants;
     public override int SortValue { get; protected set; }
-    public override String Description { get; protected set; } = "";
+    public override String Description { get; protected set; } = String.Empty;
     public override String PluralName => Name + " Berries";
 
     protected Berry(int phaseTime, String description, String size, String firmness, int minBerries, int maxBerries)

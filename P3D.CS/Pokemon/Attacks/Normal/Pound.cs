@@ -82,8 +82,8 @@ public class Pound : Attack
     public override void InternalOpponentPokemonMoveAnimation(BattleScreen battleScreen, bool battleFlip, Pokemon currentPokemon, NPC currentEntity)
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
-        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Pound", 0.5, 2.5);
-        Object PoundEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Pound"), new Vector3(0.5F), 1, 0, 3);
+        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Pound", 0.5f, 2.5f);
+        Entity PoundEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Pound"), new Vector3(0.5F), 1, 0, 3);
         MoveAnimation.AnimationFade(PoundEntity, true, 1.0F, 0.0F, 3, 0);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }

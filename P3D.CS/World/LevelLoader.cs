@@ -31,7 +31,7 @@ public class LevelLoader
     private Vector3 _offset;
     private bool _loadOffsetMap = true;
     private int _offsetMapLevel = 0;
-    private String _mapOrigin = "";
+    private String _mapOrigin = String.Empty;
     private List<String> _sessionMapsLoaded = [];
 
     private static int _busy = 0;
@@ -700,7 +700,7 @@ public class LevelLoader
 
     private String ReplaceStructureRotation(String line, int mapRotation)
     {
-        String replaceString = "";
+        String replaceString = String.Empty;
 
         if (line.ToLower().Contains("{\"rotation\"{int[") == true)
         {
@@ -729,7 +729,7 @@ public class LevelLoader
 
     private String ReplaceStructurePosition(String line, Vector3 mapOffset)
     {
-        String replaceString = "";
+        String replaceString = String.Empty;
 
         if (line.ToLower().Contains("{\"position\"{sngarr[") == true)
         {
@@ -846,7 +846,7 @@ public class LevelLoader
         String additionalValue = (String)GetTag(tags, "AdditionalValue")!;
         String name = (String)GetTag(tags, "Name")!;
         int id = (int)GetTag(tags, "ID")!;
-        String modelPath = "";
+        String modelPath = String.Empty;
         if (TagExists(tags, "ModelPath") == true)
         {
             String rawPath = (String)GetTag(tags, "ModelPath")!;
@@ -953,7 +953,7 @@ public class LevelLoader
             rotation = (int)GetTag(tags, "Rotation")!;
         }
 
-        String seasonTexture = "";
+        String seasonTexture = String.Empty;
         if (TagExists(tags, "SeasonTexture") == true)
         {
             seasonTexture = (String)GetTag(tags, "SeasonTexture")!;
@@ -1076,7 +1076,7 @@ public class LevelLoader
 
         int modelID = (int)GetTag(tags, "ModelID")!;
 
-        String modelPath = "";
+        String modelPath = String.Empty;
         if (TagExists(tags, "ModelPath") == true)
         {
             String rawPath = (String)GetTag(tags, "ModelPath")!;
@@ -1092,7 +1092,7 @@ public class LevelLoader
 
         int actionValue = (int)GetTag(tags, "Action")!;
 
-        String additionalValue = "";
+        String additionalValue = String.Empty;
         if (TagExists(tags, "AdditionalValue") == true)
         {
             additionalValue = (String)GetTag(tags, "AdditionalValue")!;
@@ -1130,13 +1130,13 @@ public class LevelLoader
             shader = new Vector3(shaderList[0], shaderList[1], shaderList[2]);
         }
 
-        String seasonTexture = "";
+        String seasonTexture = String.Empty;
         if (TagExists(tags, "SeasonTexture") == true)
         {
             seasonTexture = (String)GetTag(tags, "SeasonTexture")!;
         }
 
-        String seasonToggle = "";
+        String seasonToggle = String.Empty;
         if (TagExists(tags, "SeasonToggle") == true)
         {
             seasonToggle = (String)GetTag(tags, "SeasonToggle")!;
@@ -1272,7 +1272,7 @@ public class LevelLoader
         }
         else
         {
-            Screen.Level.RegionalForm = "";
+            Screen.Level.RegionalForm = String.Empty;
         }
 
         if (TagExists(tags, "HiddenAbility") == true)
@@ -1288,7 +1288,7 @@ public class LevelLoader
         Screen.Level.MusicLoop = musicLoop;
     }
 
-    public static String MapScript = "";
+    public static String MapScript = String.Empty;
 
     private void SetupActions(Dictionary<String, Object> tags)
     {
@@ -1344,7 +1344,7 @@ public class LevelLoader
         }
         else
         {
-            Screen.Level.BattleVariables = "";
+            Screen.Level.BattleVariables = String.Empty;
         }
 
         if (TagExists(tags, "BlackOutScript") == true)
@@ -1353,7 +1353,7 @@ public class LevelLoader
         }
         else
         {
-            Screen.Level.BlackOutScript = "";
+            Screen.Level.BlackOutScript = String.Empty;
         }
 
         if (_reload == false)
@@ -1475,7 +1475,7 @@ public class LevelLoader
         else
         {
             Screen.Level.IsBugCatchingContest = false;
-            Screen.Level.BugCatchingContestData = "";
+            Screen.Level.BugCatchingContestData = String.Empty;
         }
 
         if (TagExists(tags, "MapScript") == true)
@@ -1501,7 +1501,7 @@ public class LevelLoader
         }
         else
         {
-            MapScript = "";
+            MapScript = String.Empty;
         }
 
         if (TagExists(tags, "RadioChannels") == true)
@@ -1523,7 +1523,7 @@ public class LevelLoader
         }
         else
         {
-            Screen.Level.BattleMapData = "";
+            Screen.Level.BattleMapData = String.Empty;
         }
 
         if (TagExists(tags, "SurfingBattleMap") == true)
@@ -1532,7 +1532,7 @@ public class LevelLoader
         }
         else
         {
-            Screen.Level.SurfingBattleMapData = "";
+            Screen.Level.SurfingBattleMapData = String.Empty;
         }
 
         Screen.Level.World = new World(Screen.Level.EnvironmentType, Screen.Level.WeatherType);
@@ -1616,7 +1616,7 @@ public class LevelLoader
         int animationSpeed = (int)GetTag(tags, "AnimationSpeed")!;
         int frameCount = (int)GetTag(tags, "FrameCount")!;
 
-        String trigger = "";
+        String trigger = String.Empty;
         bool isTriggered = true;
 
         if (TagExists(tags, "Trigger") == true)

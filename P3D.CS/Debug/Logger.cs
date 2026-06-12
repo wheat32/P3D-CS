@@ -342,9 +342,9 @@ public static class Logger
     public class ErrorInformation
     {
         public int ErrorID { get; private set; } = -1;
-        public String ErrorType { get; private set; } = "";
-        public String ErrorDescription { get; private set; } = "";
-        public String ErrorSolution { get; private set; } = "";
+        public String ErrorType { get; private set; } = String.Empty;
+        public String ErrorDescription { get; private set; } = String.Empty;
+        public String ErrorSolution { get; private set; } = String.Empty;
         public String ErrorIDString { get; private set; } = "-1";
 
         public ErrorInformation(Exception ex)

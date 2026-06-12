@@ -92,16 +92,16 @@ public class IcePunch : Attack
             Vector3 Destination = new Vector3(xPos - xPos * 2, 0, zPos - zPos * 2);
             Vector3 Scale = new Vector3(0.25F);
             double startDelay = 5.0 * Core.Random.NextDouble();
-            Object IceEntity = MoveAnimation.SpawnEntity(Position, Texture, Scale, 1.0F, (float)(startDelay));
+            Entity IceEntity = MoveAnimation.SpawnEntity(Position, Texture, Scale, 1.0F, (float)(startDelay));
             MoveAnimation.AnimationMove(IceEntity, false, Destination.X, Destination.Y, Destination.Z, 0.0125F, false, true, (float)(startDelay), 0.0F);
-            MoveAnimation.AnimationChangeTexture(IceEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(16, 0, 16, 16), ""), (float)(startDelay + 0.5), 0);
+            MoveAnimation.AnimationChangeTexture(IceEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(16, 0, 16, 16), ""), (float)(startDelay + 0.5f), 0);
             MoveAnimation.AnimationChangeTexture(IceEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(0, 0, 16, 16), ""), (float)(startDelay + 1), 0);
-            MoveAnimation.AnimationChangeTexture(IceEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(16, 0, 16, 16), ""), (float)(startDelay + 1.5), 0);
-            MoveAnimation.AnimationRotate(IceEntity, true, 0, 0, 0.125, 0, 0, 3, (float)(startDelay), 0, false);
+            MoveAnimation.AnimationChangeTexture(IceEntity, false, TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Crystals", new Rectangle(16, 0, 16, 16), ""), (float)(startDelay + 1.5f), 0);
+            MoveAnimation.AnimationRotate(IceEntity, true, 0, 0, 0.125f, 0, 0, 3, (float)(startDelay), 0, false);
 
             System.Threading.Interlocked.Increment(ref currentAmount);
         }
-        Object FistEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Fist"), new Vector3(0.5F), 1, 5, 3);
+        Entity FistEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Ice\IcePunch_Fist"), new Vector3(0.5F), 1, 5, 3);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Ice\IcePunch_Fist", 5, 0);
         MoveAnimation.AnimationFade(FistEntity, true, 1.0F, 0.0F, 8, 0);
 

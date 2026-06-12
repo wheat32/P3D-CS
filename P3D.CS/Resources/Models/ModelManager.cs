@@ -9,4 +9,6 @@ public static class ModelManager
 
     public static bool ModelExist(String path) => false;
     public static Model? GetModel(String path) => null;
+    public static float PokeModelScale(String path) => 1.0f;
+    public static Microsoft.Xna.Framework.Vector3 PokeModelRotation(String path) => Microsoft.Xna.Framework.Vector3.Zero;
 }

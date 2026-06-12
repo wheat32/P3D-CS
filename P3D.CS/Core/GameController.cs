@@ -7,10 +7,10 @@ namespace P3D;
 
 public class Classified
 {
-    public static String Remote_Texture_URL = ""; // CLASSIFIED — remote texture server URL
+    public static String Remote_Texture_URL = String.Empty; // CLASSIFIED — remote texture server URL
     public const String GameJolt_Game_ID = "";    // CLASSIFIED — GameJolt API game ID
     public const String GameJolt_Game_Key = "";   // CLASSIFIED — GameJolt API private key
-    public static String Encryption_Password = ""; // CLASSIFIED — save/network encryption password
+    public static String Encryption_Password = String.Empty; // CLASSIFIED — save/network encryption password
 }
 
 /// <summary>Controls the game's main workflow.</summary>

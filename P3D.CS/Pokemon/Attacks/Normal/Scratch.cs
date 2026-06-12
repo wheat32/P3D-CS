@@ -57,15 +57,15 @@ public class Scratch : Attack
     public override void InternalOpponentPokemonMoveAnimation(BattleScreen battleScreen, bool battleFlip, Pokemon currentPokemon, NPC currentEntity)
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
-        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Scratch", 0.5, 2.5);
+        MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Scratch", 0.5f, 2.5f);
         int TextureXOffset = 0;
         if (battleFlip == true)
         {
             TextureXOffset = 32;
         }
-        Object ScratchEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Scratch", new Rectangle(TextureXOffset, 0, 32, 32), ""), new Vector3(0.5F), 1, 0, 0.5);
-        MoveAnimation.AnimationChangeTexture(ScratchEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Scratch", new Rectangle(TextureXOffset, 32, 32, 32), ""), 0.5, 0.5);
-        MoveAnimation.AnimationChangeTexture(ScratchEntity, true, TextureManager.GetTexture(@"Textures\Battle\Normal\Scratch", new Rectangle(TextureXOffset, 64, 32, 32), ""), 1, 0.5);
+        Entity ScratchEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Scratch", new Rectangle(TextureXOffset, 0, 32, 32), ""), new Vector3(0.5F), 1, 0, 0.5f);
+        MoveAnimation.AnimationChangeTexture(ScratchEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Scratch", new Rectangle(TextureXOffset, 32, 32, 32), ""), 0.5f, 0.5f);
+        MoveAnimation.AnimationChangeTexture(ScratchEntity, true, TextureManager.GetTexture(@"Textures\Battle\Normal\Scratch", new Rectangle(TextureXOffset, 64, 32, 32), ""), 1, 0.5f);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 

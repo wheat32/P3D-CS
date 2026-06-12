@@ -160,8 +160,8 @@ public class Attack
 
     // GameMode fields
 
-    public String gameModeFunction = "";
-    public String gameModeBasePower = "";
+    public String gameModeFunction = String.Empty;
+    public String gameModeBasePower = String.Empty;
     public bool isGameModeMove = false;
     public bool gmDeductPP = true;
     public int gmCopyMove = -1;

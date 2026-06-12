@@ -33,18 +33,19 @@ namespace P3D
         public static String GetOverworldSpriteName(Pokemon p, bool shiny) => p.Number.ToString();
         public static String[]? GetAdditionalDataForms(int number) => null;
         public static String GetAdditionalValueFromDataFile(String dataFileName) => "";
+        public static String GetFormDataInParty(Pokemon p) => String.Empty;
         public static void Initialize() { }
     }
 
     // TODO Phase 3: full PokedexEntry port
     public class PokedexEntry
     {
-        public String text = "";
+        public String text = String.Empty;
         public float height;
         public float weight;
-        public String category = "";
-        public String color = "";
-        public String species = "";
+        public String category = String.Empty;
+        public String color = String.Empty;
+        public String species = String.Empty;
         public String Text { get => text; set => text = value; }
         public float Height { get => height; set => height = value; }
         public float Weight { get => weight; set => weight = value; }

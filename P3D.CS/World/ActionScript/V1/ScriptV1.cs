@@ -49,7 +49,7 @@ public class ScriptV1
     }
 
     public ScriptTypes ScriptType = ScriptTypes.Text;
-    public String Value = "";
+    public String Value = String.Empty;
     public bool started;
     public bool IsReady;
     public bool CanContinue;
@@ -61,7 +61,7 @@ public class ScriptV1
             line = line.Remove(0, 1);
 
             String script = line;
-            String command = "";
+            String command = String.Empty;
 
             if (line.Contains(":") == true)
             {
@@ -219,8 +219,8 @@ public class ScriptV1
         {
             line = line.Remove(0, 1);
 
-            String script = "";
-            String command = "";
+            String script = String.Empty;
+            String command = String.Empty;
 
             if (line.Contains(":") == true)
             {
@@ -230,7 +230,7 @@ public class ScriptV1
             else
             {
                 script = line;
-                command = "";
+                command = String.Empty;
             }
 
             switch (script)
@@ -550,7 +550,7 @@ public class ScriptV1
 
     private void DoSelect()
     {
-        String condition = "";
+        String condition = String.Empty;
         String check = Value;
 
         if (Value.Contains("(") == true && Value.Contains(")") == true)
@@ -614,7 +614,7 @@ public class ScriptV1
 
     private void DoIf()
     {
-        String condition = "";
+        String condition = String.Empty;
         String check = Value;
 
         if (Value.Contains("(") == true && Value.Contains(")") == true)
@@ -1348,7 +1348,7 @@ public class ScriptV1
     private void DoPokemon()
     {
         String command = Value;
-        String argument = "";
+        String argument = String.Empty;
 
         if (command.Contains("(") == true && command.EndsWith(")") == true)
         {
@@ -1637,7 +1637,7 @@ public class ScriptV1
     private void DoNPC()
     {
         String command = Value;
-        String argument = "";
+        String argument = String.Empty;
 
         if (command.Contains("(") == true && command.EndsWith(")") == true)
         {
@@ -1722,7 +1722,7 @@ public class ScriptV1
     private void DoPlayer()
     {
         String command = Value;
-        String argument = "";
+        String argument = String.Empty;
 
         if (command.Contains("(") == true && command.EndsWith(")") == true)
         {
@@ -1865,7 +1865,7 @@ public class ScriptV1
     private void DoEntity()
     {
         String command = Value;
-        String argument = "";
+        String argument = String.Empty;
 
         if (command.Contains("(") == true && command.EndsWith(")") == true)
         {
@@ -1930,7 +1930,7 @@ public class ScriptV1
     private void DoEnvironment()
     {
         String command = Value;
-        String argument = "";
+        String argument = String.Empty;
 
         if (command.Contains("(") == true && command.EndsWith(")") == true)
         {
@@ -1981,7 +1981,7 @@ public class ScriptV1
     private void DoLevel()
     {
         String command = Value;
-        String argument = "";
+        String argument = String.Empty;
 
         if (command.Contains("(") == true && command.EndsWith(")") == true)
         {

@@ -23,7 +23,7 @@ public class MessageBox : Screen
     private float _fadeIn = 0f;
     private bool _closing = false;
 
-    private String _text = "";
+    private String _text = String.Empty;
     private int _width = DEFAULT_WIDTH;
     private int _height = DEFAULT_HEIGHT;
     private Color _backColor = Color.Black;

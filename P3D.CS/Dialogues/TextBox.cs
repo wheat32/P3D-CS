@@ -72,8 +72,8 @@ public class TextBox
         Text = text;
         ResultFunction = resultFunction;
         TextColor = textColor;
-        _showText[0] = "";
-        _showText[1] = "";
+        _showText[0] = String.Empty;
+        _showText[1] = String.Empty;
         _through = false;
         _currentLine = 0;
         _currentChar = 0;
@@ -97,8 +97,8 @@ public class TextBox
         Text = text;
         _entities = entities;
         TextColor = textColor;
-        _showText[0] = "";
-        _showText[1] = "";
+        _showText[0] = String.Empty;
+        _showText[1] = String.Empty;
         _through = false;
         _currentLine = 0;
         _currentChar = 0;
@@ -261,7 +261,7 @@ public class TextBox
                         else
                         {
                             _showText[0] = _clearNextLine == true ? "" : _showText[1];
-                            _showText[1] = "";
+                            _showText[1] = String.Empty;
                             _through = false;
                             _clearNextLine = false;
                         }

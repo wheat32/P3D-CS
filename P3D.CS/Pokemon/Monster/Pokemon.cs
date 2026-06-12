@@ -92,7 +92,7 @@ public partial class Pokemon
 
     public String AnimationName => PokemonForms.GetAnimationName(this);
 
-    private String _additionalData = "";
+    private String _additionalData = String.Empty;
     public String AdditionalData
     {
         get => _additionalData;
@@ -110,7 +110,7 @@ public partial class Pokemon
     public int Number { get; set; }
     public ExperienceTypes ExperienceType { get; set; }
     public int BaseExperience { get; set; }
-    public String Name { get; set; } = "";
+    public String Name { get; set; } = String.Empty;
     public int CatchRate { get; set; }
     public int BaseFriendship { get; set; }
     public int BaseEggSteps { get; set; }
@@ -153,7 +153,7 @@ public partial class Pokemon
     public PokedexEntry? pokedexEntry;
     public SoundEffect? cry;
     public Dictionary<int, String> wildItems = [];
-    public String regionalForms = "";
+    public String regionalForms = String.Empty;
     public List<String> dexForms = [];
     public List<String> evolutionLines = [];
 
@@ -255,7 +255,7 @@ public partial class Pokemon
     public int Experience { get; set; }
     public Genders Gender { get; set; }
     public int EggSteps { get; set; }
-    public String NickName { get; set; } = "";
+    public String NickName { get; set; } = String.Empty;
     public int Level { get; set; }
     public String OT { get; set; } = "00000";
     public StatusProblems Status { get; set; } = StatusProblems.None;
@@ -305,7 +305,7 @@ public partial class Pokemon
 
     public int Friendship { get; set; }
     public bool IsShiny { get; set; }
-    public String IndividualValue { get; set; } = "";
+    public String IndividualValue { get; set; } = String.Empty;
 
     // Temp battle state
 
@@ -486,7 +486,7 @@ public partial class Pokemon
     {
         Dictionary<String, String> tags = ParseTags(inputData);
 
-        String additionalData = "";
+        String additionalData = String.Empty;
         if (tags.ContainsKey("AdditionalData") == true)
         {
             additionalData = ScriptVersion2.ScriptCommander.Parse(tags["AdditionalData"]).ToString() ?? "";
@@ -769,7 +769,7 @@ public partial class Pokemon
         String a4 = attacks.Count > 3 && attacks[3] != null ? attacks[3].ToString() : "";
 
         String itemID = "0";
-        String itemData = "";
+        String itemData = String.Empty;
         if (Item != null)
         {
             itemID = Item.IsGameModeItem == true ? Item.gmID : Item.ID.ToString();
@@ -958,7 +958,7 @@ public partial class Pokemon
     private void GenerateIndividualValue()
     {
         const String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        String s = "";
+        String s = String.Empty;
         for (int i = 0; i < ID_VALUE_LENGTH; i++)
         {
             s += chars[Core.Random.Next(0, chars.Length)];

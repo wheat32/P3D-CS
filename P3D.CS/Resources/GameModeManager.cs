@@ -20,8 +20,11 @@ public static partial class GameModeManager
 public class GameMode
 {
     public static String DefaultLocalizationsPath = @"\Content\Localization\";
-    public String DirectoryName = "";
+    public String DirectoryName = String.Empty;
     public String ContentPath = @"\Content\";
+    public String MapPath = @"\Content\Data\maps\";
     public String LocalizationsPath => DefaultLocalizationsPath;
     public bool IsDefaultGamemode { get; set; } = true;
+    public String StartScript { get; set; } = String.Empty;
+    public int WaterSpeed { get; set; } = 2;
 }

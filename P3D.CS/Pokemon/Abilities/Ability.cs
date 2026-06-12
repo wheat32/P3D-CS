@@ -4,8 +4,8 @@ namespace P3D;
 public class Ability
 {
     public int ID;
-    public String Name = "";
-    public String Description = "";
+    public String Name = String.Empty;
+    public String Description = String.Empty;
 
     public Ability() { }
 

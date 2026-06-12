@@ -26,7 +26,7 @@ public class GameMessage : BasicObject
     public Rectangle TextureRectangle { get; set; } = new Rectangle(0, 0, 0, 0);
     public bool Fullscreen { get; set; }
     public DockStyles Dock { get; set; } = DockStyles.Top;
-    public String Text { get; set; } = "";
+    public String Text { get; set; } = String.Empty;
     public Vector2 TextPosition { get; set; } = Vector2.Zero;
     public SpriteFont? SpriteFont { get; set; }
     public Color TextColor { get; set; } = Color.White;

@@ -58,7 +58,7 @@ public class Tackle : Attack
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
         MoveAnimation.AnimationMove(null, false, -0.5F, 0, 0, 0.035F, false, false, 0, 0);
-        MoveAnimation.AnimationMove(null, false, 0.5F, 0, 0, 0.06F, false, false, 1.25, 0);
+        MoveAnimation.AnimationMove(null, false, 0.5F, 0, 0, 0.06F, false, false, 1.25f, 0);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
 
@@ -66,7 +66,7 @@ public class Tackle : Attack
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Tackle", 0, 0);
-        Object SpawnEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Tackle"), new Vector3(0.5F), 1.0F, 0, 2);
+        Entity SpawnEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Tackle"), new Vector3(0.5F), 1.0F, 0, 2);
         MoveAnimation.AnimationFade(SpawnEntity, true, 1.0F, 0.0F, 2, 0);
         battleScreen.BattleQuery.Add(MoveAnimation);
     }

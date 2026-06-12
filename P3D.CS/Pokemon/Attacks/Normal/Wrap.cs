@@ -103,12 +103,12 @@ public class Wrap : Attack
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Wrap", 5.0F, 0);
-        Object WrapEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 0, 80, 40), ""), new Vector3(1.0F, 0.5F, 1.0F), 1, 0, 0.75);
-        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 40, 80, 40), ""), 0.75, 0.75);
-        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 80, 80, 40), ""), 1.5, 0.75);
-        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 120, 80, 40), ""), 2.25, 0.75);
-        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 160, 80, 40), ""), 3, 0.75);
-        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 200, 80, 40), ""), 3.75, 0.75);
+        Entity WrapEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 0, 80, 40), ""), new Vector3(1.0F, 0.5F, 1.0F), 1, 0, 0.75f);
+        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 40, 80, 40), ""), 0.75f, 0.75f);
+        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 80, 80, 40), ""), 1.5f, 0.75f);
+        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 120, 80, 40), ""), 2.25f, 0.75f);
+        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 160, 80, 40), ""), 3, 0.75f);
+        MoveAnimation.AnimationChangeTexture(WrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 200, 80, 40), ""), 3.75f, 0.75f);
         MoveAnimation.AnimationScale(null, false, 0.75F, 1.0F, 0.75F, 0.02F, 5, 0);
         MoveAnimation.AnimationScale(WrapEntity, false, 0.75F, 0.5F, 0.75F, 0.02F, 5, 0);
         MoveAnimation.AnimationScale(null, false, 1.0F, 1.0F, 1.0F, 0.04F, 7, 0);
@@ -117,7 +117,7 @@ public class Wrap : Attack
         MoveAnimation.AnimationScale(WrapEntity, false, 0.75F, 0.5F, 0.75F, 0.02F, 9, 0);
         MoveAnimation.AnimationScale(null, false, 1.0F, 1.0F, 1.0F, 0.04F, 11, 0);
         MoveAnimation.AnimationScale(WrapEntity, false, 1.0F, 0.5F, 1.0F, 0.04F, 11, 0);
-        MoveAnimation.AnimationFade(WrapEntity, true, 0.03, 0.0, 11, 0);
+        MoveAnimation.AnimationFade(WrapEntity, true, 0.03f, 0.0f, 11, 0);
 
         battleScreen.BattleQuery.Add(MoveAnimation);
     }

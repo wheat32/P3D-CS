@@ -85,17 +85,17 @@ public class Gust : Attack
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
 
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Flying\Gust", 0, 0);
-        Object GustEntity = MoveAnimation.SpawnEntity(new Vector3(0), TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), new Vector3(0.5F, 1.0F, 0.5F), 1.0F);
-        MoveAnimation.AnimationMove(GustEntity, true, 2.0, 0.0, 0.0, 0.04, false, false, 0.0, 0.0);
+        Entity GustEntity = MoveAnimation.SpawnEntity(new Vector3(0), TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), new Vector3(0.5F, 1.0F, 0.5F), 1.0F);
+        MoveAnimation.AnimationMove(GustEntity, true, 2.0f, 0.0f, 0.0f, 0.04f, false, false, 0.0f, 0.0f);
 
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 0.5, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 0.5f, 0);
         MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 1, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 1.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 2.0, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 2.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 3.0, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 3.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 4.0, 0.5);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 1.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 2.0f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 2.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 3.0f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 3.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 4.0f, 0.5f);
 
         battleScreen.BattleQuery.Add(MoveAnimation);
     }
@@ -105,21 +105,21 @@ public class Gust : Attack
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip);
 
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Flying\Gust", 0, 0);
-        Object GustEntity = MoveAnimation.SpawnEntity(new Vector3(-2, 0, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), new Vector3(0.5F, 1.0F, 0.5F), 1.0F);
-        MoveAnimation.AnimationMove(GustEntity, false, -0.05, 0.0, 0.0, 0.04, false, false, 0.0, 0.0);
+        Entity GustEntity = MoveAnimation.SpawnEntity(new Vector3(-2, 0, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), new Vector3(0.5F, 1.0F, 0.5F), 1.0F);
+        MoveAnimation.AnimationMove(GustEntity, false, -0.05f, 0.0f, 0.0f, 0.04f, false, false, 0.0f, 0.0f);
 
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 0.5, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 0.5f, 0);
         MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 1, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 1.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 2.0, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 2.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 3.0, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 3.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 4.0, 0.5);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 4.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 5.0, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 5.5, 0);
-        MoveAnimation.AnimationChangeTexture(GustEntity, true, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 6.0, 0.5);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 1.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 2.0f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 2.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 3.0f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 3.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 4.0f, 0.5f);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 4.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 5.0f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(32, 0, 32, 64), ""), 5.5f, 0);
+        MoveAnimation.AnimationChangeTexture(GustEntity, true, TextureManager.GetTexture(@"Textures\Battle\Flying\Gust", new Rectangle(0, 0, 32, 64), ""), 6.0f, 0.5f);
 
         battleScreen.BattleQuery.Add(MoveAnimation);
     }

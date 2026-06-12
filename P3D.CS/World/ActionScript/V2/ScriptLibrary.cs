@@ -76,8 +76,8 @@ namespace P3D.ScriptVersion2
 
         private sealed class ScriptCommand
         {
-            private String _description = "";
-            private String _returnType = "";
+            private String _description = String.Empty;
+            private String _returnType = String.Empty;
             private List<ScriptArgument> _arguments = [];
 
             public String MainClass { get; }
@@ -127,7 +127,7 @@ namespace P3D.ScriptVersion2
 
             public override String ToString()
             {
-                String args = "";
+                String args = String.Empty;
                 foreach (ScriptArgument arg in _arguments)
                 {
                     if (args.Equals("") == false)
@@ -137,7 +137,7 @@ namespace P3D.ScriptVersion2
                     args += arg.ToString();
                 }
 
-                String des = "";
+                String des = String.Empty;
                 if (_description.Equals("") == false)
                 {
                     des = " " + _description;
@@ -2212,7 +2212,7 @@ namespace P3D.ScriptVersion2
                         }
                     }
                 }
-                String str = "";
+                String str = String.Empty;
                 List<String> cList = [];
                 foreach (String l in list)
                 {
@@ -2241,7 +2241,7 @@ namespace P3D.ScriptVersion2
                         }
                     }
                 }
-                String str = "";
+                String str = String.Empty;
                 List<String> cList = [];
                 foreach (String l in list)
                 {
@@ -2342,13 +2342,13 @@ namespace P3D.ScriptVersion2
 
                 if (validScriptCommands.Count > 0)
                 {
-                    String str = "";
+                    String str = String.Empty;
                     for (int i = (page - 1) * pageSize; i <= page * pageSize; i++)
                     {
                         if (i <= validScriptCommands.Count - 1)
                         {
                             ScriptCommand sc = validScriptCommands[i];
-                            String s = "";
+                            String s = String.Empty;
 
                             if (sc.IsConstruct == true)
                             {

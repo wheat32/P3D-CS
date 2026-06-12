@@ -146,7 +146,7 @@ namespace P3D.ScriptVersion2
                                     break;
                                 case "itemcount":
                                 {
-                                    String compareType = "";
+                                    String compareType = String.Empty;
                                     switch (args[4].ToLower())
                                     {
                                         case "equal": compareType = "equal"; break;
@@ -269,7 +269,7 @@ namespace P3D.ScriptVersion2
                     {
                         currencyIndicator = argument.GetSplit(3);
                     }
-                    String shopIdentifier = "";
+                    String shopIdentifier = String.Empty;
                     if (argument.CountSplits() > 4) { shopIdentifier = argument.GetSplit(4); }
                     Core.SetScreen(new TransitionScreen(Core.CurrentScreen, new TradeScreen(Core.CurrentScreen, storeData, canBuy, canSell, currencyIndicator, shopIdentifier), Color.Black, false));
                     IsReady = true;
@@ -368,7 +368,7 @@ namespace P3D.ScriptVersion2
                 case "showimage":
                 {
                     Texture2D texture = TextureManager.GetTexture(argument.GetSplit(0));
-                    String sound = "";
+                    String sound = String.Empty;
                     if (argument.Split(',').Length > 1)
                     {
                         sound = argument.GetSplit(1);
@@ -468,9 +468,9 @@ namespace P3D.ScriptVersion2
                 case "input":
                 {
                     String[] data = argument.Split(',');
-                    String defaultName = "";
+                    String defaultName = String.Empty;
                     InputScreen.InputModes inputMode = InputScreen.InputModes.Text;
-                    String currentText = "";
+                    String currentText = String.Empty;
                     int maxChars = 14;
                     List<Texture2D> textureList = [];
                     if (data.Length > 0) { defaultName = data[0]; }
@@ -608,7 +608,7 @@ namespace P3D.ScriptVersion2
                     }
                     break;
                 }
-                case "unforce": MusicManager.ForceMusic = ""; break;
+                case "unforce": MusicManager.ForceMusic = String.Empty; break;
                 case "setmusicloop":
                     if (Core.CurrentScreen.Identification.Equals(Screen.Identifications.OverworldScreen) == true)
                     {
@@ -853,7 +853,7 @@ namespace P3D.ScriptVersion2
                 case "wait":
                     if (StringHelper.IsNumeric(Value) == false) { Value = argument; }
                     if (Int(Value) > 0) { Value = (Int(Value) - 1).ToString(); }
-                    else { Value = ""; IsReady = true; }
+                    else { Value = String.Empty; IsReady = true; }
                     break;
                 case "waitforsave":
                     bool doWait = false;

@@ -110,13 +110,13 @@ public class Clamp : Attack
             offsetRight = -0.35f;
         }
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Clamp", 0, 0);
-        Object ClampEntityLeft = MoveAnimation.SpawnEntity(new Vector3(offsetLeft, -0.1f, offsetLeft), TextureManager.GetTexture(@"Textures\Battle\Water\Clamp_Left", new Rectangle(0, 0, 24, 64), ""), new Vector3(0.28F, 0.75F, 0.28F), 0.75F);
-        Object ClampEntityRight = MoveAnimation.SpawnEntity(new Vector3(offsetRight, -0.1f, offsetRight), TextureManager.GetTexture(@"Textures\Battle\Water\Clamp_Right", new Rectangle(0, 0, 24, 64), ""), new Vector3(0.28F, 0.75F, 0.28F), 0.75F);
-        MoveAnimation.AnimationMove(ClampEntityLeft, false, -0.1, -0.1, -0.1, 0.02, false, false, 0, 0);
-        MoveAnimation.AnimationMove(ClampEntityRight, false, 0.1, -0.1, 0.1, 0.02, false, false, 0, 0);
-        MoveAnimation.AnimationMove(ClampEntityLeft, true, -0.35, -0.1, -0.35, 0.02, false, false, 2, 0);
-        MoveAnimation.AnimationMove(ClampEntityRight, true, 0.35, -0.1, 0.35, 0.02, false, false, 2, 0);
-        Object SpawnEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Tackle"), new Vector3(0.5F), 1.0F, 2.5, 2);
+        Entity ClampEntityLeft = MoveAnimation.SpawnEntity(new Vector3(offsetLeft, -0.1f, offsetLeft), TextureManager.GetTexture(@"Textures\Battle\Water\Clamp_Left", new Rectangle(0, 0, 24, 64), ""), new Vector3(0.28F, 0.75F, 0.28F), 0.75F);
+        Entity ClampEntityRight = MoveAnimation.SpawnEntity(new Vector3(offsetRight, -0.1f, offsetRight), TextureManager.GetTexture(@"Textures\Battle\Water\Clamp_Right", new Rectangle(0, 0, 24, 64), ""), new Vector3(0.28F, 0.75F, 0.28F), 0.75F);
+        MoveAnimation.AnimationMove(ClampEntityLeft, false, -0.1f, -0.1f, -0.1f, 0.02f, false, false, 0, 0);
+        MoveAnimation.AnimationMove(ClampEntityRight, false, 0.1f, -0.1f, 0.1f, 0.02f, false, false, 0, 0);
+        MoveAnimation.AnimationMove(ClampEntityLeft, true, -0.35f, -0.1f, -0.35f, 0.02f, false, false, 2, 0);
+        MoveAnimation.AnimationMove(ClampEntityRight, true, 0.35f, -0.1f, 0.35f, 0.02f, false, false, 2, 0);
+        Entity SpawnEntity = MoveAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Tackle"), new Vector3(0.5F), 1.0F, 2.5f, 2);
         MoveAnimation.AnimationFade(SpawnEntity, true, 1.0F, 0.0F, 4.5F, 0);
 
         battleScreen.BattleQuery.Add(MoveAnimation);

@@ -93,6 +93,7 @@ public abstract class Screen
         CharacterSelectionScreen,
         GameModeSelectionScreen,
         VoltorbFlipScreen,
+        NewMenuScreen,
 
         // Legacy
         PokemonScreen,

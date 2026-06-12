@@ -181,7 +181,7 @@ public class Trick : Attack
 
             if (p.Item != null && p.OriginalItem != null)
             {
-                String pItemID = "";
+                String pItemID = String.Empty;
                 if (p.Item.IsGameModeItem == true)
                 {
                     pItemID = p.Item.gmID;
@@ -190,7 +190,7 @@ public class Trick : Attack
                 {
                     pItemID = p.Item.ID.ToString();
                 }
-                String pOriginalItemID = "";
+                String pOriginalItemID = String.Empty;
                 if (p.OriginalItem.IsGameModeItem == true)
                 {
                     pOriginalItemID = p.OriginalItem.gmID;
@@ -222,7 +222,7 @@ public class Trick : Attack
             }
             if (op.Item != null && op.OriginalItem != null)
             {
-                String opItemID = "";
+                String opItemID = String.Empty;
                 if (op.Item.IsGameModeItem == true)
                 {
                     opItemID = op.Item.gmID;
@@ -231,7 +231,7 @@ public class Trick : Attack
                 {
                     opItemID = op.Item.ID.ToString();
                 }
-                String opOriginalItemID = "";
+                String opOriginalItemID = String.Empty;
                 if (op.OriginalItem.IsGameModeItem == true)
                 {
                     opOriginalItemID = op.OriginalItem.gmID;

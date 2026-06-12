@@ -7,6 +7,7 @@ public class BaseModel
 {
     public static readonly BaseModel BillModel = new BaseModel();
     public static readonly BaseModel FloorModel = new BaseModel();
+    public static readonly BaseModel BlockModel = new BaseModel();
 
     public int ID;
 

@@ -21,7 +21,7 @@ public static class DebugDisplay
             return;
         }
 
-        String debugSuffix = "";
+        String debugSuffix = String.Empty;
         if (GameController.IS_DEBUG_ACTIVE == true)
         {
             String lastWrite = File.GetLastWriteTime(
@@ -35,10 +35,10 @@ public static class DebugDisplay
             actionscriptActive = ((OverworldScreen)Core.CurrentScreen).ActionScript.IsReady;
         }
 
-        String cameraInfo = "";
+        String cameraInfo = String.Empty;
         if (Screen.Camera != null)
         {
-            String thirdPersonStr = "";
+            String thirdPersonStr = String.Empty;
             if (Screen.Camera.Name.Equals("Overworld") && Screen.Camera is OverworldCamera oc)
             {
                 if (oc.ThirdPerson == true)

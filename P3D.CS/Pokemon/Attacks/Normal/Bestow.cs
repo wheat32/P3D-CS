@@ -126,7 +126,7 @@ public class Bestow : Attack
 
                 if (op.Item != null && op.OriginalItem != null)
                 {
-                    String opItemID = "";
+                    String opItemID = String.Empty;
                     if (op.Item.IsGameModeItem == true)
                     {
                         opItemID = op.Item.gmID;
@@ -135,7 +135,7 @@ public class Bestow : Attack
                     {
                         opItemID = op.Item.ID.ToString();
                     }
-                    String opOriginalItemID = "";
+                    String opOriginalItemID = String.Empty;
                     if (op.OriginalItem.IsGameModeItem == true)
                     {
                         opOriginalItemID = op.OriginalItem.gmID;

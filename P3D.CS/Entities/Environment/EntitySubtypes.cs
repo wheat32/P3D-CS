@@ -79,6 +79,8 @@ public class Floor : Entity
     public void SetRotation(int rotation) { }
 
     public void Initialize(bool hasSnowVal, bool hasSandVal, bool hasIceVal) => base.Initialize();
+
+    public int GetIceFloors() => 1;
 }
 
 public class StepBlock : Entity
@@ -214,13 +216,13 @@ public class NPC : Entity
     public List<Pokemon> Pokemons { get; } = [];
     public int faceRotation;
     public bool isDancing;
-    public String TextureID { get; set; } = "";
+    public String TextureID { get; set; } = String.Empty;
     public bool MoveAsync;
     public float MoveY;
     public bool AnimateIdle;
     public List<Rectangle> MoveRectangles { get; set; } = [];
     public Movements Movement { get; set; } = Movements.Still;
-    public String Name { get; set; } = "";
+    public String Name { get; set; } = String.Empty;
 
     public bool CheckInSight() => false;
     public bool InCameraFocus() => false;

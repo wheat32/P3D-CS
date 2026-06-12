@@ -128,7 +128,7 @@ internal static class Extensions
 
         if (s.Contains(' ') == false)
         {
-            String newText = "";
+            String newText = String.Empty;
             foreach (char ch in s)
             {
                 if (font.MeasureString(newText + ch).X * scale > width)
@@ -140,9 +140,9 @@ internal static class Extensions
             return newText;
         }
 
-        String output = "";
-        String currentLine = "";
-        String currentWord = "";
+        String output = String.Empty;
+        String currentLine = String.Empty;
+        String currentWord = String.Empty;
         String fulltext = s;
 
         while (fulltext.Length > 0)
@@ -155,8 +155,8 @@ internal static class Extensions
                 }
                 currentLine += currentWord;
                 output += currentLine + Environment.NewLine;
-                currentLine = "";
-                currentWord = "";
+                currentLine = String.Empty;
+                currentWord = String.Empty;
                 fulltext = fulltext[Environment.NewLine.Length..];
             }
             else if (fulltext.StartsWith(' ') == true)
@@ -166,7 +166,7 @@ internal static class Extensions
                     currentLine += " ";
                 }
                 currentLine += currentWord;
-                currentWord = "";
+                currentWord = String.Empty;
                 fulltext = fulltext[1..];
             }
             else
@@ -177,12 +177,12 @@ internal static class Extensions
                     if (currentLine.Equals(""))
                     {
                         output += currentWord + Environment.NewLine;
-                        currentWord = "";
+                        currentWord = String.Empty;
                     }
                     else
                     {
                         output += currentLine + Environment.NewLine;
-                        currentLine = "";
+                        currentLine = String.Empty;
                     }
                 }
                 fulltext = fulltext[1..];

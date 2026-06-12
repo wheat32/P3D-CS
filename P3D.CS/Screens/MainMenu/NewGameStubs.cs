@@ -7,8 +7,8 @@ public static class NewNewGameScreen
 
     public static class CharacterSelectionScreen
     {
-        public static String SelectedSkin = "";
-        public static String SelectedName = "";
-        public static String SelectedGender = "";
+        public static String SelectedSkin = String.Empty;
+        public static String SelectedName = String.Empty;
+        public static String SelectedGender = String.Empty;
     }
 }

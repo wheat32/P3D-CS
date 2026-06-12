@@ -22,7 +22,7 @@ public static class Badge
     private class BadgeDeclaration
     {
         public int ID;
-        public String Name = "";
+        public String Name = String.Empty;
         public int LevelCap = -1;
         public List<HMMoves> HMs = [];
         public Rectangle TextureRectangle = new Rectangle(0, 0, 50, 50);

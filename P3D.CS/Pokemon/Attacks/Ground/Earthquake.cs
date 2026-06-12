@@ -77,12 +77,12 @@ public class Earthquake : Attack
     {
         AnimationQueryObject MoveAnimation = new AnimationQueryObject(currentEntity, battleFlip, false);
         MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Ground\Earthquake", 0.0F, 0);
-        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, 0, 0.075f), 0.045, true, 16, 0, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, 0, 0.075f), 0.045f, true, 16, 0, 0, 0, new Vector3(0, 0, 1));
 
-        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, 0.06f, 0), 0.03, true, 4, 0, 0, 0, new Vector3(0, 0, 1));
-        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, -0.06f, 0), 0.03, true, 4, 4, 0, 0, new Vector3(0, 0, 1));
-        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, 0.06f, 0), 0.03, true, 4, 8, 0, 0, new Vector3(0, 0, 1));
-        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, -0.06f, 0), 0.03, true, 4, 12, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, 0.06f, 0), 0.03f, true, 4, 0, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, -0.06f, 0), 0.03f, true, 4, 4, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, 0.06f, 0), 0.03f, true, 4, 8, 0, 0, new Vector3(0, 0, 1));
+        MoveAnimation.AnimationCameraOscillateMove(new Vector3(0, -0.06f, 0), 0.03f, true, 4, 12, 0, 0, new Vector3(0, 0, 1));
 
         battleScreen.BattleQuery.Add(MoveAnimation);
     }

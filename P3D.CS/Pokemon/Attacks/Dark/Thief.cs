@@ -113,7 +113,7 @@ public class Thief : Attack
 
                 if (p.Item != null && p.OriginalItem != null)
                 {
-                    String pItemID = "";
+                    String pItemID = String.Empty;
                     if (p.Item.IsGameModeItem == true)
                     {
                         pItemID = p.Item.gmID;
@@ -122,7 +122,7 @@ public class Thief : Attack
                     {
                         pItemID = p.Item.ID.ToString();
                     }
-                    String pOriginalItemID = "";
+                    String pOriginalItemID = String.Empty;
                     if (p.OriginalItem.IsGameModeItem == true)
                     {
                         pOriginalItemID = p.OriginalItem.gmID;

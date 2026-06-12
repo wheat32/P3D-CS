@@ -27,4 +27,9 @@ public static class TextureManager
     {
         return GetTexture(name);
     }
+
+    public static bool TextureExist(String name)
+    {
+        return TextureList.ContainsKey(name.ToLower());
+    }
 }

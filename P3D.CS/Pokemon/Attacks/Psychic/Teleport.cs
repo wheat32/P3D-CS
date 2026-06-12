@@ -74,7 +74,7 @@ public class Teleport : Attack
                 trapped = battleScreen.FieldEffects.TrappedCounter.Opponent;
             }
 
-            if (p.Ability.Name.ToLower() == "run away" || p.Item?.Name.ToLower() == "smoke ball" || trapped == 0 && BattleCalculation.CanRun(battleScreen, own) == true)
+            if (p.Ability.Name.ToLower() == "run away" || p.Item?.Name.ToLower() == "smoke ball" || trapped == 0 && BattleCalculation.CanRun(own, battleScreen) == true)
             {
                 battleScreen.Battle.WildHasEscaped = true;
                 battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " fled from battle!"));

@@ -69,7 +69,7 @@ public class BugBite : Attack
         {
             if (op.Item.IsBerry == true)
             {
-                String ItemID = "";
+                String ItemID = String.Empty;
                 if (op.Item.IsGameModeItem == true)
                 {
                     ItemID = op.Item.gmID;

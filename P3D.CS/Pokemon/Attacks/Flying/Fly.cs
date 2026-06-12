@@ -244,9 +244,9 @@ public class Fly : Attack
         {
             MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Flying\Fly_Start", 0, 0);
             MoveAnimation.AnimationFade(null, false, 0.2F, 0.0F, 0, 0);
-            Object FlyEntity = MoveAnimation.SpawnEntity(new Vector3(0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 0, 32, 32), ""), new Vector3(0.5F), 0.0F);
+            Entity FlyEntity = MoveAnimation.SpawnEntity(new Vector3(0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 0, 32, 32), ""), new Vector3(0.5F), 0.0F);
             MoveAnimation.AnimationFade(FlyEntity, false, 0.2F, 1.0F, 0, 0);
-            MoveAnimation.AnimationMove(FlyEntity, true, 0.0, 2.0, 0.0, 0.06, false, false, 1.4F, 0.0, 0.06, 0);
+            MoveAnimation.AnimationMove(FlyEntity, true, 0.0f, 2.0f, 0.0f, 0.06f, false, false, 1.4F, 0.0f, 0.06f, 0);
             MoveAnimation.AnimationChangeTexture(FlyEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 32, 32, 32), ""), 1.3F, 0);
             MoveAnimation.AnimationChangeTexture(FlyEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 64, 32, 32), ""), 1.4F, 0);
             MoveAnimation.AnimationChangeTexture(FlyEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 96, 32, 32), ""), 1.5F, 0);
@@ -258,8 +258,8 @@ public class Fly : Attack
         else
         {
             MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Flying\Fly_Start", 0, 0);
-            Object FlyEntity = MoveAnimation.SpawnEntity(new Vector3(0, 0.9f, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 0, 32, 32), ""), new Vector3(0.5F), 1.0F);
-            MoveAnimation.AnimationMove(FlyEntity, true, 2.0, 0.5, 0, 0.07, false, false, 0.0F, 0.0, 0.035, 0);
+            Entity FlyEntity = MoveAnimation.SpawnEntity(new Vector3(0, 0.9f, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 0, 32, 32), ""), new Vector3(0.5F), 1.0F);
+            MoveAnimation.AnimationMove(FlyEntity, true, 2.0f, 0.5f, 0, 0.07f, false, false, 0.0F, 0.0f, 0.035f, 0);
 
             battleScreen.BattleQuery.Add(MoveAnimation);
         }
@@ -282,8 +282,8 @@ public class Fly : Attack
                 ModelOffset += 0.5F;
             }
             MoveAnimation.AnimationPlaySound(@"Battle\Attacks\Flying\Fly_Hit", 0, 0);
-            Object FlyEntity = MoveAnimation.SpawnEntity(new Vector3(-2, 0.9f, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 0, 32, 32), ""), new Vector3(0.5F), 1.0F);
-            MoveAnimation.AnimationMove(FlyEntity, true, 0.0, 0.0F + ModelOffset, 0.0, 0.07, false, false, 0.0, 0.0, 0.035, 3);
+            Entity FlyEntity = MoveAnimation.SpawnEntity(new Vector3(-2, 0.9f, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 0, 32, 32), ""), new Vector3(0.5F), 1.0F);
+            MoveAnimation.AnimationMove(FlyEntity, true, 0.0f, 0.0F + ModelOffset, 0.0f, 0.07f, false, false, 0.0f, 0.0f, 0.035f, 3);
 
             if (battleFlip == false)
             {
@@ -314,8 +314,8 @@ public class Fly : Attack
         {
             FadeDelay = 2.3F;
             FadeSpeed = 0.2F;
-            Object FlyEntity = MoveAnimation.SpawnEntity(new Vector3(0, 2, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 160, 32, 32), ""), new Vector3(0.5F), 1.0F);
-            MoveAnimation.AnimationMove(FlyEntity, false, 0.0, 0.0, 0.0, 0.1F, false, false, 0.0F, 0.0, 0.1F, 1);
+            Entity FlyEntity = MoveAnimation.SpawnEntity(new Vector3(0, 2, 0), TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 160, 32, 32), ""), new Vector3(0.5F), 1.0F);
+            MoveAnimation.AnimationMove(FlyEntity, false, 0.0f, 0.0f, 0.0f, 0.1F, false, false, 0.0F, 0.0f, 0.1F, 1);
             MoveAnimation.AnimationChangeTexture(FlyEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 128, 32, 32), ""), 0.0F, 0);
             MoveAnimation.AnimationChangeTexture(FlyEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 96, 32, 32), ""), 0.1F, 0);
             MoveAnimation.AnimationChangeTexture(FlyEntity, false, TextureManager.GetTexture(@"Textures\Battle\Flying\Fly", new Rectangle(0, 64, 32, 32), ""), 0.2F, 0);

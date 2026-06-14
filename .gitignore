@@ -305,6 +305,9 @@ Temporary Items
 lib/save/
 lib/build/
 
+# MonoGame content build cache
+*.mgstats
+
 # ignore binaries in p3d project
 p3d/**/*.exe
 p3d/**/*.dll

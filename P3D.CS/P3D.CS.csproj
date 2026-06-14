@@ -18,10 +18,6 @@
     <PackageReference Include="TextCopy" Version="6.2.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\lib\kolben\Kolben\Kolben.csproj" />
-  </ItemGroup>
-
   <!-- Phase 11: compile fonts, shaders, and 3D models via MGCB -->
   <ItemGroup>
     <MonoGameContentReference Include="..\lib\P3D.ContentPipeline\Content\Content.mgcb" />

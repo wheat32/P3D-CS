@@ -1686,7 +1686,7 @@ public class SwitchPokemonQueryObject : QueryObject
         PartyScreen selScreen = new PartyScreen(
             Core.CurrentScreen,
             Item.GetItemByID("5"),
-            i => { ChoosePokemon(i); return true; },
+            i => ChoosePokemon(i),
             Localization.GetString("battle_choose_pokemon"),
             false);
         selScreen.Mode = Screens.UI.ISelectionScreen.ScreenMode.Selection;
@@ -1802,14 +1802,14 @@ public class SwitchPokemonQueryObject : QueryObject
             _tempScreen.SelfStatistics.Switches += 1;
             _tempScreen.BattleQuery.Clear();
             FinishOppSwitchAnimation(_tempScreen);
-            _tempScreen.Battle.SwitchOutSelf(_tempScreen, pokeIndex, -1);
+            _tempScreen.Battle.SwitchOutOwn(_tempScreen, pokeIndex, -1);
             FinishOppSwitchEffects(_tempScreen);
         }
         else
         {
             _tempScreen.BattleQuery.Clear();
             FinishOppSwitchAnimation(_tempScreen);
-            _tempScreen.Battle.SwitchOutSelf(_tempScreen, pokeIndex, -1);
+            _tempScreen.Battle.SwitchOutOwn(_tempScreen, pokeIndex, -1);
             FinishOppSwitchEffects(_tempScreen);
         }
 

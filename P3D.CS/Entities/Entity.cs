@@ -168,7 +168,11 @@ public class Entity : BaseEntity
         props.Offset = offset;
         props.NormalOpacity = opacity;
         props.CameraDistanceDelta = cameraDistanceDelta;
-        // TODO Phase 4: ModelManager.ModelExist / GetModel when ModelManager is ported
+        if (ModelManager.ModelExist(modelPath) == true)
+        {
+            props.Scale *= ModelManager.MODELSCALE;
+            props.Model = ModelManager.GetModel(modelPath);
+        }
 
         switch (entityID.ToLower())
         {
@@ -271,10 +275,13 @@ public class Entity : BaseEntity
     internal void LoadSeasonTextures()
     {
         if (String.IsNullOrEmpty(SeasonColorTexture) == true)
-        {
             return;
-        }
-        // TODO Phase 7: World.GetSeasonTexture when World is fully ported
+
+        Texture2D seasonSource = TextureManager.GetTexture(@"Textures\Seasons\" + SeasonColorTexture);
+        Texture2D[] newTextures = new Texture2D[Textures.Length];
+        for (int i = 0; i < Textures.Length; i++)
+            newTextures[i] = P3D.World.GetSeasonTexture(seasonSource, Textures[i]) ?? Textures[i];
+        Textures = newTextures;
     }
 
     public virtual void Update() { }
@@ -422,8 +429,17 @@ public class Entity : BaseEntity
             }
         }
 
-        // TODO Phase 4: lighting updates when Lighting class is ported
-        Shader = Vector3.One;
+        if (Screen.Level?.World != null)
+        {
+            Shader = Screen.Level.World.EnvironmentType == P3D.World.EnvironmentTypes.Dark
+                ? new Vector3(0.5f) : Vector3.One;
+        }
+        else
+        {
+            Shader = Vector3.One;
+        }
+        if (Screen.Level?.LightingType == 6)
+            Shader = new Vector3(0.5f);
 
         for (int s = 0; s < Shaders.Count; s++)
         {
@@ -584,21 +600,43 @@ public class Entity : BaseEntity
     public void ApplyEffect()
     {
         if (Model == null || Screen.Effect == null)
-        {
             return;
-        }
+
+        bool outdoors = Screen.Level?.World?.EnvironmentType == P3D.World.EnvironmentTypes.Outside;
+
         foreach (ModelMesh mesh in Model.Meshes)
         {
             foreach (ModelMeshPart part in mesh.MeshParts)
             {
-                if (part.Effect is BasicEffect be)
+                if (part.Effect.GetType() == typeof(BasicEffect))
                 {
+                    BasicEffect be = (BasicEffect)part.Effect;
+                    Lighting.UpdateLighting(ref be);
                     be.Alpha = Opacity;
-                    be.DiffuseColor = Screen.Effect.DiffuseColor * Shader * Color;
+                    be.DiffuseColor = Core.GameOptions.LightingEnabled == true
+                        ? Screen.Effect.DiffuseColor * Shader * Color
+                        : Screen.Effect.DiffuseColor * Color;
+                    if (outdoors == true)
+                        be.DiffuseColor *= SkyDome.GetDaytimeColor(true).ToVector3();
                     be.FogEnabled = true;
                     be.FogColor = Screen.Effect.FogColor;
                     be.FogEnd = Screen.Effect.FogEnd;
                     be.FogStart = Screen.Effect.FogStart;
+                }
+                else if (part.Effect is BasicEffectWithAlphaTest)
+                {
+                    BasicEffectWithAlphaTest bea = (BasicEffectWithAlphaTest)part.Effect;
+                    Lighting.UpdateLighting(ref bea);
+                    bea.Alpha = Opacity;
+                    bea.DiffuseColor = Core.GameOptions.LightingEnabled == true
+                        ? Screen.Effect.DiffuseColor * Shader * Color
+                        : Screen.Effect.DiffuseColor * Color;
+                    if (outdoors == true)
+                        bea.DiffuseColor *= SkyDome.GetDaytimeColor(true).ToVector3();
+                    bea.FogEnabled = true;
+                    bea.FogColor = Screen.Effect.FogColor;
+                    bea.FogEnd = Screen.Effect.FogEnd;
+                    bea.FogStart = Screen.Effect.FogStart;
                 }
             }
         }

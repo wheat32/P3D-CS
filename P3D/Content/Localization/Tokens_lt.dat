@@ -5,6 +5,9 @@ main_menu_continue,Tęsti Žaidimą
 main_menu_load_game,Ankstesnis Žaidimas
 main_menu_new_game,Naujas Žaidimas
 main_menu_quit_game,Išeiti iš Žaidimo
+main_menu_quit_line1,Baigti
+main_menu_quit_line2,Žaidimą
+main_menu_online_disabled,(Išjungta)
 LoadScreen:
 load_menu_name,Vardas
 load_menu_badges,Ženkliukai

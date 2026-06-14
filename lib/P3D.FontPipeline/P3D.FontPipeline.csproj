@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <AssemblyName>P3D.FontPipeline</AssemblyName>
+    <RootNamespace>P3D.FontPipeline</RootNamespace>
+    <!--
+      Must match the dotnet-mgcb runtime (net8.0) so the assembly can be
+      loaded by MGCB via reflection. Not referenced by the game project —
+      only by Content.mgcb at content-build time.
+    -->
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" Version="3.8.2.1105" />
+  </ItemGroup>
+
+</Project>

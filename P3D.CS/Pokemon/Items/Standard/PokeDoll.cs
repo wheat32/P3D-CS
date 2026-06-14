@@ -16,7 +16,24 @@ public class PokéDoll : Item
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 5: escape from battle logic (requires BattleScreen)
-        return false;
+        Screen s = Core.CurrentScreen;
+        while (s.Identification != Screen.Identifications.BattleScreen && s.PreScreen != null)
+            s = s.PreScreen;
+        if (s.Identification != Screen.Identifications.BattleScreen)
+            return false;
+        BattleSystem.BattleScreen bs = (BattleSystem.BattleScreen)s;
+        if (bs.BattleMode != BattleSystem.BattleScreen.BattleModes.Standard &&
+            bs.BattleMode != BattleSystem.BattleScreen.BattleModes.BugContest)
+            return false;
+        bs.BattleQuery.Clear();
+        bs.BattleQuery.Insert(0, new BattleSystem.ToggleMenuQueryObject(true));
+        bs.BattleQuery.Add(bs.FocusOwnPlayer());
+        bs.BattleQuery.Add(new BattleSystem.PlaySoundQueryObject(@"Battle\running", false));
+        bs.BattleQuery.Add(new BattleSystem.TextQueryObject("Got away safely!"));
+        bs.BattleQuery.Add(new BattleSystem.EndBattleQueryObject(false));
+        Battle.Won = true;
+        Battle.Fled = true;
+        RemoveItem();
+        return true;
     }
 }

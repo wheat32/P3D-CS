@@ -69,9 +69,9 @@ public class Encore : Attack
 
         if (own == true)
         {
-            if ((battleScreen.FieldEffects.LastMove.Opponent == null && Battle.OpponentStep.StepType.Equals(BattleStepTypes.Move)) || Battle.OpponentStep.StepType.Equals(BattleStepTypes.Move) && ((Attack)Battle.OpponentStep.Argument!).ID != battleScreen.FieldEffects.LastMove.Opponent!.ID)
+            if ((battleScreen.FieldEffects.LastMove.Opponent == null && Battle.OppStep.StepType.Equals(BattleStepTypes.Move)) || Battle.OppStep.StepType.Equals(BattleStepTypes.Move) && ((Attack)Battle.OppStep.Argument!).ID != battleScreen.FieldEffects.LastMove.Opponent!.ID)
             {
-                lastMove = (Attack)Battle.OpponentStep.Argument!;
+                lastMove = (Attack)Battle.OppStep.Argument!;
             }
             else
             {
@@ -80,9 +80,9 @@ public class Encore : Attack
         }
         else
         {
-            if ((battleScreen.FieldEffects.LastMove.Self == null && Battle.SelfStep.StepType.Equals(BattleStepTypes.Move)) || Battle.SelfStep.StepType.Equals(BattleStepTypes.Move) && ((Attack)Battle.SelfStep.Argument!).ID != battleScreen.FieldEffects.LastMove.Self!.ID)
+            if ((battleScreen.FieldEffects.LastMove.Self == null && Battle.OwnStep.StepType.Equals(BattleStepTypes.Move)) || Battle.OwnStep.StepType.Equals(BattleStepTypes.Move) && ((Attack)Battle.OwnStep.Argument!).ID != battleScreen.FieldEffects.LastMove.Self!.ID)
             {
-                lastMove = (Attack)Battle.SelfStep.Argument!;
+                lastMove = (Attack)Battle.OwnStep.Argument!;
             }
             else
             {

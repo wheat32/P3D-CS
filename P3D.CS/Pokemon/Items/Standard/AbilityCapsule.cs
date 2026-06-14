@@ -36,7 +36,7 @@ public class AbilityCapsule : Item
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 3: ability slot swap logic (requires Ability backing field access)
+        // TODO Phase 12: ability slot swap logic (requires Ability backing field access)
         return false;
     }
 }

@@ -16,7 +16,7 @@ public class PPUp : MedicineItem
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 6: PP max raise logic (requires ChooseAttackScreen)
+        // TODO Phase 12: PP max raise logic (requires ChooseAttackScreen)
         return false;
     }
 }

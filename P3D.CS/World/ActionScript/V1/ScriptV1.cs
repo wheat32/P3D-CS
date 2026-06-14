@@ -2008,7 +2008,7 @@ public class ScriptV1
         bool shiny = bool.Parse(Value.GetSplit(1));
         bool front = bool.Parse(Value.GetSplit(2));
 
-        Screen.PokemonImageView.Show(pokemonID, shiny, front);
+        Screen.PokemonImageView.Show(pokemonID.ToString(), shiny, front);
         IsReady = true;
     }
 

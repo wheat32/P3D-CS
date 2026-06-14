@@ -1,6 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using P3D;
+using P3D.BattleSystem.Moves;
 using P3D.Items;
 
 namespace P3D.BattleSystem;
@@ -31,11 +32,11 @@ public class Battle
     {
         if (own == true)
         {
-            if (battleScreen.FieldEffects.OwnUsedRandomMove == true)
+            if (battleScreen.FieldEffects.UsedRandomMove.Self == true)
             {
                 foreach (Attack a in pokemon.Attacks)
                 {
-                    if (a.Name == Localization.GetString("move_name_118", "Metronome") || a.IsGameModeMove && a.gmUseRandomMove == true)
+                    if (a.Name == Localization.GetString("move_name_118", "Metronome") || a.isGameModeMove && a.gmUseRandomMove == true)
                     {
                         if (a.CurrentPP > 0)
                         {
@@ -45,7 +46,7 @@ public class Battle
                     }
                 }
             }
-            if (battleScreen.FieldEffects.OwnUsedMirrorMove == true)
+            if (battleScreen.FieldEffects.UsedMirrorMove.Self == true)
             {
                 foreach (Attack a in pokemon.Attacks)
                 {
@@ -59,18 +60,18 @@ public class Battle
                     }
                 }
             }
-            if (battleScreen.FieldEffects.OwnUsedRandomMove == true || battleScreen.FieldEffects.OwnUsedMirrorMove == true)
+            if (battleScreen.FieldEffects.UsedRandomMove.Self == true || battleScreen.FieldEffects.UsedMirrorMove.Self == true)
             {
                 return Attack.GetAttackByID(moveID);
             }
         }
         else
         {
-            if (battleScreen.FieldEffects.OppUsedRandomMove == true)
+            if (battleScreen.FieldEffects.UsedRandomMove.Opponent == true)
             {
                 foreach (Attack a in pokemon.Attacks)
                 {
-                    if (a.Name == Localization.GetString("move_name_118", "Metronome") || a.IsGameModeMove && a.gmUseRandomMove == true)
+                    if (a.Name == Localization.GetString("move_name_118", "Metronome") || a.isGameModeMove && a.gmUseRandomMove == true)
                     {
                         if (a.CurrentPP > 0)
                         {
@@ -80,7 +81,7 @@ public class Battle
                     }
                 }
             }
-            if (battleScreen.FieldEffects.OppUsedMirrorMove == true)
+            if (battleScreen.FieldEffects.UsedMirrorMove.Opponent == true)
             {
                 foreach (Attack a in pokemon.Attacks)
                 {
@@ -94,7 +95,7 @@ public class Battle
                     }
                 }
             }
-            if (battleScreen.FieldEffects.OppUsedRandomMove == true || battleScreen.FieldEffects.OppUsedMirrorMove == true)
+            if (battleScreen.FieldEffects.UsedRandomMove.Opponent == true || battleScreen.FieldEffects.UsedMirrorMove.Opponent == true)
             {
                 return Attack.GetAttackByID(moveID);
             }
@@ -112,164 +113,164 @@ public class Battle
 
     public void StartMultiTurnAction(BattleScreen battleScreen)
     {
-        if (battleScreen.FieldEffects.OwnRecharge > 0)
+        if (battleScreen.FieldEffects.Recharge.Self > 0)
         {
-            battleScreen.FieldEffects.OwnRecharge -= 1;
+            battleScreen.FieldEffects.Recharge.Self -= 1;
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Text, Argument = battleScreen.OwnPokemon.GetDisplayName() + " needs to recharge!" });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Text, Argument = battleScreen.SelfPokemon.GetDisplayName() + " needs to recharge!" });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnRolloutCounter > 0)
+        if (battleScreen.FieldEffects.RolloutCounter.Self > 0)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 205, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 205, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnIceBallCounter > 0)
+        if (battleScreen.FieldEffects.IceBallCounter.Self > 0)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 301, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 301, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnFlyCounter >= 1)
+        if (battleScreen.FieldEffects.FlyCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 19, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 19, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnDigCounter >= 1)
+        if (battleScreen.FieldEffects.DigCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 91, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 91, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnOutrage >= 1)
+        if (battleScreen.FieldEffects.Outrage.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 200, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 200, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnThrash >= 1)
+        if (battleScreen.FieldEffects.Thrash.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 37, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 37, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnPetalDance >= 1)
+        if (battleScreen.FieldEffects.PetalDance.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 80, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 80, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnBounceCounter >= 1)
+        if (battleScreen.FieldEffects.BounceCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 340, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 340, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnDiveCounter >= 1)
+        if (battleScreen.FieldEffects.DiveCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 291, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 291, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnShadowForceCounter == 1)
+        if (battleScreen.FieldEffects.ShadowForceCounter.Self == 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 467, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 467, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnPhantomForceCounter == 1)
+        if (battleScreen.FieldEffects.PhantomForceCounter.Self == 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 566, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 566, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnGeomancyCounter == 1)
+        if (battleScreen.FieldEffects.GeomancyCounter.Self == 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 601, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 601, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnSolarBeam >= 1)
+        if (battleScreen.FieldEffects.SolarBeam.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 76, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 76, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnSolarBlade >= 1)
+        if (battleScreen.FieldEffects.SolarBlade.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 669, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 669, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnSkyAttackCounter >= 1)
+        if (battleScreen.FieldEffects.SkyAttackCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 143, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 143, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnSkullBashCounter >= 1)
+        if (battleScreen.FieldEffects.SkullBashCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 130, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 130, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnRazorWindCounter >= 1)
+        if (battleScreen.FieldEffects.RazorWindCounter.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 13, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 13, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnUproar >= 1)
+        if (battleScreen.FieldEffects.Uproar.Self >= 1)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 253, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 253, battleScreen, true) });
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnBideCounter > 0)
+        if (battleScreen.FieldEffects.BideCounter.Self > 0)
         {
             selectedMoveOwn = false;
             DeleteHostQuery(battleScreen);
-            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OwnPokemon, 117, battleScreen, true) });
+            InitializeRound(battleScreen, new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.SelfPokemon, 117, battleScreen, true) });
             return;
         }
 
@@ -324,12 +325,12 @@ public class Battle
 
     public BattleRoundConst GetOppStep(BattleScreen battleScreen, BattleRoundConst ownStep)
     {
-        if (battleScreen.RoamingBattle)
+        if (BattleScreen.RoamingBattle)
         {
             battleScreen.FieldEffects.RoamingFled = false;
             if (BattleCalculation.CanSwitch(battleScreen, false))
             {
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Flee, Argument = battleScreen.OppPokemon.GetDisplayName() + " fled!" };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Flee, Argument = battleScreen.OpponentPokemon.GetDisplayName() + " fled!" };
             }
         }
 
@@ -345,166 +346,166 @@ public class Battle
 
         if (isAfterFaint == false)
         {
-            if (battleScreen.FieldEffects.OppRecharge > 0)
+            if (battleScreen.FieldEffects.Recharge.Opponent > 0)
             {
                 selectedMoveOpp = false;
-                battleScreen.FieldEffects.OppRecharge -= 1;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Text, Argument = battleScreen.OppPokemon.GetDisplayName() + " needs to recharge!" };
+                battleScreen.FieldEffects.Recharge.Opponent -= 1;
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Text, Argument = battleScreen.OpponentPokemon.GetDisplayName() + " needs to recharge!" };
             }
 
-            if (battleScreen.FieldEffects.OppRolloutCounter > 0)
+            if (battleScreen.FieldEffects.RolloutCounter.Opponent > 0)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 205, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 205, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppIceBallCounter > 0)
+            if (battleScreen.FieldEffects.IceBallCounter.Opponent > 0)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 301, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 301, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppFlyCounter >= 1)
+            if (battleScreen.FieldEffects.FlyCounter.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 19, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 19, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppDigCounter >= 1)
+            if (battleScreen.FieldEffects.DigCounter.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 91, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 91, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppOutrage >= 1)
+            if (battleScreen.FieldEffects.Outrage.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 200, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 200, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppThrash >= 1)
+            if (battleScreen.FieldEffects.Thrash.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 37, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 37, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppPetalDance >= 1)
+            if (battleScreen.FieldEffects.PetalDance.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 80, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 80, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppBounceCounter >= 1)
+            if (battleScreen.FieldEffects.BounceCounter.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 340, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 340, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppDiveCounter == 1)
+            if (battleScreen.FieldEffects.DiveCounter.Opponent == 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 291, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 291, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppShadowForceCounter == 1)
+            if (battleScreen.FieldEffects.ShadowForceCounter.Opponent == 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 467, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 467, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppPhantomForceCounter == 1)
+            if (battleScreen.FieldEffects.PhantomForceCounter.Opponent == 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 566, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 566, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppGeomancyCounter == 1)
+            if (battleScreen.FieldEffects.GeomancyCounter.Opponent == 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 601, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 601, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppSolarBeam >= 1)
+            if (battleScreen.FieldEffects.SolarBeam.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 76, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 76, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppSolarBlade >= 1)
+            if (battleScreen.FieldEffects.SolarBlade.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 669, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 669, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppSkyAttackCounter >= 1)
+            if (battleScreen.FieldEffects.SkyAttackCounter.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 143, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 143, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppSkullBashCounter >= 1)
+            if (battleScreen.FieldEffects.SkullBashCounter.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 130, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 130, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppRazorWindCounter >= 1)
+            if (battleScreen.FieldEffects.RazorWindCounter.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 13, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 13, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppUproar >= 1)
+            if (battleScreen.FieldEffects.Uproar.Opponent >= 1)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 253, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 253, battleScreen, false) };
             }
 
-            if (battleScreen.FieldEffects.OppBideCounter > 0)
+            if (battleScreen.FieldEffects.BideCounter.Opponent > 0)
             {
                 selectedMoveOpp = false;
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, 117, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, 117, battleScreen, false) };
             }
         }
 
         if (battleScreen.IsRemoteBattle && battleScreen.IsHost)
         {
-            battleScreen.OppStatistics.Turns += 1;
-            battleScreen.OwnStatistics.Turns += 1;
-            if (battleScreen.ReceivedInput.StartsWith("MOVE|") || battleScreen.ReceivedInput.StartsWith("MEGA|"))
+            battleScreen.OpponentStatistics.Turns += 1;
+            battleScreen.SelfStatistics.Turns += 1;
+            if (BattleScreen.ReceivedInput.StartsWith("MOVE|") || BattleScreen.ReceivedInput.StartsWith("MEGA|"))
             {
-                battleScreen.OppStatistics.Moves += 1;
-                if (battleScreen.ReceivedInput.StartsWith("MEGA|"))
+                battleScreen.OpponentStatistics.Moves += 1;
+                if (BattleScreen.ReceivedInput.StartsWith("MEGA|"))
                 {
                     battleScreen.IsMegaEvolvingOpp = true;
                 }
                 int moveID;
-                String inputString = battleScreen.ReceivedInput.Remove(0, 5);
+                String inputString = BattleScreen.ReceivedInput.Remove(0, 5);
                 if (inputString.Contains(";BATON;"))
                 {
-                    battleScreen.FieldEffects.OppBatonPassIndex = (int)inputString.GetSplit(2, ";");
-                    moveID = (int)inputString.GetSplit(0, ";");
+                    battleScreen.FieldEffects.BatonPassIndex.Opponent = int.Parse(inputString.GetSplit(2, ";"));
+                    moveID = int.Parse(inputString.GetSplit(0, ";"));
                 }
                 else if (inputString.Contains(";SWAP;"))
                 {
-                    battleScreen.FieldEffects.OppSwapIndex = (int)inputString.GetSplit(2, ";");
-                    moveID = (int)inputString.GetSplit(0, ";");
+                    battleScreen.FieldEffects.SwapIndex.Opponent = int.Parse(inputString.GetSplit(2, ";"));
+                    moveID = int.Parse(inputString.GetSplit(0, ";"));
                 }
                 else
                 {
                     moveID = int.Parse(inputString);
                 }
-                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OppPokemon, moveID, battleScreen, false) };
+                return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = GetPokemonMoveFromID(battleScreen.OpponentPokemon, moveID, battleScreen, false) };
             }
-            else if (battleScreen.ReceivedInput.StartsWith("SWITCH|"))
+            else if (BattleScreen.ReceivedInput.StartsWith("SWITCH|"))
             {
-                battleScreen.OppStatistics.Switches += 1;
-                int switchID = int.Parse(battleScreen.ReceivedInput.Remove(0, 7));
+                battleScreen.OpponentStatistics.Switches += 1;
+                int switchID = int.Parse(BattleScreen.ReceivedInput.Remove(0, 7));
                 return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Switch, Argument = switchID.ToString() };
             }
-            else if (battleScreen.ReceivedInput.StartsWith("TEXT|"))
+            else if (BattleScreen.ReceivedInput.StartsWith("TEXT|"))
             {
-                String text = battleScreen.ReceivedInput.Remove(0, 5);
+                String text = BattleScreen.ReceivedInput.Remove(0, 5);
                 return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Text, Argument = text };
             }
         }
@@ -517,36 +518,36 @@ public class Battle
         else
         {
             List<int> availableAttacks = new List<int>();
-            for (int i = 0; i <= battleScreen.OppPokemon.Attacks.Count - 1; i++)
+            for (int i = 0; i <= battleScreen.OpponentPokemon.Attacks.Count - 1; i++)
             {
                 availableAttacks.Add(i);
             }
             int oppAttackChoice = Core.Random.Next(0, availableAttacks.Count);
-            if (battleScreen.FieldEffects.OppEncore > 0)
+            if (battleScreen.FieldEffects.Encore.Opponent > 0)
             {
                 int attackIndex = -1;
-                for (int a = 0; a <= battleScreen.OppPokemon.Attacks.Count - 1; a++)
+                for (int a = 0; a <= battleScreen.OpponentPokemon.Attacks.Count - 1; a++)
                 {
-                    if (battleScreen.OppPokemon.Attacks[a].ID == battleScreen.FieldEffects.OppEncoreMove.ID)
+                    if (battleScreen.OpponentPokemon.Attacks[a].ID == battleScreen.FieldEffects.EncoreMove.Opponent.ID)
                     {
                         attackIndex = a;
                     }
                 }
-                if (attackIndex != -1 && battleScreen.OppPokemon.Attacks[attackIndex].CurrentPP > 0)
+                if (attackIndex != -1 && battleScreen.OpponentPokemon.Attacks[attackIndex].CurrentPP > 0)
                 {
-                    return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = battleScreen.FieldEffects.OppEncoreMove };
+                    return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = battleScreen.FieldEffects.EncoreMove.Opponent };
                 }
                 else
                 {
-                    battleScreen.FieldEffects.OppEncoreMove = null;
-                    battleScreen.FieldEffects.OppEncore = 0;
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s encore stopped."));
+                    battleScreen.FieldEffects.EncoreMove.Opponent = null;
+                    battleScreen.FieldEffects.Encore.Opponent = 0;
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s encore stopped."));
                 }
             }
             bool ready = false;
             while (ready == false)
             {
-                if (battleScreen.OppPokemon.Attacks[oppAttackChoice] == battleScreen.FieldEffects.OppTormentMove || battleScreen.OppPokemon.Attacks[oppAttackChoice].Disabled > 0 || battleScreen.FieldEffects.OppTaunt > 0 && battleScreen.OppPokemon.Attacks[oppAttackChoice].Category == Attack.Categories.Status || battleScreen.OppPokemon.Attacks[oppAttackChoice].CurrentPP <= 0)
+                if (battleScreen.OpponentPokemon.Attacks[oppAttackChoice] == battleScreen.FieldEffects.TormentMove.Opponent || battleScreen.OpponentPokemon.Attacks[oppAttackChoice].Disabled > 0 || battleScreen.FieldEffects.Taunt.Opponent > 0 && battleScreen.OpponentPokemon.Attacks[oppAttackChoice].Category == Attack.Categories.Status || battleScreen.OpponentPokemon.Attacks[oppAttackChoice].CurrentPP <= 0)
                 {
                     availableAttacks.Remove(oppAttackChoice);
                     if (availableAttacks.Count > 0)
@@ -563,7 +564,7 @@ public class Battle
                     ready = true;
                 }
             }
-            return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = battleScreen.OppPokemon.Attacks[oppAttackChoice] };
+            return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = battleScreen.OpponentPokemon.Attacks[oppAttackChoice] };
         }
     }
 
@@ -571,32 +572,32 @@ public class Battle
     {
         if (own == true)
         {
-            if (battleScreen.FieldEffects.OwnUsedRandomMove == true && (move.Name.ToLower() != Localization.GetString("move_name_118", "Metronome").ToLower() || move.IsGameModeMove == true && move.gmUseRandomMove == false))
+            if (battleScreen.FieldEffects.UsedRandomMove.Self == true && (move.Name.ToLower() != Localization.GetString("move_name_118", "Metronome").ToLower() || move.isGameModeMove == true && move.gmUseRandomMove == false))
             {
-                battleScreen.FieldEffects.OwnUsedRandomMove = false;
-                battleScreen.FieldEffects.OppUsedRandomMoveAttack = null;
+                battleScreen.FieldEffects.UsedRandomMove.Self = false;
+                battleScreen.FieldEffects.UsedRandomMoveAttack.Opponent = null;
             }
-            if (battleScreen.FieldEffects.OwnUsedMirrorMove == true && (move.Name.ToLower() != Localization.GetString("move_name_119", "Mirror Move").ToLower()))
+            if (battleScreen.FieldEffects.UsedMirrorMove.Self == true && (move.Name.ToLower() != Localization.GetString("move_name_119", "Mirror Move").ToLower()))
             {
-                battleScreen.FieldEffects.OwnUsedMirrorMove = false;
-                battleScreen.FieldEffects.OppUsedMirrorMoveAttack = null;
+                battleScreen.FieldEffects.UsedMirrorMove.Self = false;
+                battleScreen.FieldEffects.UsedMirrorMoveAttack.Opponent = null;
             }
         }
         else
         {
-            if (battleScreen.FieldEffects.OppUsedRandomMove == true && (move.Name.ToLower() != Localization.GetString("move_name_118", "Metronome").ToLower() || move.IsGameModeMove == true && move.gmUseRandomMove == false))
+            if (battleScreen.FieldEffects.UsedRandomMove.Opponent == true && (move.Name.ToLower() != Localization.GetString("move_name_118", "Metronome").ToLower() || move.isGameModeMove == true && move.gmUseRandomMove == false))
             {
-                battleScreen.FieldEffects.OppUsedRandomMove = false;
-                battleScreen.FieldEffects.OppUsedRandomMoveAttack = null;
+                battleScreen.FieldEffects.UsedRandomMove.Opponent = false;
+                battleScreen.FieldEffects.UsedRandomMoveAttack.Opponent = null;
             }
-            if (battleScreen.FieldEffects.OppUsedMirrorMove == true && (move.Name.ToLower() != Localization.GetString("move_name_119", "Mirror Move").ToLower()))
+            if (battleScreen.FieldEffects.UsedMirrorMove.Opponent == true && (move.Name.ToLower() != Localization.GetString("move_name_119", "Mirror Move").ToLower()))
             {
-                battleScreen.FieldEffects.OppUsedMirrorMove = false;
-                battleScreen.FieldEffects.OppUsedMirrorMoveAttack = null;
+                battleScreen.FieldEffects.UsedMirrorMove.Opponent = false;
+                battleScreen.FieldEffects.UsedMirrorMoveAttack.Opponent = null;
             }
         }
 
-        if (move.IsGameModeMove == true && move.gmUseRandomMove == true)
+        if (move.isGameModeMove == true && move.gmUseRandomMove == true)
         {
             if (move.CurrentPP > 0)
             {
@@ -604,13 +605,13 @@ public class Battle
             }
             if (own == true)
             {
-                battleScreen.FieldEffects.OwnUsedRandomMove = true;
-                battleScreen.FieldEffects.OwnUsedRandomMoveAttack = move;
+                battleScreen.FieldEffects.UsedRandomMove.Self = true;
+                battleScreen.FieldEffects.UsedRandomMoveAttack.Self = move;
             }
             else
             {
-                battleScreen.FieldEffects.OppUsedRandomMove = true;
-                battleScreen.FieldEffects.OppUsedRandomMoveAttack = move;
+                battleScreen.FieldEffects.UsedRandomMove.Opponent = true;
+                battleScreen.FieldEffects.UsedRandomMoveAttack.Opponent = move;
             }
             return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = move.GetRandomAttack() };
         }
@@ -624,13 +625,13 @@ public class Battle
                 }
                 if (own == true)
                 {
-                    battleScreen.FieldEffects.OwnUsedRandomMove = true;
-                    battleScreen.FieldEffects.OwnUsedRandomMoveAttack = move;
+                    battleScreen.FieldEffects.UsedRandomMove.Self = true;
+                    battleScreen.FieldEffects.UsedRandomMoveAttack.Self = move;
                 }
                 else
                 {
-                    battleScreen.FieldEffects.OppUsedRandomMove = true;
-                    battleScreen.FieldEffects.OppUsedRandomMoveAttack = move;
+                    battleScreen.FieldEffects.UsedRandomMove.Opponent = true;
+                    battleScreen.FieldEffects.UsedRandomMoveAttack.Opponent = move;
                 }
                 return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = Moves.Normal.Metronome.GetMetronomeMove() };
             }
@@ -644,16 +645,16 @@ public class Battle
                 int id = -1;
                 if (own == true)
                 {
-                    if (battleScreen.FieldEffects.OppLastMove != null && battleScreen.FieldEffects.OppLastMove.MirrorMoveAffected == true)
+                    if (battleScreen.FieldEffects.LastMove.Opponent != null && battleScreen.FieldEffects.LastMove.Opponent.mirrorMoveAffected == true)
                     {
-                        id = battleScreen.FieldEffects.OppLastMove.ID;
+                        id = battleScreen.FieldEffects.LastMove.Opponent.ID;
                     }
                 }
                 else
                 {
-                    if (battleScreen.FieldEffects.OwnLastMove != null && battleScreen.FieldEffects.OwnLastMove.MirrorMoveAffected == true)
+                    if (battleScreen.FieldEffects.LastMove.Self != null && battleScreen.FieldEffects.LastMove.Self.mirrorMoveAffected == true)
                     {
-                        id = battleScreen.FieldEffects.OwnLastMove.ID;
+                        id = battleScreen.FieldEffects.LastMove.Self.ID;
                     }
                 }
 
@@ -661,11 +662,11 @@ public class Battle
                 {
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OwnUsedMirrorMove = true;
+                        battleScreen.FieldEffects.UsedMirrorMove.Self = true;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppUsedMirrorMove = true;
+                        battleScreen.FieldEffects.UsedMirrorMove.Opponent = true;
                     }
                     return new BattleRoundConst { StepType = BattleRoundConst.StepTypes.Move, Argument = Attack.GetAttackByID(id) };
                 }
@@ -691,7 +692,7 @@ public class Battle
                 return;
             }
         }
-        Pokemon p = battleScreen.OppPokemon;
+        Pokemon p = battleScreen.OpponentPokemon;
         if (p.Item != null)
         {
             if (p.Item.IsGameModeItem == true)
@@ -720,12 +721,12 @@ public class Battle
 
     public void DoMegaEvolution(BattleScreen battleScreen, bool own)
     {
-        Pokemon p = battleScreen.OwnPokemon;
-        NPC pNPC = battleScreen.OwnPokemonNPC;
+        Pokemon p = battleScreen.SelfPokemon;
+        NPC pNPC = battleScreen.SelfPokemonNPC;
         if (own == false)
         {
-            p = battleScreen.OppPokemon;
-            pNPC = battleScreen.OppPokemonNPC;
+            p = battleScreen.OpponentPokemon;
+            pNPC = battleScreen.OpponentPokemonNPC;
         }
         String baseName = p.GetDisplayName();
         if (p.AdditionalData == String.Empty)
@@ -763,11 +764,11 @@ public class Battle
                 for (int currentAmount = 0; currentAmount <= 16; currentAmount++)
                 {
                     Texture2D texture = TextureManager.GetTexture(@"Textures\Battle\MegaEvolution\Mega_Phase1");
-                    float xPos = (float)((Random.NextDouble() - 0.5) * 1.2);
-                    float zPos = (float)((Random.NextDouble() - 0.5) * 1.2);
+                    float xPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
+                    float zPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
                     Vector3 position = new Vector3(xPos, 0.8f, zPos);
                     Vector3 scale = new Vector3(0.5f);
-                    float startDelay = (float)(5.0 * Random.NextDouble());
+                    float startDelay = (float)(5.0 * Core.Random.NextDouble());
                     Entity phase1Entity = megaAnimation.SpawnEntity(position, texture, scale, 1.0f, startDelay);
                     Vector3 destination = new Vector3(0, 0, 0);
                     megaAnimation.AnimationMove(phase1Entity, true, destination.X, destination.Y, destination.Z, 0.05f, false, true, startDelay, 0.0f);
@@ -782,7 +783,7 @@ public class Battle
             {
                 battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\MegaEvolution", false));
             }
-            battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
+            battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
             battleScreen.BattleQuery.Add(new TextQueryObject(baseName + " has Mega Evolved into " + p.GetName(true) + "!"));
             TriggerAbilityEffect(battleScreen, own);
         }
@@ -860,8 +861,8 @@ public class Battle
 
         if (ownStep.StepType == BattleRoundConst.StepTypes.Move && oppStep.StepType == BattleRoundConst.StepTypes.Move)
         {
-            battleScreen.FieldEffects.OwnUsedMoves.Add(((Attack)ownStep.Argument).ID);
-            battleScreen.FieldEffects.OppUsedMoves.Add(((Attack)oppStep.Argument).ID);
+            battleScreen.FieldEffects.UsedMoves.Self.Add(((Attack)ownStep.Argument).ID);
+            battleScreen.FieldEffects.UsedMoves.Opponent.Add(((Attack)oppStep.Argument).ID);
 
             Attack ownMove = (Attack)ownStep.Argument;
             Attack oppMove = (Attack)oppStep.Argument;
@@ -910,7 +911,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject((String)oppStep.Argument));
             EndRound(battleScreen, 2);
 
-            battleScreen.FieldEffects.OwnUsedMoves.Add(((Attack)ownStep.Argument).ID);
+            battleScreen.FieldEffects.UsedMoves.Self.Add(((Attack)ownStep.Argument).ID);
             Attack ownMove = (Attack)ownStep.Argument;
 
             if (selectedMoveOwn == true) { ownMove.MoveSelected(true, battleScreen); }
@@ -926,7 +927,7 @@ public class Battle
             OpponentUseItem(battleScreen, int.Parse(((String)oppStep.Argument).Split(',')[0]), int.Parse(((String)oppStep.Argument).Split(',')[1]));
             EndRound(battleScreen, 2);
 
-            battleScreen.FieldEffects.OwnUsedMoves.Add(((Attack)ownStep.Argument).ID);
+            battleScreen.FieldEffects.UsedMoves.Self.Add(((Attack)ownStep.Argument).ID);
             Attack ownMove = (Attack)ownStep.Argument;
             if (selectedMoveOwn == true) { ownMove.MoveSelected(true, battleScreen); }
             DoAttackRound(battleScreen, true, ownMove);
@@ -939,8 +940,8 @@ public class Battle
 
             if (((Attack)ownStep.Argument).ID == 228)
             {
-                battleScreen.FieldEffects.OwnPursuit = true;
-                battleScreen.FieldEffects.OwnUsedMoves.Add(((Attack)ownStep.Argument).ID);
+                battleScreen.FieldEffects.Pursuit.Self = true;
+                battleScreen.FieldEffects.UsedMoves.Self.Add(((Attack)ownStep.Argument).ID);
                 Attack ownMove = (Attack)ownStep.Argument;
                 if (selectedMoveOwn == true) { ownMove.MoveSelected(true, battleScreen); }
                 DoAttackRound(battleScreen, true, ownMove);
@@ -954,7 +955,7 @@ public class Battle
                 SwitchOutOpp(battleScreen, int.Parse((String)oppStep.Argument), String.Empty, true);
                 EndRound(battleScreen, 2);
 
-                battleScreen.FieldEffects.OwnUsedMoves.Add(((Attack)ownStep.Argument).ID);
+                battleScreen.FieldEffects.UsedMoves.Self.Add(((Attack)ownStep.Argument).ID);
                 Attack ownMove = (Attack)ownStep.Argument;
                 if (selectedMoveOwn == true) { ownMove.MoveSelected(true, battleScreen); }
                 DoAttackRound(battleScreen, true, ownMove);
@@ -966,7 +967,7 @@ public class Battle
         {
             MegaEvolCheck(battleScreen);
 
-            battleScreen.FieldEffects.OwnUsedMoves.Add(((Attack)ownStep.Argument).ID);
+            battleScreen.FieldEffects.UsedMoves.Self.Add(((Attack)ownStep.Argument).ID);
             Attack ownMove = (Attack)ownStep.Argument;
 
             if (selectedMoveOwn == true) { ownMove.MoveSelected(true, battleScreen); }
@@ -974,7 +975,7 @@ public class Battle
             DoAttackRound(battleScreen, true, ownMove);
             EndRound(battleScreen, 1);
 
-            if (battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
                 if (BattleCalculation.CanSwitch(battleScreen, false) == true)
                 {
@@ -988,7 +989,7 @@ public class Battle
                 else
                 {
                     ChangeCameraAngle(2, true, battleScreen);
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " is trapped!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " is trapped!"));
                     EndRound(battleScreen, 2);
                 }
             }
@@ -1003,7 +1004,7 @@ public class Battle
             EndRound(battleScreen, 1);
 
             Attack oppMove = (Attack)oppStep.Argument;
-            battleScreen.FieldEffects.OppUsedMoves.Add(oppMove.ID);
+            battleScreen.FieldEffects.UsedMoves.Opponent.Add(oppMove.ID);
             if (selectedMoveOpp == true) { oppMove.MoveSelected(false, battleScreen); }
             DoAttackRound(battleScreen, false, oppMove);
             EndRound(battleScreen, 2);
@@ -1045,7 +1046,7 @@ public class Battle
             ChangeCameraAngle(0, true, battleScreen);
             battleScreen.BattleQuery.Add(new TextQueryObject((String)ownStep.Argument));
 
-            if (battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
                 if (BattleCalculation.CanSwitch(battleScreen, false) == true)
                 {
@@ -1059,7 +1060,7 @@ public class Battle
                 else
                 {
                     ChangeCameraAngle(2, true, battleScreen);
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " is trapped!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " is trapped!"));
                     EndRound(battleScreen, 2);
                 }
             }
@@ -1073,9 +1074,9 @@ public class Battle
             {
                 if (((Attack)oppStep.Argument).ID == 228)
                 {
-                    battleScreen.FieldEffects.OppPursuit = true;
+                    battleScreen.FieldEffects.Pursuit.Opponent = true;
                     Attack oppMove = (Attack)oppStep.Argument;
-                    battleScreen.FieldEffects.OppUsedMoves.Add(oppMove.ID);
+                    battleScreen.FieldEffects.UsedMoves.Opponent.Add(oppMove.ID);
                     if (selectedMoveOpp == true) { oppMove.MoveSelected(false, battleScreen); }
                     DoAttackRound(battleScreen, false, oppMove);
                     EndRound(battleScreen, 2);
@@ -1089,7 +1090,7 @@ public class Battle
                     EndRound(battleScreen, 1);
 
                     Attack oppMove = (Attack)oppStep.Argument;
-                    battleScreen.FieldEffects.OppUsedMoves.Add(oppMove.ID);
+                    battleScreen.FieldEffects.UsedMoves.Opponent.Add(oppMove.ID);
                     if (selectedMoveOpp == true) { oppMove.MoveSelected(false, battleScreen); }
                     DoAttackRound(battleScreen, false, oppMove);
                     EndRound(battleScreen, 2);
@@ -1098,10 +1099,10 @@ public class Battle
             else
             {
                 ChangeCameraAngle(0, true, battleScreen);
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " is trapped!"));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " is trapped!"));
 
                 Attack oppMove = (Attack)oppStep.Argument;
-                battleScreen.FieldEffects.OppUsedMoves.Add(oppMove.ID);
+                battleScreen.FieldEffects.UsedMoves.Opponent.Add(oppMove.ID);
                 if (selectedMoveOpp == true) { oppMove.MoveSelected(false, battleScreen); }
                 DoAttackRound(battleScreen, false, oppMove);
                 EndRound(battleScreen, 2);
@@ -1122,7 +1123,7 @@ public class Battle
             else
             {
                 ChangeCameraAngle(0, true, battleScreen);
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " is trapped!"));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " is trapped!"));
 
                 ChangeCameraAngle(0, true, battleScreen);
                 battleScreen.BattleQuery.Add(new TextQueryObject((String)oppStep.Argument));
@@ -1144,7 +1145,7 @@ public class Battle
             else
             {
                 ChangeCameraAngle(0, true, battleScreen);
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " is trapped!"));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " is trapped!"));
 
                 ChangeCameraAngle(2, true, battleScreen);
                 OpponentUseItem(battleScreen, int.Parse(((String)oppStep.Argument).Split(',')[0]), int.Parse(((String)oppStep.Argument).Split(',')[1]));
@@ -1166,7 +1167,7 @@ public class Battle
             else
             {
                 ChangeCameraAngle(0, true, battleScreen);
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " is trapped!"));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " is trapped!"));
 
                 ChangeCameraAngle(2, true, battleScreen);
                 SwitchOutOpp(battleScreen, int.Parse((String)oppStep.Argument), String.Empty, true);
@@ -1189,10 +1190,10 @@ public class Battle
             else
             {
                 ChangeCameraAngle(0, true, battleScreen);
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " is trapped!"));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " is trapped!"));
             }
 
-            if (battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
                 if (BattleCalculation.CanSwitch(battleScreen, false) == true)
                 {
@@ -1206,7 +1207,7 @@ public class Battle
                 else
                 {
                     ChangeCameraAngle(2, true, battleScreen);
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " is trapped!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " is trapped!"));
                     EndRound(battleScreen, 2);
                 }
             }
@@ -1219,7 +1220,7 @@ public class Battle
             EndRound(battleScreen, 1);
 
             Attack oppMove = (Attack)oppStep.Argument;
-            battleScreen.FieldEffects.OppUsedMoves.Add(oppMove.ID);
+            battleScreen.FieldEffects.UsedMoves.Opponent.Add(oppMove.ID);
             if (selectedMoveOpp == true) { oppMove.MoveSelected(false, battleScreen); }
             DoAttackRound(battleScreen, false, oppMove);
             EndRound(battleScreen, 2);
@@ -1255,7 +1256,7 @@ public class Battle
         {
             EndRound(battleScreen, 1);
 
-            if (battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
                 if (BattleCalculation.CanSwitch(battleScreen, false) == true)
                 {
@@ -1269,7 +1270,7 @@ public class Battle
                 else
                 {
                     ChangeCameraAngle(2, true, battleScreen);
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " is trapped!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " is trapped!"));
                     EndRound(battleScreen, 2);
                 }
             }
@@ -1292,7 +1293,7 @@ public class Battle
 
     private void OpponentUseItem(BattleScreen battleScreen, int itemID, int target)
     {
-        Pokemon p = battleScreen.OppPokemon;
+        Pokemon p = battleScreen.OpponentPokemon;
 
         if (target != -1)
         {
@@ -1380,40 +1381,40 @@ public class Battle
 
         if (own)
         {
-            fly = battleScreen.FieldEffects.OwnFlyCounter;
-            bounce = battleScreen.FieldEffects.OwnBounceCounter;
-            dig = battleScreen.FieldEffects.OwnDigCounter;
-            dive = battleScreen.FieldEffects.OwnDiveCounter;
-            skyDrop = battleScreen.FieldEffects.OwnSkyDropCounter;
-            geomancy = battleScreen.FieldEffects.OwnGeomancyCounter;
-            shadowForce = battleScreen.FieldEffects.OwnShadowForceCounter;
-            phantomForce = battleScreen.FieldEffects.OwnPhantomForceCounter;
-            skullBash = battleScreen.FieldEffects.OwnSkullBashCounter;
-            skyAttack = battleScreen.FieldEffects.OwnSkyAttackCounter;
-            solarBeam = battleScreen.FieldEffects.OwnSolarBeam;
-            solarBlade = battleScreen.FieldEffects.OwnSolarBlade;
-            razorWind = battleScreen.FieldEffects.OwnRazorWindCounter;
-            bide = battleScreen.FieldEffects.OwnBideCounter;
+            fly = battleScreen.FieldEffects.FlyCounter.Self;
+            bounce = battleScreen.FieldEffects.BounceCounter.Self;
+            dig = battleScreen.FieldEffects.DigCounter.Self;
+            dive = battleScreen.FieldEffects.DiveCounter.Self;
+            skyDrop = battleScreen.FieldEffects.SkyDropCounter.Self;
+            geomancy = battleScreen.FieldEffects.GeomancyCounter.Self;
+            shadowForce = battleScreen.FieldEffects.ShadowForceCounter.Self;
+            phantomForce = battleScreen.FieldEffects.PhantomForceCounter.Self;
+            skullBash = battleScreen.FieldEffects.SkullBashCounter.Self;
+            skyAttack = battleScreen.FieldEffects.SkyAttackCounter.Self;
+            solarBeam = battleScreen.FieldEffects.SolarBeam.Self;
+            solarBlade = battleScreen.FieldEffects.SolarBlade.Self;
+            razorWind = battleScreen.FieldEffects.RazorWindCounter.Self;
+            bide = battleScreen.FieldEffects.BideCounter.Self;
         }
         else
         {
-            fly = battleScreen.FieldEffects.OppFlyCounter;
-            bounce = battleScreen.FieldEffects.OppBounceCounter;
-            dig = battleScreen.FieldEffects.OppDigCounter;
-            dive = battleScreen.FieldEffects.OppDiveCounter;
-            skyDrop = battleScreen.FieldEffects.OppSkyDropCounter;
-            geomancy = battleScreen.FieldEffects.OppGeomancyCounter;
-            shadowForce = battleScreen.FieldEffects.OppShadowForceCounter;
-            phantomForce = battleScreen.FieldEffects.OppPhantomForceCounter;
-            skullBash = battleScreen.FieldEffects.OppSkullBashCounter;
-            skyAttack = battleScreen.FieldEffects.OppSkyAttackCounter;
-            solarBeam = battleScreen.FieldEffects.OppSolarBeam;
-            solarBlade = battleScreen.FieldEffects.OppSolarBlade;
-            razorWind = battleScreen.FieldEffects.OppRazorWindCounter;
-            bide = battleScreen.FieldEffects.OppBideCounter;
+            fly = battleScreen.FieldEffects.FlyCounter.Opponent;
+            bounce = battleScreen.FieldEffects.BounceCounter.Opponent;
+            dig = battleScreen.FieldEffects.DigCounter.Opponent;
+            dive = battleScreen.FieldEffects.DiveCounter.Opponent;
+            skyDrop = battleScreen.FieldEffects.SkyDropCounter.Opponent;
+            geomancy = battleScreen.FieldEffects.GeomancyCounter.Opponent;
+            shadowForce = battleScreen.FieldEffects.ShadowForceCounter.Opponent;
+            phantomForce = battleScreen.FieldEffects.PhantomForceCounter.Opponent;
+            skullBash = battleScreen.FieldEffects.SkullBashCounter.Opponent;
+            skyAttack = battleScreen.FieldEffects.SkyAttackCounter.Opponent;
+            solarBeam = battleScreen.FieldEffects.SolarBeam.Opponent;
+            solarBlade = battleScreen.FieldEffects.SolarBlade.Opponent;
+            razorWind = battleScreen.FieldEffects.RazorWindCounter.Opponent;
+            bide = battleScreen.FieldEffects.BideCounter.Opponent;
         }
 
-        if (battleScreen.OwnPokemon.Item != null && battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "power herb" && battleScreen.CanUseItems)
+        if (battleScreen.SelfPokemon.Item != null && battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "power herb" && BattleScreen.CanUseItems)
         {
             return false;
         }
@@ -1485,24 +1486,24 @@ public class Battle
         NPC opNPC;
         if (own)
         {
-            p = battleScreen.OwnPokemon;
-            op = battleScreen.OppPokemon;
-            pNPC = battleScreen.OwnPokemonNPC;
-            opNPC = battleScreen.OppPokemonNPC;
-            if ((own && battleScreen.FieldEffects.OwnLastMove != null && battleScreen.FieldEffects.OwnLastMove.ID == 214) == false)
+            p = battleScreen.SelfPokemon;
+            op = battleScreen.OpponentPokemon;
+            pNPC = battleScreen.SelfPokemonNPC;
+            opNPC = battleScreen.OpponentPokemonNPC;
+            if ((own && battleScreen.FieldEffects.LastMove.Self != null && battleScreen.FieldEffects.LastMove.Self.ID == 214) == false)
             {
-                battleScreen.FieldEffects.OwnLastMove = moveUsed;
+                battleScreen.FieldEffects.LastMove.Self = moveUsed;
             }
         }
         else
         {
-            p = battleScreen.OppPokemon;
-            op = battleScreen.OwnPokemon;
-            pNPC = battleScreen.OppPokemonNPC;
-            opNPC = battleScreen.OwnPokemonNPC;
-            if ((own == false && battleScreen.FieldEffects.OppLastMove != null && battleScreen.FieldEffects.OppLastMove.ID == 214) == false)
+            p = battleScreen.OpponentPokemon;
+            op = battleScreen.SelfPokemon;
+            pNPC = battleScreen.OpponentPokemonNPC;
+            opNPC = battleScreen.SelfPokemonNPC;
+            if ((own == false && battleScreen.FieldEffects.LastMove.Opponent != null && battleScreen.FieldEffects.LastMove.Opponent.ID == 214) == false)
             {
-                battleScreen.FieldEffects.OppLastMove = moveUsed;
+                battleScreen.FieldEffects.LastMove.Opponent = moveUsed;
             }
         }
         if (wildHasEscaped)
@@ -1511,11 +1512,11 @@ public class Battle
             return;
         }
 
-        if (battleScreen.FieldEffects.OwnTurnCounts == 0)
+        if (battleScreen.FieldEffects.TurnCounts.Self == 0)
         {
             _hasSwitchedInOwn = false;
         }
-        if (battleScreen.FieldEffects.OppTurnCounts == 0)
+        if (battleScreen.FieldEffects.TurnCounts.Opponent == 0)
         {
             _hasSwitchedInOpp = false;
         }
@@ -1527,13 +1528,13 @@ public class Battle
         {
             if (p.AdditionalData == String.Empty)
             {
-                if (moveUsed.IsDamagingMove)
+                if (moveUsed.isDamagingMove)
                 {
                     p.AdditionalData = "blade";
                     p.ReloadDefinitions();
                     p.CalculateStats();
                     ChangeCameraAngle(1, own, battleScreen);
-                    battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
+                    battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
                     battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " transformed into Blade Forme!"));
                 }
             }
@@ -1545,7 +1546,7 @@ public class Battle
                     p.ReloadDefinitions();
                     p.CalculateStats();
                     ChangeCameraAngle(1, own, battleScreen);
-                    battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
+                    battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
                     battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " transformed into Shield Forme!"));
                 }
             }
@@ -1555,11 +1556,11 @@ public class Battle
         {
             if (own)
             {
-                battleScreen.FieldEffects.OwnDestinyBond = false;
+                battleScreen.FieldEffects.DestinyBond.Self = false;
             }
             else
             {
-                battleScreen.FieldEffects.OppDestinyBond = false;
+                battleScreen.FieldEffects.DestinyBond.Opponent = false;
             }
         }
 
@@ -1575,7 +1576,7 @@ public class Battle
 
         if (p.Status == Pokemon.StatusProblems.Freeze)
         {
-            if (moveUsed.RemovesOwnFrozen == true)
+            if (moveUsed.removesSelfFrozen == true)
             {
                 CureStatusProblem(own, own, battleScreen, p.GetDisplayName() + " got defrosted by " + moveUsed.Name + ".", "defrostmove");
             }
@@ -1611,9 +1612,9 @@ public class Battle
                         }
                         Vector3 position = new Vector3(xPos, -0.25f, zPos);
                         Vector3 scale = new Vector3(0.25f);
-                        float startDelay = (float)(5.0 * Random.NextDouble());
+                        float startDelay = (float)(5.0 * Core.Random.NextDouble());
                         Entity snowflakeEntity = frozenAnimation.SpawnEntity(position, texture, scale, 1.0f, startDelay);
-                        frozenAnimation.AnimationFade(snowflakeEntity, true, 0.02, 0.0f, startDelay, 0.0);
+                        frozenAnimation.AnimationFade(snowflakeEntity, true, 0.02f, 0.0f, startDelay, 0.0f);
                     }
                     battleScreen.BattleQuery.Add(frozenAnimation);
                 }
@@ -1629,10 +1630,10 @@ public class Battle
         if (p.Status == Pokemon.StatusProblems.Sleep)
         {
             moveUsed.IsSleeping(own, battleScreen);
-            int sleepTurns = battleScreen.FieldEffects.OwnSleepTurns;
+            int sleepTurns = battleScreen.FieldEffects.SleepTurns.Self;
             if (own == false)
             {
-                sleepTurns = battleScreen.FieldEffects.OppSleepTurns;
+                sleepTurns = battleScreen.FieldEffects.SleepTurns.Opponent;
             }
 
             if (moveUsed.ID == 214)
@@ -1641,11 +1642,11 @@ public class Battle
                 {
                     if (own)
                     {
-                        battleScreen.FieldEffects.OwnLastMove = moveUsed;
+                        battleScreen.FieldEffects.LastMove.Self = moveUsed;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppLastMove = moveUsed;
+                        battleScreen.FieldEffects.LastMove.Opponent = moveUsed;
                     }
                 }
                 else
@@ -1657,15 +1658,15 @@ public class Battle
             }
             else
             {
-                if ((own && battleScreen.FieldEffects.OwnLastMove != null && battleScreen.FieldEffects.OwnLastMove.ID == 214) || (own == false && battleScreen.FieldEffects.OppLastMove != null && battleScreen.FieldEffects.OppLastMove.ID == 214))
+                if ((own && battleScreen.FieldEffects.LastMove.Self != null && battleScreen.FieldEffects.LastMove.Self.ID == 214) || (own == false && battleScreen.FieldEffects.LastMove.Opponent != null && battleScreen.FieldEffects.LastMove.Opponent.ID == 214))
                 {
                     if (own)
                     {
-                        battleScreen.FieldEffects.OwnLastMove = moveUsed;
+                        battleScreen.FieldEffects.LastMove.Self = moveUsed;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppLastMove = moveUsed;
+                        battleScreen.FieldEffects.LastMove.Opponent = moveUsed;
                     }
                 }
                 else
@@ -1680,11 +1681,11 @@ public class Battle
                                 AnimationQueryObject sleepAnimation = new AnimationQueryObject(pNPC, own == false);
                                 sleepAnimation.AnimationPlaySound(@"Battle\Effects\Asleep", 0, 0);
                                 Entity sleepEntity1 = sleepAnimation.SpawnEntity(new Vector3(0, 0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 0, 16, 16), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                                sleepAnimation.AnimationChangeTexture(sleepEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 16, 16, 16), String.Empty), 1, 1);
-                                sleepAnimation.AnimationMove(sleepEntity1, true, 0, 0.5, 0.25, 0.01, false, false, 0, 0);
+                                sleepAnimation.AnimationChangeTexture(sleepEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 16, 16, 16), String.Empty), 1f, 1f);
+                                sleepAnimation.AnimationMove(sleepEntity1, true, 0, 0.5f, 0.25f, 0.01f, false, false, 0, 0);
                                 Entity sleepEntity2 = sleepAnimation.SpawnEntity(new Vector3(0, 0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 0, 16, 16), String.Empty), new Vector3(0.5f), 1, 1.5f, 1);
                                 sleepAnimation.AnimationChangeTexture(sleepEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 16, 16, 16), String.Empty), 2.5f, 1);
-                                sleepAnimation.AnimationMove(sleepEntity2, true, 0, 0.5, 0.25, 0.01, false, false, 2, 0);
+                                sleepAnimation.AnimationMove(sleepEntity2, true, 0, 0.5f, 0.25f, 0.01f, false, false, 2, 0);
                                 battleScreen.BattleQuery.Add(sleepAnimation);
                             }
                             else
@@ -1705,10 +1706,10 @@ public class Battle
 
         if (p.Ability.Name.ToLower() == "truant")
         {
-            int truantTurn = battleScreen.FieldEffects.OwnTruantRound;
+            int truantTurn = battleScreen.FieldEffects.TruantRound.Self;
             if (own == false)
             {
-                truantTurn = battleScreen.FieldEffects.OppTruantRound;
+                truantTurn = battleScreen.FieldEffects.TruantRound.Opponent;
             }
             if (truantTurn == 1)
             {
@@ -1729,9 +1730,9 @@ public class Battle
             {
                 if (p.Item.OriginalName.ToLower() == "choice band" || p.Item.OriginalName.ToLower() == "choice specs" || p.Item.OriginalName.ToLower() == "choice scarf")
                 {
-                    if (battleScreen.FieldEffects.OwnChoiceMove != null)
+                    if (battleScreen.FieldEffects.ChoiceMove.Self != null)
                     {
-                        if (moveUsed != battleScreen.FieldEffects.OwnChoiceMove)
+                        if (moveUsed != battleScreen.FieldEffects.ChoiceMove.Self)
                         {
                             battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + "'s move was prevented due to " + p.Item.OneLineName() + "!"));
                             return;
@@ -1739,7 +1740,7 @@ public class Battle
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OwnChoiceMove = moveUsed;
+                        battleScreen.FieldEffects.ChoiceMove.Self = moveUsed;
                     }
                 }
             }
@@ -1750,9 +1751,9 @@ public class Battle
             {
                 if (p.Item.OriginalName.ToLower() == "choice band" || p.Item.OriginalName.ToLower() == "choice specs" || p.Item.OriginalName.ToLower() == "choice scarf")
                 {
-                    if (battleScreen.FieldEffects.OppChoiceMove != null)
+                    if (battleScreen.FieldEffects.ChoiceMove.Opponent != null)
                     {
-                        if (moveUsed != battleScreen.FieldEffects.OppChoiceMove)
+                        if (moveUsed != battleScreen.FieldEffects.ChoiceMove.Opponent)
                         {
                             battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + "'s move was prevented due to " + p.Item.OneLineName() + "!"));
                             return;
@@ -1760,16 +1761,16 @@ public class Battle
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppChoiceMove = moveUsed;
+                        battleScreen.FieldEffects.ChoiceMove.Opponent = moveUsed;
                     }
                 }
             }
         }
 
-        int imprisoned = battleScreen.FieldEffects.OwnImprison;
+        int imprisoned = battleScreen.FieldEffects.Imprison.Self;
         if (own == false)
         {
-            imprisoned = battleScreen.FieldEffects.OppImprison;
+            imprisoned = battleScreen.FieldEffects.Imprison.Opponent;
         }
         if (imprisoned > 0)
         {
@@ -1789,14 +1790,14 @@ public class Battle
             }
         }
 
-        int healBlock = battleScreen.FieldEffects.OppHealBlock;
+        int healBlock = battleScreen.FieldEffects.HealBlock.Opponent;
         if (own == false)
         {
-            healBlock = battleScreen.FieldEffects.OwnHealBlock;
+            healBlock = battleScreen.FieldEffects.HealBlock.Self;
         }
         if (healBlock > 0)
         {
-            if (moveUsed.IsHealingMove == true)
+            if (moveUsed.isHealingMove == true)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " was prevented from healing!"));
                 return;
@@ -1805,7 +1806,7 @@ public class Battle
 
         if (p.HP > 0 && p.Status != Pokemon.StatusProblems.Fainted)
         {
-            if (op.Ability.Name.ToLower() == "cacophony" && moveUsed.IsSoundMove == true)
+            if (op.Ability.Name.ToLower() == "cacophony" && moveUsed.isSoundMove == true)
             {
                 if (battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen) == true)
                 {
@@ -1815,7 +1816,7 @@ public class Battle
                 }
             }
 
-            if (op.Ability.Name.ToLower() == "soundproof" && moveUsed.IsSoundMove == true)
+            if (op.Ability.Name.ToLower() == "soundproof" && moveUsed.isSoundMove == true)
             {
                 if (battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen) == true)
                 {
@@ -1825,7 +1826,7 @@ public class Battle
                 }
             }
 
-            if (op.Ability.Name.ToLower() == "sturdy" && moveUsed.IsOneHitKOMove == true)
+            if (op.Ability.Name.ToLower() == "sturdy" && moveUsed.isOneHitKOMove == true)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Sturdy prevented any damage from the 1-Hit-KO move."));
                 return;
@@ -1837,13 +1838,13 @@ public class Battle
             int confusionTurns;
             if (own == true)
             {
-                confusionTurns = battleScreen.FieldEffects.OwnConfusionTurns;
-                battleScreen.FieldEffects.OwnConfusionTurns -= 1;
+                confusionTurns = battleScreen.FieldEffects.ConfusionTurns.Self;
+                battleScreen.FieldEffects.ConfusionTurns.Self -= 1;
             }
             else
             {
-                confusionTurns = battleScreen.FieldEffects.OppConfusionTurns;
-                battleScreen.FieldEffects.OppConfusionTurns -= 1;
+                confusionTurns = battleScreen.FieldEffects.ConfusionTurns.Opponent;
+                battleScreen.FieldEffects.ConfusionTurns.Opponent -= 1;
             }
             if (confusionTurns == 0)
             {
@@ -1896,11 +1897,11 @@ public class Battle
                     moveUsed.HurtItselfInConfusion(own, battleScreen);
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                        battleScreen.FieldEffects.LastMoveFailed.Self = true;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppLastMoveFailed = true;
+                        battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
                     }
                     return;
                 }
@@ -1914,11 +1915,11 @@ public class Battle
             moveUsed.InflictedFlinch(own, battleScreen);
             if (own == true)
             {
-                battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                battleScreen.FieldEffects.LastMoveFailed.Self = true;
             }
             else
             {
-                battleScreen.FieldEffects.OppLastMoveFailed = true;
+                battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
             }
             if (p.Ability.Name.ToLower() == "steadfast")
             {
@@ -1927,10 +1928,10 @@ public class Battle
             return;
         }
 
-        int taunt = battleScreen.FieldEffects.OwnTaunt;
+        int taunt = battleScreen.FieldEffects.Taunt.Self;
         if (own == false)
         {
-            taunt = battleScreen.FieldEffects.OppTaunt;
+            taunt = battleScreen.FieldEffects.Taunt.Opponent;
         }
         if (taunt > 0)
         {
@@ -1944,23 +1945,23 @@ public class Battle
         int gravity = battleScreen.FieldEffects.Gravity;
         if (gravity > 0)
         {
-            if (moveUsed.DisabledWhileGravity == true)
+            if (moveUsed.disabledWhileGravity == true)
             {
-                int fly = battleScreen.FieldEffects.OwnFlyCounter;
+                int fly = battleScreen.FieldEffects.FlyCounter.Self;
                 if (own == false)
                 {
-                    fly = battleScreen.FieldEffects.OppFlyCounter;
+                    fly = battleScreen.FieldEffects.FlyCounter.Opponent;
                 }
                 if (fly > 0)
                 {
                     moveUsed.MoveMisses(own, battleScreen);
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                        battleScreen.FieldEffects.LastMoveFailed.Self = true;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppLastMoveFailed = true;
+                        battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
                     }
                 }
                 battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + "'s move was prevented due to Gravity!"));
@@ -1982,8 +1983,8 @@ public class Battle
                         {
                             Entity heartEntity = heartAnimation.SpawnEntity(new Vector3(0.0f, 0.0f, 0.0f), TextureManager.GetTexture(@"Textures\Battle\Normal\Attract"), new Vector3(0.25f), 1.0f, (float)(i * 0.2));
                             float zPos = (float)(Core.Random.Next(-2, 2) * 0.2);
-                            heartAnimation.AnimationMove(heartEntity, false, 0.0, 0.25, zPos, 0.01, false, false, (float)(i * 0.2), 0.0);
-                            heartAnimation.AnimationFade(heartEntity, true, 0.02, 0.0, (float)(1 + i * 0.2), 0.0);
+                            heartAnimation.AnimationMove(heartEntity, false, 0.0f, 0.25f, zPos, 0.01f, false, false, (float)(i * 0.2), 0.0f);
+                            heartAnimation.AnimationFade(heartEntity, true, 0.02f, 0.0f, (float)(1 + i * 0.2), 0.0f);
                         }
                         battleScreen.BattleQuery.Add(heartAnimation);
                     }
@@ -1991,11 +1992,11 @@ public class Battle
                     moveUsed.IsAttracted(own, battleScreen);
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                        battleScreen.FieldEffects.LastMoveFailed.Self = true;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppLastMoveFailed = true;
+                        battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
                     }
                     return;
                 }
@@ -2019,7 +2020,7 @@ public class Battle
                         Vector3 position = new Vector3(xPos, -0.25f, zPos);
                         Vector3 destination = new Vector3(xPos - xPos * 2, 0, zPos - zPos * 2);
                         Vector3 scale = new Vector3(0.25f);
-                        float startDelay = (float)(5.0 * Random.NextDouble());
+                        float startDelay = (float)(5.0 * Core.Random.NextDouble());
                         Entity shockEntity = paralyzedAnimation.SpawnEntity(position, texture, scale, 1.0f, startDelay);
                         paralyzedAnimation.AnimationMove(shockEntity, true, destination.X, destination.Y, destination.Z, 0.025f, false, true, startDelay, 0.0f);
                         paralyzedAnimation.AnimationChangeTexture(shockEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Paralyzed", new Rectangle(16, 0, 16, 16), String.Empty), startDelay + 1, 1);
@@ -2038,62 +2039,62 @@ public class Battle
                 moveUsed.IsParalyzed(own, battleScreen);
                 if (own == true)
                 {
-                    battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                    battleScreen.FieldEffects.LastMoveFailed.Self = true;
                 }
                 else
                 {
-                    battleScreen.FieldEffects.OppLastMoveFailed = true;
+                    battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
                 }
                 return;
             }
         }
 
-        if (op.Status == Pokemon.StatusProblems.Sleep && moveUsed.CanHitSleeping == false)
+        if (op.Status == Pokemon.StatusProblems.Sleep && moveUsed.canHitSleeping == false)
         {
             battleScreen.BattleQuery.Add(new TextQueryObject(moveUsed.Name + " failed because " + op.GetDisplayName() + " is asleep!"));
             moveUsed.MoveMisses(own, battleScreen);
             if (own == true)
             {
-                battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                battleScreen.FieldEffects.LastMoveFailed.Self = true;
             }
             else
             {
-                battleScreen.FieldEffects.OppLastMoveFailed = true;
+                battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
             }
             return;
         }
 
         if (own == true)
         {
-            battleScreen.FieldEffects.OwnLastMove = moveUsed;
+            battleScreen.FieldEffects.LastMove.Self = moveUsed;
         }
         else
         {
-            battleScreen.FieldEffects.OppLastMove = moveUsed;
+            battleScreen.FieldEffects.LastMove.Opponent = moveUsed;
         }
 
         if (own == true)
         {
-            if (battleScreen.FieldEffects.OwnTorment > 0)
+            if (battleScreen.FieldEffects.Torment.Self > 0)
             {
-                if (moveUsed == battleScreen.FieldEffects.OwnTormentMove)
+                if (moveUsed == battleScreen.FieldEffects.TormentMove.Self)
                 {
                     battleScreen.BattleQuery.Add(new TextQueryObject(moveUsed.Name + " failed!"));
                     return;
                 }
-                battleScreen.FieldEffects.OwnTormentMove = battleScreen.FieldEffects.OwnLastMove;
+                battleScreen.FieldEffects.TormentMove.Self = battleScreen.FieldEffects.LastMove.Self;
             }
         }
         else
         {
-            if (battleScreen.FieldEffects.OppTorment > 0)
+            if (battleScreen.FieldEffects.Torment.Opponent > 0)
             {
-                if (moveUsed == battleScreen.FieldEffects.OppTormentMove)
+                if (moveUsed == battleScreen.FieldEffects.TormentMove.Opponent)
                 {
                     battleScreen.BattleQuery.Add(new TextQueryObject(moveUsed.Name + " failed!"));
                     return;
                 }
-                battleScreen.FieldEffects.OppTormentMove = battleScreen.FieldEffects.OppLastMove;
+                battleScreen.FieldEffects.TormentMove.Opponent = battleScreen.FieldEffects.LastMove.Opponent;
             }
         }
 
@@ -2135,10 +2136,10 @@ public class Battle
 
         moveUsed.PreAttack(own, battleScreen);
 
-        int substitute = battleScreen.FieldEffects.OppSubstitute;
+        int substitute = battleScreen.FieldEffects.Substitute.Opponent;
         if (own == false)
         {
-            substitute = battleScreen.FieldEffects.OwnSubstitute;
+            substitute = battleScreen.FieldEffects.Substitute.Self;
         }
 
         int allDamage = 0;
@@ -2148,10 +2149,10 @@ public class Battle
         ChangeCameraAngle(1, own, battleScreen);
         String moveUsedText = p.GetDisplayName() + " used " + moveUsed.Name + "!";
 
-        int bide = battleScreen.FieldEffects.OwnBideCounter;
+        int bide = battleScreen.FieldEffects.BideCounter.Self;
         if (own == false)
         {
-            bide = battleScreen.FieldEffects.OppBideCounter;
+            bide = battleScreen.FieldEffects.BideCounter.Opponent;
         }
         if (bide > 0)
         {
@@ -2165,10 +2166,10 @@ public class Battle
             }
         }
 
-        int thrash = battleScreen.FieldEffects.OwnThrash;
+        int thrash = battleScreen.FieldEffects.Thrash.Self;
         if (own == false)
         {
-            thrash = battleScreen.FieldEffects.OppThrash;
+            thrash = battleScreen.FieldEffects.Thrash.Opponent;
         }
         if (thrash > 0)
         {
@@ -2178,16 +2179,16 @@ public class Battle
         String randomMoveText = String.Empty;
         if (own == true)
         {
-            if (battleScreen.FieldEffects.OwnUsedRandomMove == true && battleScreen.FieldEffects.OwnUsedRandomMoveAttack != null)
+            if (battleScreen.FieldEffects.UsedRandomMove.Self == true && battleScreen.FieldEffects.UsedRandomMoveAttack.Self != null)
             {
-                randomMoveText = p.GetDisplayName() + " used " + battleScreen.FieldEffects.OwnUsedRandomMoveAttack.Name + "!";
+                randomMoveText = p.GetDisplayName() + " used " + battleScreen.FieldEffects.UsedRandomMoveAttack.Self.Name + "!";
             }
         }
         else
         {
-            if (battleScreen.FieldEffects.OppUsedRandomMove == true && battleScreen.FieldEffects.OppUsedRandomMoveAttack != null)
+            if (battleScreen.FieldEffects.UsedRandomMove.Opponent == true && battleScreen.FieldEffects.UsedRandomMoveAttack.Opponent != null)
             {
-                randomMoveText = p.GetDisplayName() + " used " + battleScreen.FieldEffects.OppUsedRandomMoveAttack.Name + "!";
+                randomMoveText = p.GetDisplayName() + " used " + battleScreen.FieldEffects.UsedRandomMoveAttack.Opponent.Name + "!";
             }
         }
         if (randomMoveText != String.Empty)
@@ -2212,18 +2213,18 @@ public class Battle
                 moveUsed.MoveMisses(own, battleScreen);
                 if (own == true)
                 {
-                    battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                    battleScreen.FieldEffects.LastMoveFailed.Self = true;
                 }
                 else
                 {
-                    battleScreen.FieldEffects.OppLastMoveFailed = true;
+                    battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
                 }
                 return;
             }
         }
 
         bool noTargetCheck = true;
-        if (moveUsed.ProtectAffected == false)
+        if (moveUsed.protectAffected == false)
         {
             noTargetCheck = false;
             String moveNameLower = moveUsed.Name.ToLower();
@@ -2261,11 +2262,11 @@ public class Battle
 
         moveUsed.UserPokemonMoveAnimation(battleScreen, own);
 
-        if (moveUsed.Target != Attack.Targets.Self && moveUsed.FocusOppPokemon == true)
+        if (moveUsed.target != Attack.Targets.Self && moveUsed.focusOpponentPokemon == true)
         {
             if (own == true)
             {
-                QueryObject ca = battleScreen.FocusOppPokemon();
+                QueryObject ca = battleScreen.FocusOpponentPokemon();
                 ((CameraQueryObject)ca).SetTargetToStart();
                 ScreenFadeQueryObject fa1 = new ScreenFadeQueryObject(ScreenFadeQueryObject.FadeTypes.CloseLeft, Color.Black, true, 110);
                 ScreenFadeQueryObject fa2 = new ScreenFadeQueryObject(ScreenFadeQueryObject.FadeTypes.CloseRight, Color.Black, false, 110);
@@ -2273,7 +2274,7 @@ public class Battle
             }
             else
             {
-                QueryObject ca = battleScreen.FocusOwnPokemon();
+                QueryObject ca = battleScreen.FocusSelfPokemon();
                 ((CameraQueryObject)ca).SetTargetToStart();
                 ScreenFadeQueryObject fa1 = new ScreenFadeQueryObject(ScreenFadeQueryObject.FadeTypes.CloseRight, Color.Black, true, 110);
                 ScreenFadeQueryObject fa2 = new ScreenFadeQueryObject(ScreenFadeQueryObject.FadeTypes.CloseLeft, Color.Black, false, 110);
@@ -2282,20 +2283,20 @@ public class Battle
         }
         bool doesNotMiss = BattleCalculation.AccuracyCheck(moveUsed, own, battleScreen);
 
-        int lockon = battleScreen.FieldEffects.OwnLockOn;
+        int lockon = battleScreen.FieldEffects.LockOn.Self;
         if (own == false)
         {
-            lockon = battleScreen.FieldEffects.OppLockOn;
+            lockon = battleScreen.FieldEffects.LockOn.Opponent;
         }
         if (lockon > 0)
         {
             doesNotMiss = true;
         }
 
-        int minimize = battleScreen.FieldEffects.OppMinimize;
+        int minimize = battleScreen.FieldEffects.Minimize.Opponent;
         if (own == false)
         {
-            minimize = battleScreen.FieldEffects.OwnMinimize;
+            minimize = battleScreen.FieldEffects.Minimize.Self;
         }
 
         String[] minimizeMoveList = {
@@ -2315,7 +2316,7 @@ public class Battle
         }
 
         bool useTwoTurnCheck = true;
-        if (moveUsed.ProtectAffected == false)
+        if (moveUsed.protectAffected == false)
         {
             useTwoTurnCheck = false;
             String moveNameLower2 = moveUsed.Name.ToLower();
@@ -2341,50 +2342,50 @@ public class Battle
 
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int dig = battleScreen.FieldEffects.OppDigCounter;
-            if (own == false) { dig = battleScreen.FieldEffects.OwnDigCounter; }
-            if (dig > 0 && moveUsed.CanHitUnderground == false) { doesNotMiss = false; }
+            int dig = battleScreen.FieldEffects.DigCounter.Opponent;
+            if (own == false) { dig = battleScreen.FieldEffects.DigCounter.Self; }
+            if (dig > 0 && moveUsed.canHitUnderground == false) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int fly = battleScreen.FieldEffects.OppFlyCounter;
-            if (own == false) { fly = battleScreen.FieldEffects.OwnFlyCounter; }
-            if (fly > 0 && moveUsed.CanHitInMidAir == false) { doesNotMiss = false; }
+            int fly = battleScreen.FieldEffects.FlyCounter.Opponent;
+            if (own == false) { fly = battleScreen.FieldEffects.FlyCounter.Self; }
+            if (fly > 0 && moveUsed.canHitInMidAir == false) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int bounce = battleScreen.FieldEffects.OppBounceCounter;
-            if (own == false) { bounce = battleScreen.FieldEffects.OwnBounceCounter; }
-            if (bounce > 0 && moveUsed.CanHitInMidAir == false) { doesNotMiss = false; }
+            int bounce = battleScreen.FieldEffects.BounceCounter.Opponent;
+            if (own == false) { bounce = battleScreen.FieldEffects.BounceCounter.Self; }
+            if (bounce > 0 && moveUsed.canHitInMidAir == false) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int dive = battleScreen.FieldEffects.OppDiveCounter;
-            if (own == false) { dive = battleScreen.FieldEffects.OwnDiveCounter; }
-            if (dive > 0 && moveUsed.CanHitUnderwater == false) { doesNotMiss = false; }
+            int dive = battleScreen.FieldEffects.DiveCounter.Opponent;
+            if (own == false) { dive = battleScreen.FieldEffects.DiveCounter.Self; }
+            if (dive > 0 && moveUsed.canHitUnderwater == false) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int shadowforce = battleScreen.FieldEffects.OppShadowForceCounter;
-            if (own == false) { shadowforce = battleScreen.FieldEffects.OwnShadowForceCounter; }
+            int shadowforce = battleScreen.FieldEffects.ShadowForceCounter.Opponent;
+            if (own == false) { shadowforce = battleScreen.FieldEffects.ShadowForceCounter.Self; }
             if (shadowforce > 0) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int phantomforce = battleScreen.FieldEffects.OppPhantomForceCounter;
-            if (own == false) { phantomforce = battleScreen.FieldEffects.OwnPhantomForceCounter; }
+            int phantomforce = battleScreen.FieldEffects.PhantomForceCounter.Opponent;
+            if (own == false) { phantomforce = battleScreen.FieldEffects.PhantomForceCounter.Self; }
             if (phantomforce > 0) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int skydrop = battleScreen.FieldEffects.OppSkyDropCounter;
-            if (own == false) { skydrop = battleScreen.FieldEffects.OwnSkyDropCounter; }
-            if (skydrop > 0 && moveUsed.CanHitInMidAir == false) { doesNotMiss = false; }
+            int skydrop = battleScreen.FieldEffects.SkyDropCounter.Opponent;
+            if (own == false) { skydrop = battleScreen.FieldEffects.SkyDropCounter.Self; }
+            if (skydrop > 0 && moveUsed.canHitInMidAir == false) { doesNotMiss = false; }
         }
         if (doesNotMiss == true && useTwoTurnCheck)
         {
-            int geomancy = battleScreen.FieldEffects.OppGeomancyCounter;
-            if (own == false) { geomancy = battleScreen.FieldEffects.OwnGeomancyCounter; }
+            int geomancy = battleScreen.FieldEffects.GeomancyCounter.Opponent;
+            if (own == false) { geomancy = battleScreen.FieldEffects.GeomancyCounter.Self; }
             if (geomancy > 0) { doesNotMiss = false; }
         }
 
@@ -2397,10 +2398,10 @@ public class Battle
         {
             float effectiveness = BattleCalculation.CalculateEffectiveness(own, moveUsed, battleScreen);
 
-            int oppHealblock = battleScreen.FieldEffects.OwnHealBlock;
+            int oppHealblock = battleScreen.FieldEffects.HealBlock.Self;
             if (own == false)
             {
-                oppHealblock = battleScreen.FieldEffects.OppHealBlock;
+                oppHealblock = battleScreen.FieldEffects.HealBlock.Opponent;
             }
             bool moveWorks = true;
 
@@ -2534,11 +2535,11 @@ public class Battle
                     battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + "'s Flash Fire made " + moveUsed.Name + " useless!"));
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OppFlashFire = 1;
+                        battleScreen.FieldEffects.FlashFire.Opponent = 1;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OwnFlashFire = 1;
+                        battleScreen.FieldEffects.FlashFire.Self = 1;
                     }
                 }
             }
@@ -2575,7 +2576,7 @@ public class Battle
                 }
             }
 
-            if (op.Ability.Name.ToLower() == "overcoat" && moveUsed.IsPowderMove == true)
+            if (op.Ability.Name.ToLower() == "overcoat" && moveUsed.isPowderMove == true)
             {
                 moveWorks = false;
                 battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " is not affected by " + moveUsed.Name + "!"));
@@ -2583,7 +2584,7 @@ public class Battle
 
             if (op.Type1.Type == Element.Types.Grass || op.Type2.Type == Element.Types.Grass)
             {
-                if (moveUsed.IsPowderMove == true)
+                if (moveUsed.isPowderMove == true)
                 {
                     moveWorks = false;
                     battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " is not affected by " + moveUsed.Name + "!"));
@@ -2592,14 +2593,14 @@ public class Battle
 
             if (op.Type1.Type == Element.Types.Ghost || op.Type2.Type == Element.Types.Ghost)
             {
-                if (moveUsed.IsTrappingMove == true)
+                if (moveUsed.isTrappingMove == true)
                 {
                     moveWorks = false;
                     battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " is not affected by " + moveUsed.Name + "!"));
                 }
             }
 
-            if (op.Ability.Name.ToLower() == "bulletproof" && moveUsed.IsBulletMove == true)
+            if (op.Ability.Name.ToLower() == "bulletproof" && moveUsed.isBulletMove == true)
             {
                 moveWorks = false;
                 battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " prevents damage with its Bulletproof ability!"));
@@ -2607,7 +2608,7 @@ public class Battle
 
             if (battleScreen.FieldEffects.PsychicTerrain > 0 && battleScreen.FieldEffects.IsGrounded(own == false, battleScreen) == true)
             {
-                if (moveUsed.Priority > 0)
+                if (moveUsed.priority > 0)
                 {
                     moveWorks = false;
                     battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " surrounds itself with Psychic Terrain!"));
@@ -2626,11 +2627,11 @@ public class Battle
                     Localization.GetString("move_name_214", "Sleep Talk").ToLower(),
                     Localization.GetString("move_name_289", "Snatch").ToLower()
                 };
-                if (moveUsed.Priority > 0 && exceptionAttacks.Contains(moveUsed.Name.ToLower()) == false &&
-                    moveUsed.Target != Attack.Targets.All && moveUsed.Target != Attack.Targets.AllFoes &&
+                if (moveUsed.priority > 0 && exceptionAttacks.Contains(moveUsed.Name.ToLower()) == false &&
+                    moveUsed.target != Attack.Targets.All && moveUsed.target != Attack.Targets.AllFoes &&
                     exceptionAbilities.Contains(p.Ability.Name.ToLower()) == false &&
-                    (battleScreen.FieldEffects.OwnUsedRandomMove == false || battleScreen.FieldEffects.OwnUsedRandomMoveAttack.Priority > 0) &&
-                    (battleScreen.FieldEffects.OwnUsedMirrorMove == false || battleScreen.FieldEffects.OwnUsedMirrorMoveAttack.Priority > 0))
+                    (battleScreen.FieldEffects.UsedRandomMove.Self == false || battleScreen.FieldEffects.UsedRandomMoveAttack.Self.priority > 0) &&
+                    (battleScreen.FieldEffects.UsedMirrorMove.Self == false || battleScreen.FieldEffects.UsedMirrorMoveAttack.Self.priority > 0))
                 {
                     moveWorks = false;
                     battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " cannot use " + moveUsed.Name + " because of Armor Tail!"));
@@ -2641,9 +2642,9 @@ public class Battle
             {
                 if (op.HP > 0 && op.Status != Pokemon.StatusProblems.Fainted)
                 {
-                    int protect = battleScreen.FieldEffects.OppProtectCounter;
-                    if (own == false) { protect = battleScreen.FieldEffects.OwnProtectCounter; }
-                    if (protect > 0 && moveUsed.ProtectAffected == true)
+                    int protect = battleScreen.FieldEffects.ProtectCounter.Opponent;
+                    if (own == false) { protect = battleScreen.FieldEffects.ProtectCounter.Self; }
+                    if (protect > 0 && moveUsed.protectAffected == true)
                     {
                         bool protectWorks = true;
                         if (p.Ability.Name.ToLower() == "no guard")
@@ -2661,9 +2662,9 @@ public class Battle
                         }
                     }
 
-                    int detect = battleScreen.FieldEffects.OppDetectCounter;
-                    if (own == false) { detect = battleScreen.FieldEffects.OwnDetectCounter; }
-                    if (detect > 0 && moveUsed.ProtectAffected == true)
+                    int detect = battleScreen.FieldEffects.DetectCounter.Opponent;
+                    if (own == false) { detect = battleScreen.FieldEffects.DetectCounter.Self; }
+                    if (detect > 0 && moveUsed.protectAffected == true)
                     {
                         bool detectWorks = true;
                         if (p.Ability.Name.ToLower() == "no guard")
@@ -2681,9 +2682,9 @@ public class Battle
                         }
                     }
 
-                    int kingsshield = battleScreen.FieldEffects.OppKingsShieldCounter;
-                    if (own == false) { kingsshield = battleScreen.FieldEffects.OwnKingsShieldCounter; }
-                    if (kingsshield > 0 && moveUsed.ProtectAffected == true && moveUsed.Category != Attack.Categories.Status)
+                    int kingsshield = battleScreen.FieldEffects.KingsShieldCounter.Opponent;
+                    if (own == false) { kingsshield = battleScreen.FieldEffects.KingsShieldCounter.Self; }
+                    if (kingsshield > 0 && moveUsed.protectAffected == true && moveUsed.Category != Attack.Categories.Status)
                     {
                         bool kingsshieldWorks = true;
                         if (p.Ability.Name.ToLower() == "no guard")
@@ -2696,7 +2697,7 @@ public class Battle
                         if (kingsshieldWorks == true)
                         {
                             battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " protected itself!"));
-                            if (moveUsed.MakesContact == true)
+                            if (moveUsed.makesContact == true)
                             {
                                 LowerStat(own, own == false, battleScreen, "Attack", 1, String.Empty, "move:kingsshield");
                             }
@@ -2729,18 +2730,18 @@ public class Battle
 
                 moveUsed.OpponentPokemonMoveAnimation(battleScreen, own);
 
-                if (own == true && battleScreen.FieldEffects.OwnFlyCounter == 2)
+                if (own == true && battleScreen.FieldEffects.FlyCounter.Self == 2)
                 {
-                    battleScreen.FieldEffects.OwnFlyCounter = 0;
+                    battleScreen.FieldEffects.FlyCounter.Self = 0;
                 }
-                if (own == false && battleScreen.FieldEffects.OppFlyCounter == 2)
+                if (own == false && battleScreen.FieldEffects.FlyCounter.Opponent == 2)
                 {
-                    battleScreen.FieldEffects.OppFlyCounter = 0;
+                    battleScreen.FieldEffects.FlyCounter.Opponent = 0;
                 }
-                if (moveUsed.IsDamagingMove == true)
+                if (moveUsed.isDamagingMove == true)
                 {
                     ChangeCameraAngle(2, own, battleScreen);
-                    if (op.Ability.Name.ToLower() == "wonder guard" && effectiveness <= 1.0f && battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen) == true && moveUsed.IsWonderGuardAffected == true)
+                    if (op.Ability.Name.ToLower() == "wonder guard" && effectiveness <= 1.0f && battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen) == true && moveUsed.isWonderGuardAffected == true)
                     {
                         battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + "s Wonder Guard blocked the attack!"));
                         return;
@@ -2804,11 +2805,11 @@ public class Battle
                                 moveUsed.MoveMisses(own, battleScreen);
                                 if (own == true)
                                 {
-                                    battleScreen.FieldEffects.OwnLastMoveFailed = true;
+                                    battleScreen.FieldEffects.LastMoveFailed.Self = true;
                                 }
                                 else
                                 {
-                                    battleScreen.FieldEffects.OppLastMoveFailed = true;
+                                    battleScreen.FieldEffects.LastMoveFailed.Opponent = true;
                                 }
                                 effectiveness = 0;
                                 break;
@@ -2852,17 +2853,17 @@ public class Battle
                                 {
                                     int didDamage = damage;
                                     if (didDamage > op.HP) { didDamage = op.HP; }
-                                    battleScreen.FieldEffects.OwnLastDamage = didDamage;
-                                    if (battleScreen.FieldEffects.OppBideCounter > 0) { battleScreen.FieldEffects.OppBideDamage += didDamage; }
-                                    if (battleScreen.FieldEffects.OppRageFistPower < 350) { battleScreen.FieldEffects.OppRageFistPower += 50; }
+                                    battleScreen.FieldEffects.LastDamage.Self = didDamage;
+                                    if (battleScreen.FieldEffects.BideCounter.Opponent > 0) { battleScreen.FieldEffects.BideDamage.Opponent += didDamage; }
+                                    if (battleScreen.FieldEffects.RageFistPower.Opponent < 350) { battleScreen.FieldEffects.RageFistPower.Opponent += 50; }
                                 }
                                 else
                                 {
                                     int didDamage = damage;
                                     if (didDamage > op.HP) { didDamage = op.HP; }
-                                    battleScreen.FieldEffects.OppLastDamage = didDamage;
-                                    if (battleScreen.FieldEffects.OwnBideCounter > 0) { battleScreen.FieldEffects.OwnBideDamage += didDamage; }
-                                    if (battleScreen.FieldEffects.OwnRageFistPower < 350) { battleScreen.FieldEffects.OwnRageFistPower += 50; }
+                                    battleScreen.FieldEffects.LastDamage.Opponent = didDamage;
+                                    if (battleScreen.FieldEffects.BideCounter.Self > 0) { battleScreen.FieldEffects.BideDamage.Self += didDamage; }
+                                    if (battleScreen.FieldEffects.RageFistPower.Self < 350) { battleScreen.FieldEffects.RageFistPower.Self += 50; }
                                 }
                             }
 
@@ -2870,8 +2871,8 @@ public class Battle
 
                             if (substitute == 0)
                             {
-                                int endure = battleScreen.FieldEffects.OppEndure;
-                                if (own == false) { endure = battleScreen.FieldEffects.OwnEndure; }
+                                int endure = battleScreen.FieldEffects.Endure.Opponent;
+                                if (own == false) { endure = battleScreen.FieldEffects.Endure.Self; }
 
                                 bool endureWorked = false;
                                 if (endure > 0 && effectiveness != 0)
@@ -2885,11 +2886,11 @@ public class Battle
 
                                 if (own == true)
                                 {
-                                    battleScreen.FieldEffects.OppPokemonDamagedThisTurn = true;
+                                    battleScreen.FieldEffects.PokemonDamagedThisTurn.Opponent = true;
                                 }
                                 else
                                 {
-                                    battleScreen.FieldEffects.OwnPokemonDamagedThisTurn = true;
+                                    battleScreen.FieldEffects.PokemonDamagedThisTurn.Self = true;
                                 }
 
                                 String sound = @"Battle\Damage\Effective";
@@ -2911,25 +2912,25 @@ public class Battle
                             {
                                 if (own == true)
                                 {
-                                    battleScreen.FieldEffects.OppSubstitute -= damage;
-                                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s substitute took the damage!"));
-                                    if (battleScreen.FieldEffects.OppSubstitute <= 0)
+                                    battleScreen.FieldEffects.Substitute.Opponent -= damage;
+                                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s substitute took the damage!"));
+                                    if (battleScreen.FieldEffects.Substitute.Opponent <= 0)
                                     {
-                                        battleScreen.FieldEffects.OppSubstitute = 0;
-                                        battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(false, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.OppPokemon, true), 0, 1, -1, -1));
-                                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " substitute broke!"));
+                                        battleScreen.FieldEffects.Substitute.Opponent = 0;
+                                        battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(false, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.OpponentPokemon, true), 0, 1, -1, -1));
+                                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " substitute broke!"));
                                         break;
                                     }
                                 }
                                 else
                                 {
-                                    battleScreen.FieldEffects.OwnSubstitute -= damage;
-                                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s substitute took the damage!"));
-                                    if (battleScreen.FieldEffects.OwnSubstitute <= 0)
+                                    battleScreen.FieldEffects.Substitute.Self -= damage;
+                                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s substitute took the damage!"));
+                                    if (battleScreen.FieldEffects.Substitute.Self <= 0)
                                     {
-                                        battleScreen.FieldEffects.OwnSubstitute = 0;
-                                        battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.OwnPokemon, true), 0, 1, -1, -1));
-                                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " substitute broke!"));
+                                        battleScreen.FieldEffects.Substitute.Self = 0;
+                                        battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.SelfPokemon, true), 0, 1, -1, -1));
+                                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " substitute broke!"));
                                         break;
                                     }
                                 }
@@ -2941,8 +2942,8 @@ public class Battle
                             battleScreen.BattleQuery.Add(new TextQueryObject("It's super effective!"));
                             if (battleScreen.IsRemoteBattle == true && battleScreen.IsHost == true)
                             {
-                                if (own == true) { battleScreen.OwnStatistics.SuperEffective += 1; }
-                                else { battleScreen.OppStatistics.SuperEffective += 1; }
+                                if (own == true) { battleScreen.SelfStatistics.SuperEffective += 1; }
+                                else { battleScreen.OpponentStatistics.SuperEffective += 1; }
                             }
                         }
                         else if (effectiveness < 1.0f && effectiveness != 0.0f)
@@ -2950,8 +2951,8 @@ public class Battle
                             battleScreen.BattleQuery.Add(new TextQueryObject("It's not very effective..."));
                             if (battleScreen.IsRemoteBattle == true && battleScreen.IsHost == true)
                             {
-                                if (own == true) { battleScreen.OwnStatistics.NotVeryEffective += 1; }
-                                else { battleScreen.OppStatistics.NotVeryEffective += 1; }
+                                if (own == true) { battleScreen.SelfStatistics.NotVeryEffective += 1; }
+                                else { battleScreen.OpponentStatistics.NotVeryEffective += 1; }
                             }
                         }
                         else if (effectiveness == 0.0f)
@@ -2959,8 +2960,8 @@ public class Battle
                             battleScreen.BattleQuery.Add(new TextQueryObject("It has no effect..."));
                             if (battleScreen.IsRemoteBattle == true && battleScreen.IsHost == true)
                             {
-                                if (own == true) { battleScreen.OwnStatistics.NoEffect += 1; }
-                                else { battleScreen.OppStatistics.NoEffect += 1; }
+                                if (own == true) { battleScreen.SelfStatistics.NoEffect += 1; }
+                                else { battleScreen.OpponentStatistics.NoEffect += 1; }
                             }
                             break;
                         }
@@ -2969,8 +2970,8 @@ public class Battle
                         {
                             if (battleScreen.IsRemoteBattle == true && battleScreen.IsHost == true)
                             {
-                                if (own == true) { battleScreen.OwnStatistics.Critical += 1; }
-                                else { battleScreen.OppStatistics.Critical += 1; }
+                                if (own == true) { battleScreen.SelfStatistics.Critical += 1; }
+                                else { battleScreen.OpponentStatistics.Critical += 1; }
                             }
                             battleScreen.BattleQuery.Add(new TextQueryObject("It's a critical hit!"));
                             if (op.Ability.Name.ToLower() == "anger point" && op.StatAttack < 6 && op.HP > 0)
@@ -2985,14 +2986,14 @@ public class Battle
                             bool canUseEffect = true;
                             bool multiUseEffect = true;
 
-                            if (op.Ability.Name.ToLower() == "shield dust" && moveUsed.HasSecondaryEffect == true)
+                            if (op.Ability.Name.ToLower() == "shield dust" && moveUsed.hasSecondaryEffect == true)
                             {
                                 if (battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen) == true)
                                 {
                                     canUseEffect = false;
                                 }
                             }
-                            if (p.Ability.Name.ToLower() == "sheer force" && moveUsed.HasSecondaryEffect == true)
+                            if (p.Ability.Name.ToLower() == "sheer force" && moveUsed.hasSecondaryEffect == true)
                             {
                                 canUseEffect = false;
                             }
@@ -3018,15 +3019,15 @@ public class Battle
 
                             if ((canUseEffect && multiUseEffect) || (multiUseEffect == false && i == timesToAttack))
                             {
-                                if (substitute == 0 || moveUsed.IsAffectedBySubstitute == false)
+                                if (substitute == 0 || moveUsed.isAffectedBySubstitute == false)
                                 {
                                     moveUsed.MoveHits(own, battleScreen);
-                                    if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = false; }
-                                    else { battleScreen.FieldEffects.OppLastMoveFailed = false; }
+                                    if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = false; }
+                                    else { battleScreen.FieldEffects.LastMoveFailed.Opponent = false; }
 
                                     if (op.Status == Pokemon.StatusProblems.Freeze)
                                     {
-                                        if (moveUsed.RemovesOppFrozen == true)
+                                        if (moveUsed.removesOpponentFrozen == true)
                                         {
                                             CureStatusProblem(own == false, own, battleScreen, op.GetDisplayName() + " got defrosted by " + moveUsed.Name + ".", "defrostmove");
                                         }
@@ -3053,17 +3054,17 @@ public class Battle
                             {
                                 if (own == true)
                                 {
-                                    if (battleScreen.FieldEffects.OppRageCounter > 0)
+                                    if (battleScreen.FieldEffects.RageCounter.Opponent > 0)
                                     {
-                                        battleScreen.FieldEffects.OppRageCounter += 1;
+                                        battleScreen.FieldEffects.RageCounter.Opponent += 1;
                                         battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " built up its rage."));
                                     }
                                 }
                                 else
                                 {
-                                    if (battleScreen.FieldEffects.OwnRageCounter > 0)
+                                    if (battleScreen.FieldEffects.RageCounter.Self > 0)
                                     {
-                                        battleScreen.FieldEffects.OwnRageCounter += 1;
+                                        battleScreen.FieldEffects.RageCounter.Self += 1;
                                         battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " built up its rage."));
                                     }
                                 }
@@ -3072,8 +3073,8 @@ public class Battle
                         else
                         {
                             moveUsed.MoveHasNoEffect(own, battleScreen);
-                            if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = true; }
-                            else { battleScreen.FieldEffects.OppLastMoveFailed = true; }
+                            if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = true; }
+                            else { battleScreen.FieldEffects.LastMoveFailed.Opponent = true; }
                         }
 
                         if (battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen))
@@ -3095,13 +3096,13 @@ public class Battle
                                     }
                                     break;
                                 case "rough skin":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         ReduceHP((int)Math.Floor((double)p.MaxHP / 16), own, own == false, battleScreen, p.GetDisplayName() + " was harmed by Rough Skin.", "roughskin");
                                     }
                                     break;
                                 case "static":
-                                    if (moveUsed.MakesContact == true && p.Status == Pokemon.StatusProblems.None)
+                                    if (moveUsed.makesContact == true && p.Status == Pokemon.StatusProblems.None)
                                     {
                                         if (Core.Random.Next(0, 100) < 30)
                                         {
@@ -3110,7 +3111,7 @@ public class Battle
                                     }
                                     break;
                                 case "effect spore":
-                                    if (moveUsed.MakesContact == true && p.Status == Pokemon.StatusProblems.None && p.Ability.Name.ToLower() != "overcoat")
+                                    if (moveUsed.makesContact == true && p.Status == Pokemon.StatusProblems.None && p.Ability.Name.ToLower() != "overcoat")
                                     {
                                         int r = Core.Random.Next(0, 100);
                                         if (r < 30)
@@ -3132,7 +3133,7 @@ public class Battle
                                     }
                                     break;
                                 case "poison point":
-                                    if (moveUsed.MakesContact == true && p.Status == Pokemon.StatusProblems.None)
+                                    if (moveUsed.makesContact == true && p.Status == Pokemon.StatusProblems.None)
                                     {
                                         if (Core.Random.Next(0, 100) < 30)
                                         {
@@ -3141,7 +3142,7 @@ public class Battle
                                     }
                                     break;
                                 case "flame body":
-                                    if (moveUsed.MakesContact == true && p.Status == Pokemon.StatusProblems.None)
+                                    if (moveUsed.makesContact == true && p.Status == Pokemon.StatusProblems.None)
                                     {
                                         if (Core.Random.Next(0, 100) < 30)
                                         {
@@ -3150,7 +3151,7 @@ public class Battle
                                     }
                                     break;
                                 case "cute charm":
-                                    if (moveUsed.MakesContact == true && p.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) == false)
+                                    if (moveUsed.makesContact == true && p.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) == false)
                                     {
                                         if (Core.Random.Next(0, 100) < 30)
                                         {
@@ -3162,7 +3163,7 @@ public class Battle
                                     }
                                     break;
                                 case "aftermath":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         if (op.HP <= 0)
                                         {
@@ -3171,7 +3172,7 @@ public class Battle
                                     }
                                     break;
                                 case "iron barbs":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         ReduceHP((int)(p.MaxHP / 8), own, own == false, battleScreen, "Iron Barbs caused damage!", "ironbarbs");
                                     }
@@ -3191,7 +3192,7 @@ public class Battle
                                     }
                                     break;
                                 case "mummy":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         if (p.Ability.Name.ToLower() != "multitype" && p.Ability.Name.ToLower() != "mummy")
                                         {
@@ -3220,13 +3221,13 @@ public class Battle
                                     }
                                     break;
                                 case "gooey":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         LowerStat(own, own == false, battleScreen, "Speed", 1, "Gooey slowed down " + p.GetDisplayName() + "!", "gooey");
                                     }
                                     break;
                                 case "tangling hair":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         LowerStat(own, own == false, battleScreen, "Speed", 1, "Tangling Hair slowed down " + p.GetDisplayName() + "!", "tangling hair");
                                     }
@@ -3239,7 +3240,7 @@ public class Battle
                                     }
                                     break;
                                 case "pickpocket":
-                                    if (moveUsed.MakesContact == true)
+                                    if (moveUsed.makesContact == true)
                                     {
                                         if (p.Item != null && op.Item == null && substitute == 0)
                                         {
@@ -3265,16 +3266,16 @@ public class Battle
                                                             op.OriginalItem = null;
                                                             if (own == true)
                                                             {
-                                                                if (battleScreen.FieldEffects.StolenFromOwnItems.ContainsKey(battleScreen.OwnPokemonIndex))
+                                                                if (battleScreen.FieldEffects.StolenFromSelfItems.ContainsKey(battleScreen.SelfPokemonIndex))
                                                                 {
-                                                                    battleScreen.FieldEffects.StolenFromOwnItems.Remove(battleScreen.OwnPokemonIndex);
+                                                                    battleScreen.FieldEffects.StolenFromSelfItems.Remove(battleScreen.SelfPokemonIndex);
                                                                 }
                                                             }
                                                             else
                                                             {
-                                                                if (battleScreen.FieldEffects.StolenFromOppItems.ContainsKey(battleScreen.OppPokemonIndex))
+                                                                if (battleScreen.FieldEffects.StolenFromOpponentItems.ContainsKey(battleScreen.OpponentPokemonIndex))
                                                                 {
-                                                                    battleScreen.FieldEffects.StolenFromOppItems.Remove(battleScreen.OppPokemonIndex);
+                                                                    battleScreen.FieldEffects.StolenFromOpponentItems.Remove(battleScreen.OpponentPokemonIndex);
                                                                 }
                                                             }
                                                         }
@@ -3299,7 +3300,7 @@ public class Battle
                             switch (p.Ability.Name.ToLower())
                             {
                                 case "poison touch":
-                                    if (moveUsed.MakesContact == true && op.Status == Pokemon.StatusProblems.None)
+                                    if (moveUsed.makesContact == true && op.Status == Pokemon.StatusProblems.None)
                                     {
                                         if (Core.Random.Next(0, 100) < 30)
                                         {
@@ -3338,16 +3339,16 @@ public class Battle
                                                         p.OriginalItem = null;
                                                         if (own == true)
                                                         {
-                                                            if (battleScreen.FieldEffects.StolenFromOwnItems.ContainsKey(battleScreen.OwnPokemonIndex))
+                                                            if (battleScreen.FieldEffects.StolenFromSelfItems.ContainsKey(battleScreen.SelfPokemonIndex))
                                                             {
-                                                                battleScreen.FieldEffects.StolenFromOwnItems.Remove(battleScreen.OwnPokemonIndex);
+                                                                battleScreen.FieldEffects.StolenFromSelfItems.Remove(battleScreen.SelfPokemonIndex);
                                                             }
                                                         }
                                                         else
                                                         {
-                                                            if (battleScreen.FieldEffects.StolenFromOppItems.ContainsKey(battleScreen.OppPokemonIndex))
+                                                            if (battleScreen.FieldEffects.StolenFromOpponentItems.ContainsKey(battleScreen.OpponentPokemonIndex))
                                                             {
-                                                                battleScreen.FieldEffects.StolenFromOppItems.Remove(battleScreen.OppPokemonIndex);
+                                                                battleScreen.FieldEffects.StolenFromOpponentItems.Remove(battleScreen.OpponentPokemonIndex);
                                                             }
                                                         }
                                                     }
@@ -3468,11 +3469,11 @@ public class Battle
                             bool destinyBond = false;
                             if (own == true)
                             {
-                                destinyBond = battleScreen.FieldEffects.OppDestinyBond;
+                                destinyBond = battleScreen.FieldEffects.DestinyBond.Opponent;
                             }
                             else
                             {
-                                destinyBond = battleScreen.FieldEffects.OwnDestinyBond;
+                                destinyBond = battleScreen.FieldEffects.DestinyBond.Self;
                             }
 
                             if (destinyBond == true)
@@ -3516,7 +3517,7 @@ public class Battle
                             {
                                 ReduceHP((int)Math.Floor((double)p.MaxHP / 8), true, true, battleScreen, p.GetDisplayName() + " was harmed by Sticky Barb.", "stickybarb");
                             }
-                            if (Core.Random.Next(0, 2) == 0 && moveUsed.MakesContact == true && op.Item == null && op.HP > 0)
+                            if (Core.Random.Next(0, 2) == 0 && moveUsed.makesContact == true && op.Item == null && op.HP > 0)
                             {
                                 ChangeCameraAngle(2, own, battleScreen);
                                 battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + "'s Sticky Barb was passed over to " + op.GetDisplayName() + "."));
@@ -3561,22 +3562,22 @@ public class Battle
                 }
                 else
                 {
-                    Attack lastMove = battleScreen.FieldEffects.OppLastMove;
+                    Attack lastMove = battleScreen.FieldEffects.LastMove.Opponent;
                     if (own == false)
                     {
-                        lastMove = battleScreen.FieldEffects.OwnLastMove;
+                        lastMove = battleScreen.FieldEffects.LastMove.Self;
                     }
-                    if (moveUsed.SnatchAffected == true && lastMove != null && lastMove.ID == 289)
+                    if (moveUsed.snatchAffected == true && lastMove != null && lastMove.ID == 289)
                     {
                         battleScreen.BattleQuery.Add(new TextQueryObject(op.GetDisplayName() + " snatched " + p.GetDisplayName() + "'s move!"));
                         moveUsed.MoveHits(own == false, battleScreen);
-                        if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = false; }
-                        else { battleScreen.FieldEffects.OppLastMoveFailed = false; }
+                        if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = false; }
+                        else { battleScreen.FieldEffects.LastMoveFailed.Opponent = false; }
                     }
                     else
                     {
                         String magicReflect = String.Empty;
-                        if (moveUsed.MagicCoatAffected == true)
+                        if (moveUsed.magicCoatAffected == true)
                         {
                             if (op.Ability.Name.ToLower() == "magic bounce" && battleScreen.FieldEffects.CanUseAbility(own == false, battleScreen) == true)
                             {
@@ -3584,7 +3585,7 @@ public class Battle
                             }
                             else
                             {
-                                if ((own == true && battleScreen.FieldEffects.OppMagicCoat > 0) || (own == false && battleScreen.FieldEffects.OwnMagicCoat > 0))
+                                if ((own == true && battleScreen.FieldEffects.MagicCoat.Opponent > 0) || (own == false && battleScreen.FieldEffects.MagicCoat.Self > 0))
                                 {
                                     magicReflect = "Magic Coat";
                                 }
@@ -3596,10 +3597,10 @@ public class Battle
                             battleScreen.BattleQuery.Add(new TextQueryObject(magicReflect + " bounced the attack back!"));
                             effectiveness = BattleCalculation.CalculateEffectiveness(own == false, moveUsed, battleScreen);
 
-                            int oppSubstitute = battleScreen.FieldEffects.OwnSubstitute;
-                            if (own == false) { oppSubstitute = battleScreen.FieldEffects.OppSubstitute; }
+                            int oppSubstitute = battleScreen.FieldEffects.Substitute.Self;
+                            if (own == false) { oppSubstitute = battleScreen.FieldEffects.Substitute.Opponent; }
 
-                            if (moveUsed.MagicCoatAffected)
+                            if (moveUsed.magicCoatAffected)
                             {
                                 if (p.IsType(Element.Types.Dark))
                                 {
@@ -3617,11 +3618,11 @@ public class Battle
                             }
                             else
                             {
-                                if (oppSubstitute == 0 || moveUsed.IsAffectedBySubstitute == false)
+                                if (oppSubstitute == 0 || moveUsed.isAffectedBySubstitute == false)
                                 {
                                     moveUsed.MoveHits(own == false, battleScreen);
-                                    if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = false; }
-                                    else { battleScreen.FieldEffects.OppLastMoveFailed = false; }
+                                    if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = false; }
+                                    else { battleScreen.FieldEffects.LastMoveFailed.Opponent = false; }
                                 }
                                 else
                                 {
@@ -3631,7 +3632,7 @@ public class Battle
                         }
                         else
                         {
-                            if (moveUsed.MagicCoatAffected)
+                            if (moveUsed.magicCoatAffected)
                             {
                                 if (op.IsType(Element.Types.Dark))
                                 {
@@ -3645,16 +3646,16 @@ public class Battle
                             {
                                 battleScreen.BattleQuery.Add(new TextQueryObject("It has no effect..."));
                                 moveUsed.MoveHasNoEffect(own, battleScreen);
-                                if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = true; }
-                                else { battleScreen.FieldEffects.OppLastMoveFailed = true; }
+                                if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = true; }
+                                else { battleScreen.FieldEffects.LastMoveFailed.Opponent = true; }
                             }
                             else
                             {
-                                if (substitute == 0 || moveUsed.IsAffectedBySubstitute == false)
+                                if (substitute == 0 || moveUsed.isAffectedBySubstitute == false)
                                 {
                                     moveUsed.MoveHits(own, battleScreen);
-                                    if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = false; }
-                                    else { battleScreen.FieldEffects.OppLastMoveFailed = false; }
+                                    if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = false; }
+                                    else { battleScreen.FieldEffects.LastMoveFailed.Opponent = false; }
                                 }
                                 else
                                 {
@@ -3677,31 +3678,31 @@ public class Battle
                 battleScreen.BattleQuery.Add(new TextQueryObject("But it missed..."));
             }
             moveUsed.MoveMisses(own, battleScreen);
-            if (own == true) { battleScreen.FieldEffects.OwnLastMoveFailed = true; }
-            else { battleScreen.FieldEffects.OppLastMoveFailed = true; }
+            if (own == true) { battleScreen.FieldEffects.LastMoveFailed.Self = true; }
+            else { battleScreen.FieldEffects.LastMoveFailed.Opponent = true; }
         }
 
         int encoreAttackIndex = -1;
-        if (own == true && battleScreen.FieldEffects.OwnEncore > 0)
+        if (own == true && battleScreen.FieldEffects.Encore.Self > 0)
         {
-            for (int a = 0; a <= battleScreen.OwnPokemon.Attacks.Count - 1; a++)
+            for (int a = 0; a <= battleScreen.SelfPokemon.Attacks.Count - 1; a++)
             {
-                if (battleScreen.OwnPokemon.Attacks[a].ID == battleScreen.FieldEffects.OwnEncoreMove.ID)
+                if (battleScreen.SelfPokemon.Attacks[a].ID == battleScreen.FieldEffects.EncoreMove.Self.ID)
                 {
                     encoreAttackIndex = a;
                 }
             }
-            if (encoreAttackIndex != -1 && battleScreen.OwnPokemon.Attacks[encoreAttackIndex].CurrentPP == 0)
+            if (encoreAttackIndex != -1 && battleScreen.SelfPokemon.Attacks[encoreAttackIndex].CurrentPP == 0)
             {
-                battleScreen.FieldEffects.OwnEncoreMove = null;
-                battleScreen.FieldEffects.OwnEncore = 0;
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s encore stopped."));
+                battleScreen.FieldEffects.EncoreMove.Self = null;
+                battleScreen.FieldEffects.Encore.Self = 0;
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s encore stopped."));
             }
         }
     }
     public void FaintPokemon(bool own, BattleScreen battleScreen, String message)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
         p.HP = 0;
         p.Status = Pokemon.StatusProblems.Fainted;
         ChangeCameraAngle(1, own, battleScreen);
@@ -3715,14 +3716,14 @@ public class Battle
             if (own == false)
             {
                 float modelOffset = 0.0f;
-                if (battleScreen.OppPokemonNPC.Model != null)
+                if (battleScreen.OpponentPokemonNPC.Model != null)
                 {
                     modelOffset = 0.5f;
                 }
-                String crySuffixOpp = PokemonForms.GetCrySuffix(battleScreen.OppPokemon);
-                AnimationQueryObject faintAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, true);
-                faintAnimation.AnimationPlaySound(battleScreen.OppPokemon.Number.ToString(), 0, 2, false, true, crySuffixOpp);
-                faintAnimation.AnimationMove(null, false, 0, -1 - modelOffset, 0, 0.05, false, false, 2, 2);
+                String crySuffixOpp = PokemonForms.GetCrySuffix(battleScreen.OpponentPokemon);
+                AnimationQueryObject faintAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, true);
+                faintAnimation.AnimationPlaySound(battleScreen.OpponentPokemon.Number.ToString(), 0, 2, false, true, crySuffixOpp);
+                faintAnimation.AnimationMove(null, false, 0, -1 - modelOffset, 0, 0.05f, false, false, 2, 2);
                 faintAnimation.AnimationFade(null, false, 1.0f, 0.0f, 4, 0);
                 battleScreen.BattleQuery.Add(faintAnimation);
             }
@@ -3777,19 +3778,19 @@ public class Battle
 
     public bool CureStatusProblem(bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
         if (message != String.Empty)
         {
             ChangeCameraAngle(1, own, battleScreen);
             battleScreen.BattleQuery.Add(new TextQueryObject(message));
         }
-        if (own == true && battleScreen.FieldEffects.OwnPoisonCounter > 0)
+        if (own == true && battleScreen.FieldEffects.PoisonCounter.Self > 0)
         {
-            battleScreen.FieldEffects.OwnPoisonCounter = 0;
+            battleScreen.FieldEffects.PoisonCounter.Self = 0;
         }
-        if (own == false && battleScreen.FieldEffects.OppPoisonCounter > 0)
+        if (own == false && battleScreen.FieldEffects.PoisonCounter.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppPoisonCounter = 0;
+            battleScreen.FieldEffects.PoisonCounter.Opponent = 0;
         }
         p.Status = Pokemon.StatusProblems.None;
         return true;
@@ -3797,22 +3798,22 @@ public class Battle
 
     public bool InflictFlinch(bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
         }
         if (own == false)
         {
-            if (battleScreen.FieldEffects.OppTurnCounts > battleScreen.FieldEffects.OwnTurnCounts)
+            if (battleScreen.FieldEffects.TurnCounts.Opponent > battleScreen.FieldEffects.TurnCounts.Self)
             {
                 return false;
             }
         }
         else
         {
-            if (battleScreen.FieldEffects.OwnTurnCounts > battleScreen.FieldEffects.OppTurnCounts)
+            if (battleScreen.FieldEffects.TurnCounts.Self > battleScreen.FieldEffects.TurnCounts.Opponent)
             {
                 return false;
             }
@@ -3829,7 +3830,7 @@ public class Battle
         }
         else
         {
-            int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+            int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
             if (substitute > 0)
             {
                 ChangeCameraAngle(1, own, battleScreen);
@@ -3853,9 +3854,9 @@ public class Battle
 
     public bool InflictBurn(bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -3875,7 +3876,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("The mist prevented the burn."));
             return false;
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -3900,7 +3901,7 @@ public class Battle
                 battleScreen.BattleQuery.Add(new TextQueryObject("Leaf Guard prevented the burn."));
                 return false;
             }
-            int safeGuard = own ? battleScreen.FieldEffects.OwnSafeguard : battleScreen.FieldEffects.OppSafeguard;
+            int safeGuard = own ? battleScreen.FieldEffects.Safeguard.Self : battleScreen.FieldEffects.Safeguard.Opponent;
             if (safeGuard > 0 && op.Ability.Name.ToLower() != "infiltrator")
             {
                 ChangeCameraAngle(1, own, battleScreen);
@@ -3912,9 +3913,9 @@ public class Battle
             AnimationQueryObject burnAnimation = new AnimationQueryObject(pNPC, own);
             burnAnimation.AnimationPlaySound(@"Battle\Effects\Burned", 0, 0);
             Entity flameEntity = burnAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f, 0.5f, 0.5f), 1.0f);
-            burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 32, 32, 32), String.Empty), 0.75, 0);
-            burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 64, 32, 32), String.Empty), 1.5, 0);
-            burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 96, 32, 32), String.Empty), 2.25, 0);
+            burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 32, 32, 32), String.Empty), 0.75f, 0);
+            burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 64, 32, 32), String.Empty), 1.5f, 0);
+            burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 96, 32, 32), String.Empty), 2.25f, 0);
             burnAnimation.AnimationChangeTexture(flameEntity, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 128, 32, 32), String.Empty), 3, 0);
             battleScreen.BattleQuery.Add(burnAnimation);
             if (message == String.Empty)
@@ -3959,9 +3960,9 @@ public class Battle
 
     public bool InflictFreeze(bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -3981,7 +3982,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("The mist prevented the freeze."));
             return false;
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4018,7 +4019,7 @@ public class Battle
                 battleScreen.BattleQuery.Add(new TextQueryObject("Leaf Guard prevented the freeze."));
                 return false;
             }
-            int safeGuard = own ? battleScreen.FieldEffects.OwnSafeguard : battleScreen.FieldEffects.OppSafeguard;
+            int safeGuard = own ? battleScreen.FieldEffects.Safeguard.Self : battleScreen.FieldEffects.Safeguard.Opponent;
             if (safeGuard > 0 && op.Ability.Name.ToLower() != "infiltrator")
             {
                 ChangeCameraAngle(1, own, battleScreen);
@@ -4047,9 +4048,9 @@ public class Battle
                         zPos = (float)Core.Random.Next(-4, 2) / 8;
                     }
                     Vector3 position = new Vector3(xPos, -0.25f, zPos);
-                    float startDelay = (float)(5.0 * Random.NextDouble());
+                    float startDelay = (float)(5.0 * Core.Random.NextDouble());
                     Entity snowflakeEntity = frozenAnimation.SpawnEntity(position, texture, new Vector3(0.25f), 1.0f, startDelay);
-                    frozenAnimation.AnimationFade(snowflakeEntity, true, 0.02, 0.0f, startDelay, 0.0);
+                    frozenAnimation.AnimationFade(snowflakeEntity, true, 0.02f, 0.0f, startDelay, 0.0f);
                 }
                 battleScreen.BattleQuery.Add(frozenAnimation);
             }
@@ -4099,9 +4100,9 @@ public class Battle
 
     public bool InflictParalysis(bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -4127,7 +4128,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("The mist prevented the paralysis."));
             return false;
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4146,7 +4147,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("Leaf Guard prevented the paralysis."));
             return false;
         }
-        int safeGuard = own ? battleScreen.FieldEffects.OwnSafeguard : battleScreen.FieldEffects.OppSafeguard;
+        int safeGuard = own ? battleScreen.FieldEffects.Safeguard.Self : battleScreen.FieldEffects.Safeguard.Opponent;
         if (safeGuard > 0 && op.Ability.Name.ToLower() != "infiltrator")
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4166,7 +4167,7 @@ public class Battle
                 float zPos = (float)Core.Random.Next(-4, 4) / 8;
                 Vector3 position = new Vector3(xPos, -0.25f, zPos);
                 Vector3 destination = new Vector3(xPos - xPos * 2, 0, zPos - zPos * 2);
-                float startDelay = (float)(5.0 * Random.NextDouble());
+                float startDelay = (float)(5.0 * Core.Random.NextDouble());
                 Entity shockEntity = paralyzedAnimation.SpawnEntity(position, texture, new Vector3(0.25f), 1.0f, startDelay);
                 paralyzedAnimation.AnimationMove(shockEntity, false, destination.X, destination.Y, destination.Z, 0.025f, false, true, startDelay, 0.0f);
                 paralyzedAnimation.AnimationChangeTexture(shockEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Paralyzed", new Rectangle(16, 0, 16, 16), String.Empty), startDelay + 1, 0);
@@ -4222,9 +4223,9 @@ public class Battle
 
     public bool InflictSleep(bool own, bool from, BattleScreen battleScreen, int turnsPreset, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -4261,7 +4262,7 @@ public class Battle
                 return false;
             }
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4286,14 +4287,14 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("Sweet Veil prevented the sleep."));
             return false;
         }
-        int uproar = own ? battleScreen.FieldEffects.OwnUproar : battleScreen.FieldEffects.OppUproar;
+        int uproar = own ? battleScreen.FieldEffects.Uproar.Self : battleScreen.FieldEffects.Uproar.Opponent;
         if (uproar > 0)
         {
             ChangeCameraAngle(1, own, battleScreen);
             battleScreen.BattleQuery.Add(new TextQueryObject("The Uproar prevented the sleep."));
             return false;
         }
-        int safeGuard = own ? battleScreen.FieldEffects.OwnSafeguard : battleScreen.FieldEffects.OppSafeguard;
+        int safeGuard = own ? battleScreen.FieldEffects.Safeguard.Self : battleScreen.FieldEffects.Safeguard.Opponent;
         if (safeGuard > 0 && op.Ability.Name.ToLower() != "infiltrator")
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4312,11 +4313,11 @@ public class Battle
             AnimationQueryObject sleepAnimation = new AnimationQueryObject(pNPC, own == false);
             sleepAnimation.AnimationPlaySound(@"Battle\Effects\Asleep", 0, 0);
             Entity sleepEntity1 = sleepAnimation.SpawnEntity(new Vector3(0, 0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 0, 16, 16), String.Empty), new Vector3(0.5f), 1, 0, 1);
-            sleepAnimation.AnimationChangeTexture(sleepEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 16, 16, 16), String.Empty), 1, 1);
-            sleepAnimation.AnimationMove(sleepEntity1, true, 0, 0.5, 0.25, 0.01, false, false, 0, 0);
+            sleepAnimation.AnimationChangeTexture(sleepEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 16, 16, 16), String.Empty), 1f, 1f);
+            sleepAnimation.AnimationMove(sleepEntity1, true, 0, 0.5f, 0.25f, 0.01f, false, false, 0, 0);
             Entity sleepEntity2 = sleepAnimation.SpawnEntity(new Vector3(0, 0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 0, 16, 16), String.Empty), new Vector3(0.5f), 1, 1.5f, 1);
             sleepAnimation.AnimationChangeTexture(sleepEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Asleep", new Rectangle(0, 16, 16, 16), String.Empty), 2.5f, 1);
-            sleepAnimation.AnimationMove(sleepEntity2, true, 0, 0.5, 0.25, 0.01, false, false, 2, 0);
+            sleepAnimation.AnimationMove(sleepEntity2, true, 0, 0.5f, 0.25f, 0.01f, false, false, 2, 0);
             battleScreen.BattleQuery.Add(sleepAnimation);
         }
         else
@@ -4325,22 +4326,22 @@ public class Battle
         }
         if (own == true)
         {
-            battleScreen.FieldEffects.OwnBideCounter = 0;
-            battleScreen.FieldEffects.OwnBideDamage = 0;
+            battleScreen.FieldEffects.BideCounter.Self = 0;
+            battleScreen.FieldEffects.BideDamage.Self = 0;
         }
         else
         {
-            battleScreen.FieldEffects.OppBideCounter = 0;
-            battleScreen.FieldEffects.OppBideDamage = 0;
+            battleScreen.FieldEffects.BideCounter.Opponent = 0;
+            battleScreen.FieldEffects.BideDamage.Opponent = 0;
         }
         ChangeCameraAngle(1, own, battleScreen);
         if (own == true)
         {
-            battleScreen.FieldEffects.OwnSleepTurns = sleepTurns;
+            battleScreen.FieldEffects.SleepTurns.Self = sleepTurns;
         }
         else
         {
-            battleScreen.FieldEffects.OppSleepTurns = sleepTurns;
+            battleScreen.FieldEffects.SleepTurns.Opponent = sleepTurns;
         }
         p.Status = Pokemon.StatusProblems.Sleep;
         if (message == String.Empty)
@@ -4380,9 +4381,9 @@ public class Battle
 
     public bool InflictPoison(bool own, bool from, BattleScreen battleScreen, bool bad, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -4402,7 +4403,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("The mist prevented the poison."));
             return false;
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4419,7 +4420,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("Immunity prevented the poison."));
             return false;
         }
-        int safeGuard = own ? battleScreen.FieldEffects.OwnSafeguard : battleScreen.FieldEffects.OppSafeguard;
+        int safeGuard = own ? battleScreen.FieldEffects.Safeguard.Self : battleScreen.FieldEffects.Safeguard.Opponent;
         if (safeGuard > 0 && op.Ability.Name.ToLower() != "infiltrator")
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4451,13 +4452,13 @@ public class Battle
                 AnimationQueryObject poisonAnimation = new AnimationQueryObject(pNPC, own);
                 poisonAnimation.AnimationPlaySound(@"Battle\Effects\Poisoned", 0, 0);
                 Entity bubbleEntity1 = poisonAnimation.SpawnEntity(new Vector3(-0.25f, -0.25f, -0.25f), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1, 1);
+                poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1f, 1f);
                 Entity bubbleEntity2 = poisonAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 1, 1);
                 poisonAnimation.AnimationChangeTexture(bubbleEntity1, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 2, 1);
-                poisonAnimation.AnimationChangeTexture(bubbleEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 2, 1);
+                poisonAnimation.AnimationChangeTexture(bubbleEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 2f, 1f);
                 Entity bubbleEntity3 = poisonAnimation.SpawnEntity(new Vector3(0.25f, -0.25f, 0.25f), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 2, 1);
                 poisonAnimation.AnimationChangeTexture(bubbleEntity2, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 3, 1);
-                poisonAnimation.AnimationChangeTexture(bubbleEntity3, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 3, 1);
+                poisonAnimation.AnimationChangeTexture(bubbleEntity3, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 3f, 1f);
                 poisonAnimation.AnimationChangeTexture(bubbleEntity3, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 4, 1);
                 battleScreen.BattleQuery.Add(poisonAnimation);
             }
@@ -4473,7 +4474,7 @@ public class Battle
                 AnimationQueryObject poisonAnimation = new AnimationQueryObject(pNPC, own);
                 poisonAnimation.AnimationPlaySound(@"Battle\Effects\Poisoned", 0, 0);
                 Entity bubbleEntity1 = poisonAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1, 1);
+                poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1f, 1f);
                 poisonAnimation.AnimationChangeTexture(bubbleEntity1, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 2, 1);
                 battleScreen.BattleQuery.Add(poisonAnimation);
             }
@@ -4524,9 +4525,9 @@ public class Battle
 
     public bool InflictConfusion(bool own, bool from, BattleScreen battleScreen, String message, String cause, int setConfusionTurns = -1)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -4536,14 +4537,14 @@ public class Battle
             bool success = false;
             if (own == true)
             {
-                if (battleScreen.FieldEffects.OwnConfusionTurns < setConfusionTurns)
+                if (battleScreen.FieldEffects.ConfusionTurns.Self < setConfusionTurns)
                 {
                     success = true;
                 }
             }
             else
             {
-                if (battleScreen.FieldEffects.OppConfusionTurns < setConfusionTurns)
+                if (battleScreen.FieldEffects.ConfusionTurns.Opponent < setConfusionTurns)
                 {
                     success = true;
                 }
@@ -4565,7 +4566,7 @@ public class Battle
         {
             confusionTurns = setConfusionTurns;
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4629,11 +4630,11 @@ public class Battle
         }
         if (own == true)
         {
-            battleScreen.FieldEffects.OwnConfusionTurns = confusionTurns;
+            battleScreen.FieldEffects.ConfusionTurns.Self = confusionTurns;
         }
         else
         {
-            battleScreen.FieldEffects.OppConfusionTurns = confusionTurns;
+            battleScreen.FieldEffects.ConfusionTurns.Opponent = confusionTurns;
         }
         if (p.Item != null)
         {
@@ -4646,11 +4647,11 @@ public class Battle
                     battleScreen.BattleQuery.Add(new TextQueryObject("The Persim Berry cured the confusion of " + p.GetDisplayName() + "!"));
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OwnConfusionTurns = 0;
+                        battleScreen.FieldEffects.ConfusionTurns.Self = 0;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppConfusionTurns = 0;
+                        battleScreen.FieldEffects.ConfusionTurns.Opponent = 0;
                     }
                     p.RemoveVolatileStatus(Pokemon.VolatileStatus.Confusion);
                 }
@@ -4664,11 +4665,11 @@ public class Battle
                     battleScreen.BattleQuery.Add(new TextQueryObject("The Lum Berry cured the confusion of " + p.GetDisplayName() + "!"));
                     if (own == true)
                     {
-                        battleScreen.FieldEffects.OwnConfusionTurns = 0;
+                        battleScreen.FieldEffects.ConfusionTurns.Self = 0;
                     }
                     else
                     {
-                        battleScreen.FieldEffects.OppConfusionTurns = 0;
+                        battleScreen.FieldEffects.ConfusionTurns.Opponent = 0;
                     }
                     p.RemoveVolatileStatus(Pokemon.VolatileStatus.Confusion);
                 }
@@ -4679,9 +4680,9 @@ public class Battle
 
     public bool RaiseStat(bool own, bool from, BattleScreen battleScreen, String stat, int val, String message, String cause, bool isGameModeMove = false)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -4690,7 +4691,7 @@ public class Battle
         {
             if (from != own)
             {
-                int mist = own ? battleScreen.FieldEffects.OwnMist : battleScreen.FieldEffects.OppMist;
+                int mist = own ? battleScreen.FieldEffects.Mist.Self : battleScreen.FieldEffects.Mist.Opponent;
                 if (mist > 0 && op.Ability.Name.ToLower() != "infiltrator")
                 {
                     battleScreen.BattleQuery.Add(new TextQueryObject("The mist prevented the status change!"));
@@ -4698,7 +4699,7 @@ public class Battle
                 }
             }
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4761,12 +4762,12 @@ public class Battle
             for (int currentAmount = 0; currentAmount <= 20 * val; currentAmount++)
             {
                 Texture2D texture = TextureManager.GetTexture(@"Textures\Battle\StatChange\statUp");
-                float xPos = (float)((Random.NextDouble() - 0.5) * 1.2);
-                float zPos = (float)((Random.NextDouble() - 0.5) * 1.2);
+                float xPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
+                float zPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
                 Vector3 position = new Vector3(xPos, -0.4f, zPos);
-                float startDelay = (float)(5.0 * Random.NextDouble());
+                float startDelay = (float)(5.0 * Core.Random.NextDouble());
                 Entity statEntity = statAnimation.SpawnEntity(pNPC.Position + position, texture, new Vector3(0.2f), 1.0f, startDelay);
-                statAnimation.AnimationMove(statEntity, true, 0, 1.2, 0, 0.05f, false, true, startDelay, 0.0f);
+                statAnimation.AnimationMove(statEntity, true, 0, 1.2f, 0, 0.05f, false, true, startDelay, 0.0f);
             }
             statAnimation.AnimationPlaySound(@"Battle\Effects\Stat_Raise", 0, 0);
             battleScreen.BattleQuery.Add(statAnimation);
@@ -4843,9 +4844,9 @@ public class Battle
 
     public bool LowerStat(bool own, bool from, BattleScreen battleScreen, String stat, int val, String message, String cause, bool isGameModeMove = false)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -4854,15 +4855,21 @@ public class Battle
         {
             if (from != own)
             {
-                int mist = own ? battleScreen.FieldEffects.OwnMist : battleScreen.FieldEffects.OppMist;
+                int mist = own ? battleScreen.FieldEffects.Mist.Self : battleScreen.FieldEffects.Mist.Opponent;
                 if (mist > 0 && op.Ability.Name.ToLower() != "infiltrator")
                 {
                     battleScreen.BattleQuery.Add(new TextQueryObject("The mist prevented the status change!"));
                     return false;
                 }
+                int guardSpec = own ? battleScreen.FieldEffects.GuardSpec.Self : battleScreen.FieldEffects.GuardSpec.Opponent;
+                if (guardSpec > 0 && op.Ability.Name.ToLower() != "infiltrator")
+                {
+                    battleScreen.BattleQuery.Add(new TextQueryObject("Guard Spec. prevented the stat change!"));
+                    return false;
+                }
             }
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -4958,12 +4965,12 @@ public class Battle
             for (int currentAmount = 0; currentAmount <= 20 * val; currentAmount++)
             {
                 Texture2D texture = TextureManager.GetTexture(@"Textures\Battle\StatChange\statDown");
-                float xPos = (float)((Random.NextDouble() - 0.5) * 1.2);
-                float zPos = (float)((Random.NextDouble() - 0.5) * 1.2);
+                float xPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
+                float zPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
                 Vector3 position = new Vector3(xPos, 0.8f, zPos);
-                float startDelay = (float)(5.0 * Random.NextDouble());
+                float startDelay = (float)(5.0 * Core.Random.NextDouble());
                 Entity statEntity = statAnimation.SpawnEntity(pNPC.Position + position, texture, new Vector3(0.2f), 1.0f, startDelay);
-                statAnimation.AnimationMove(statEntity, true, 0, -1.2, 0, 0.05f, false, true, startDelay, 0.0f);
+                statAnimation.AnimationMove(statEntity, true, 0, -1.2f, 0, 0.05f, false, true, startDelay, 0.0f);
             }
             statAnimation.AnimationPlaySound(@"Battle\Effects\Stat_Lower", 0, 0);
             battleScreen.BattleQuery.Add(statAnimation);
@@ -5044,8 +5051,8 @@ public class Battle
 
     public bool InflictInfatuate(bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return false;
@@ -5061,7 +5068,7 @@ public class Battle
             battleScreen.BattleQuery.Add(new TextQueryObject("Oblivious prevented the infatuation."));
             return false;
         }
-        int substitute = own ? battleScreen.FieldEffects.OwnSubstitute : battleScreen.FieldEffects.OppSubstitute;
+        int substitute = own ? battleScreen.FieldEffects.Substitute.Self : battleScreen.FieldEffects.Substitute.Opponent;
         if (substitute > 0 && op.Ability.Name.ToLower() != "infiltrator" && from != own)
         {
             ChangeCameraAngle(1, own, battleScreen);
@@ -5085,7 +5092,7 @@ public class Battle
 
     public void InflictRecoil(bool own, bool from, BattleScreen battleScreen, Attack moveUsed, int damage, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
         if (p.HP <= 0 || p.Status == Pokemon.StatusProblems.Fainted)
         {
             return;
@@ -5112,8 +5119,8 @@ public class Battle
 
     public void GainHP(int hpAmount, bool own, bool from, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        NPC pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        NPC pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP < p.MaxHP && p.HP > 0 && p.Status != Pokemon.StatusProblems.Fainted)
         {
             if (own == true) { ChangeCameraAngle(1, true, battleScreen); }
@@ -5128,11 +5135,11 @@ public class Battle
                 for (int currentAmount = 0; currentAmount <= 20; currentAmount++)
                 {
                     Texture2D texture = TextureManager.GetTexture(@"Textures\Battle\StatChange\Heal");
-                    float xPos = (float)((Random.NextDouble() - 0.5) * 1.2);
-                    float zPos = (float)((Random.NextDouble() - 0.5) * 1.2);
+                    float xPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
+                    float zPos = (float)((Core.Random.NextDouble() - 0.5) * 1.2);
                     Vector3 position = new Vector3(xPos, -0.4f, zPos);
                     Vector3 destination = new Vector3(xPos, 0.8f, zPos);
-                    float startDelay = (float)(5.0 * Random.NextDouble());
+                    float startDelay = (float)(5.0 * Core.Random.NextDouble());
                     Entity healEntity = healAnimation.SpawnEntity(position, texture, new Vector3(0.2f), 1.0f, startDelay);
                     healAnimation.AnimationMove(healEntity, true, destination.X, destination.Y, destination.Z, 0.05f, false, true, startDelay, 0.0f);
                 }
@@ -5167,8 +5174,8 @@ public class Battle
 
     public void ReduceHP(int hpAmount, bool own, bool from, BattleScreen battleScreen, String message, String cause, String sound)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Entity pNPC = own ? battleScreen.OwnPokemonNPC : battleScreen.OppPokemonNPC;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Entity pNPC = own ? battleScreen.SelfPokemonNPC : battleScreen.OpponentPokemonNPC;
         if (p.HP > 0 && p.Status != Pokemon.StatusProblems.Fainted)
         {
             if (own == true) { ChangeCameraAngle(1, true, battleScreen); }
@@ -5181,7 +5188,7 @@ public class Battle
                 }
                 battleScreen.BattleQuery.Add(new PlaySoundQueryObject(sound, false, 0.0f));
             }
-            int fly = own ? battleScreen.FieldEffects.OwnFlyCounter : battleScreen.FieldEffects.OppFlyCounter;
+            int fly = own ? battleScreen.FieldEffects.FlyCounter.Self : battleScreen.FieldEffects.FlyCounter.Opponent;
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
                 if (fly == 0)
@@ -5238,7 +5245,7 @@ public class Battle
             {
                 itemID = p.Item.IsGameModeItem == true ? p.Item.gmID : p.Item.ID.ToString();
             }
-            Attack lastMove = own ? battleScreen.FieldEffects.OppLastMove : battleScreen.FieldEffects.OwnLastMove;
+            Attack lastMove = own ? battleScreen.FieldEffects.LastMove.Opponent : battleScreen.FieldEffects.LastMove.Self;
             if (lastMove != null)
             {
                 float effectiveness = BattleCalculation.CalculateEffectiveness(own == false, lastMove, battleScreen);
@@ -5319,7 +5326,7 @@ public class Battle
 
     private void UseEffectBerry(bool own, bool from, Item berryItem, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
         switch (berryItem.Name.ToLower())
         {
             case "lum":
@@ -5345,7 +5352,7 @@ public class Battle
 
     public void UseBerry(bool own, bool from, Item berryItem, BattleScreen battleScreen, String message, String cause)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
         Items.Berry berry = (Items.Berry)berryItem;
         battleScreen.BattleQuery.Add(new PlaySoundQueryObject("Use_Item", false));
         switch (berryItem.OriginalName.ToLower())
@@ -5392,8 +5399,8 @@ public class Battle
                 RaiseStat(own, own, battleScreen, "Special Defense", 2, "The Apicot Berry raised " + p.GetDisplayName() + "'s power!", "berry:apicot");
                 break;
             case "lansat":
-                if (own == true) { battleScreen.FieldEffects.OwnLansatBerry = 1; }
-                else { battleScreen.FieldEffects.OppLansatBerry = 1; }
+                if (own == true) { battleScreen.FieldEffects.LansatBerry.Self = 1; }
+                else { battleScreen.FieldEffects.LansatBerry.Opponent = 1; }
                 battleScreen.BattleQuery.Add(new TextQueryObject("The Lansat Berry raised " + p.GetDisplayName() + "'s power!"));
                 break;
             case "starf":
@@ -5415,8 +5422,8 @@ public class Battle
                 break;
             case "custap":
                 ChangeCameraAngle(1, own, battleScreen);
-                if (own == true) { battleScreen.FieldEffects.OwnCustapBerry = 1; }
-                else { battleScreen.FieldEffects.OppCustapBerry = 1; }
+                if (own == true) { battleScreen.FieldEffects.CustapBerry.Self = 1; }
+                else { battleScreen.FieldEffects.CustapBerry.Opponent = 1; }
                 battleScreen.BattleQuery.Add(new TextQueryObject("The Custap Berry gave " + p.GetDisplayName() + " a speed boost!"));
                 break;
             case "enigma":
@@ -5431,8 +5438,8 @@ public class Battle
 
     public bool RemoveHeldItem(bool own, bool from, BattleScreen battleScreen, String message, String cause, bool testFor = false, bool affectsFainted = false)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
         if (p.Item == null)
         {
             return false;
@@ -5462,19 +5469,19 @@ public class Battle
             {
                 if (own == true)
                 {
-                    battleScreen.FieldEffects.OwnCudChewBerry = lostItem;
-                    battleScreen.FieldEffects.OwnCudChewIndex = battleScreen.OwnPokemonIndex;
+                    battleScreen.FieldEffects.CudChewBerry.Self = lostItem;
+                    battleScreen.FieldEffects.CudChewIndex.Self = battleScreen.SelfPokemonIndex;
                 }
                 else
                 {
-                    battleScreen.FieldEffects.OppCudChewBerry = lostItem;
-                    battleScreen.FieldEffects.OppCudChewIndex = battleScreen.OppPokemonIndex;
+                    battleScreen.FieldEffects.CudChewBerry.Opponent = lostItem;
+                    battleScreen.FieldEffects.CudChewIndex.Opponent = battleScreen.OpponentPokemonIndex;
                 }
             }
             if (from == own)
             {
-                if (own == true) { battleScreen.FieldEffects.OwnConsumedItem = lostItem; }
-                else { battleScreen.FieldEffects.OppConsumedItem = lostItem; }
+                if (own == true) { battleScreen.FieldEffects.ConsumedItem.Self = lostItem; }
+                else { battleScreen.FieldEffects.ConsumedItem.Opponent = lostItem; }
             }
             p.Item = null;
             if (p.Ability.Name.ToLower() == "unburden")
@@ -5505,8 +5512,8 @@ public class Battle
             if (newWeather != BattleWeather.WeatherTypes.Clear)
             {
                 int weatherRounds = turns == -1 ? 5 : turns;
-                Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-                Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
+                Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+                Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
                 if (op.Ability.Name.ToLower() == "air lock" || op.Ability.Name.ToLower() == "cloud nine")
                 {
                     ChangeCameraAngle(1, own, battleScreen);
@@ -5544,8 +5551,8 @@ public class Battle
 
     public void TriggerAbilityEffect(BattleScreen battleScreen, bool own)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
-        Pokemon op = own ? battleScreen.OppPokemon : battleScreen.OwnPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
+        Pokemon op = own ? battleScreen.OpponentPokemon : battleScreen.SelfPokemon;
         int turns = BattleCalculation.FieldEffectTurns(battleScreen, own);
         if (battleScreen.FieldEffects.CanUseAbility(own, battleScreen, 1) == true)
         {
@@ -5706,7 +5713,7 @@ public class Battle
                         p.OriginalType1 = new Element(p.Type1.Type);
                         p.OriginalType2 = new Element(p.Type2.Type);
                         p.OriginalStats = new int[] { p.Attack, p.Defense, p.SpAttack, p.SpDefense, p.Speed };
-                        p.OriginalShiny = (int)p.IsShiny.ToNumberString();
+                        p.OriginalShiny = p.IsShiny ? 1 : 0;
                         p.OriginalMoves = new System.Collections.Generic.List<Attack>();
                         p.OriginalMoves.AddRange(p.Attacks.ToArray());
                         p.Number = op.Number;
@@ -5731,7 +5738,7 @@ public class Battle
                         }
                         p.Ability = Ability.GetAbilityByID(op.Ability.ID);
                         p.IsTransformed = true;
-                        battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
+                        battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(own, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(p, true), 0, 1, -1, -1));
                         battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " transformed into " + op.GetName() + "!"));
                     }
                     else
@@ -5745,7 +5752,7 @@ public class Battle
 
     public void TriggerItemEffect(BattleScreen battleScreen, bool own)
     {
-        Pokemon p = own ? battleScreen.OwnPokemon : battleScreen.OppPokemon;
+        Pokemon p = own ? battleScreen.SelfPokemon : battleScreen.OpponentPokemon;
         if (p.Item != null)
         {
             if (battleScreen.FieldEffects.CanUseItem(own) == true && battleScreen.FieldEffects.CanUseOwnItem(own, battleScreen) == true)
@@ -5799,9 +5806,9 @@ public class Battle
                             {
                                 if (own == true)
                                 {
-                                    if (battleScreen.OwnPokemonIndex > 0 && battleScreen.FieldEffects.TempOwnConfusionTurns > 0)
+                                    if (battleScreen.SelfPokemonIndex > 0 && battleScreen.FieldEffects.TempConfusionTurns.Self > 0)
                                     {
-                                        InflictConfusion(own, own, battleScreen, p.GetDisplayName() + " went berserk due to the Berserk Gene!", "item:berserkgene", battleScreen.FieldEffects.TempOwnConfusionTurns);
+                                        InflictConfusion(own, own, battleScreen, p.GetDisplayName() + " went berserk due to the Berserk Gene!", "item:berserkgene", battleScreen.FieldEffects.TempConfusionTurns.Self);
                                     }
                                     else
                                     {
@@ -5810,9 +5817,9 @@ public class Battle
                                 }
                                 else
                                 {
-                                    if (battleScreen.OppPokemonIndex > 0 && battleScreen.FieldEffects.TempOppConfusionTurns > 0)
+                                    if (battleScreen.OpponentPokemonIndex > 0 && battleScreen.FieldEffects.TempConfusionTurns.Opponent > 0)
                                     {
-                                        InflictConfusion(own, own, battleScreen, p.GetDisplayName() + " went berserk due to the Berserk Gene!", "item:berserkgene", battleScreen.FieldEffects.TempOppConfusionTurns);
+                                        InflictConfusion(own, own, battleScreen, p.GetDisplayName() + " went berserk due to the Berserk Gene!", "item:berserkgene", battleScreen.FieldEffects.TempConfusionTurns.Opponent);
                                     }
                                     else
                                     {
@@ -5824,7 +5831,7 @@ public class Battle
                             {
                                 battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " went berserk due to the Berserk Gene!"));
                             }
-                            battleScreen.FieldEffects.TempOppConfusionTurns = 0;
+                            battleScreen.FieldEffects.TempConfusionTurns.Opponent = 0;
                             RaiseStat(own, own, battleScreen, "Attack", 2, String.Empty, "item:berserkgene");
                             RaiseStat(own, own, battleScreen, "Special Attack", 2, String.Empty, "item:berserkgene");
                         }
@@ -5836,7 +5843,7 @@ public class Battle
 
     private void ApplyForecast(BattleScreen battleScreen)
     {
-        Pokemon p = battleScreen.OwnPokemon;
+        Pokemon p = battleScreen.SelfPokemon;
         if (p.Ability.Name.ToLower() == "forecast")
         {
             switch (battleScreen.FieldEffects.Weather)
@@ -5858,7 +5865,7 @@ public class Battle
                     break;
             }
         }
-        p = battleScreen.OppPokemon;
+        p = battleScreen.OpponentPokemon;
         if (p.Ability.Name.ToLower() == "forecast")
         {
             switch (battleScreen.FieldEffects.Weather)
@@ -5891,10 +5898,10 @@ public class Battle
                 q = (CameraQueryObject)battleScreen.FocusBattle();
                 break;
             case 1:
-                q = (CameraQueryObject)(own == true ? battleScreen.FocusOwnPokemon() : battleScreen.FocusOppPokemon());
+                q = (CameraQueryObject)(own == true ? battleScreen.FocusSelfPokemon() : battleScreen.FocusOpponentPokemon());
                 break;
             case 2:
-                q = (CameraQueryObject)(own == false ? battleScreen.FocusOwnPokemon() : battleScreen.FocusOppPokemon());
+                q = (CameraQueryObject)(own == false ? battleScreen.FocusSelfPokemon() : battleScreen.FocusOpponentPokemon());
                 break;
         }
         if (q != null)
@@ -6015,56 +6022,56 @@ public class Battle
                             battleScreen.BattleQuery.Add(new TextQueryObject("Mud Sport's effect ended."));
                         }
                     }
-                    if (battleScreen.OwnPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Flinch) == true)
+                    if (battleScreen.SelfPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Flinch) == true)
                     {
-                        battleScreen.OwnPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Flinch);
+                        battleScreen.SelfPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Flinch);
                     }
-                    if (battleScreen.OppPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Flinch) == true)
+                    if (battleScreen.OpponentPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Flinch) == true)
                     {
-                        battleScreen.OppPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Flinch);
+                        battleScreen.OpponentPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Flinch);
                     }
-                    if (battleScreen.FieldEffects.OwnRoostUsed == true)
+                    if (battleScreen.FieldEffects.RoostUsed.Self == true)
                     {
-                        battleScreen.OwnPokemon.Type1 = battleScreen.OwnPokemon.OriginalType1;
-                        battleScreen.OwnPokemon.Type2 = battleScreen.OwnPokemon.OriginalType2;
-                        battleScreen.FieldEffects.OwnRoostUsed = false;
+                        battleScreen.SelfPokemon.Type1 = battleScreen.SelfPokemon.OriginalType1;
+                        battleScreen.SelfPokemon.Type2 = battleScreen.SelfPokemon.OriginalType2;
+                        battleScreen.FieldEffects.RoostUsed.Self = false;
                     }
-                    if (battleScreen.FieldEffects.OppRoostUsed == true)
+                    if (battleScreen.FieldEffects.RoostUsed.Opponent == true)
                     {
-                        battleScreen.OppPokemon.Type1 = battleScreen.OppPokemon.OriginalType1;
-                        battleScreen.OppPokemon.Type2 = battleScreen.OppPokemon.OriginalType2;
-                        battleScreen.FieldEffects.OppRoostUsed = false;
+                        battleScreen.OpponentPokemon.Type1 = battleScreen.OpponentPokemon.OriginalType1;
+                        battleScreen.OpponentPokemon.Type2 = battleScreen.OpponentPokemon.OriginalType2;
+                        battleScreen.FieldEffects.RoostUsed.Opponent = false;
                     }
                     LearnMovesQueryObject.ClearCache();
-                    battleScreen.FieldEffects.OwnMagicCoat = 0;
-                    battleScreen.FieldEffects.OppMagicCoat = 0;
-                    battleScreen.FieldEffects.OwnDetectCounter = 0;
-                    battleScreen.FieldEffects.OwnProtectCounter = 0;
-                    battleScreen.FieldEffects.OwnKingsShieldCounter = 0;
-                    if (battleScreen.FieldEffects.OwnEndure > 0)
+                    battleScreen.FieldEffects.MagicCoat.Self = 0;
+                    battleScreen.FieldEffects.MagicCoat.Opponent = 0;
+                    battleScreen.FieldEffects.DetectCounter.Self = 0;
+                    battleScreen.FieldEffects.ProtectCounter.Self = 0;
+                    battleScreen.FieldEffects.KingsShieldCounter.Self = 0;
+                    if (battleScreen.FieldEffects.Endure.Self > 0)
                     {
-                        battleScreen.FieldEffects.OwnEndure = 0;
+                        battleScreen.FieldEffects.Endure.Self = 0;
                     }
-                    battleScreen.FieldEffects.OppDetectCounter = 0;
-                    battleScreen.FieldEffects.OppProtectCounter = 0;
-                    battleScreen.FieldEffects.OppKingsShieldCounter = 0;
-                    if (battleScreen.FieldEffects.OppEndure > 0)
+                    battleScreen.FieldEffects.DetectCounter.Opponent = 0;
+                    battleScreen.FieldEffects.ProtectCounter.Opponent = 0;
+                    battleScreen.FieldEffects.KingsShieldCounter.Opponent = 0;
+                    if (battleScreen.FieldEffects.Endure.Opponent > 0)
                     {
-                        battleScreen.FieldEffects.OppEndure = 0;
+                        battleScreen.FieldEffects.Endure.Opponent = 0;
                     }
-                    if (battleScreen.FieldEffects.OwnProtectMovesCount > 0 && battleScreen.FieldEffects.OwnLastMove != null && battleScreen.FieldEffects.OwnLastMove.IsProtectMove == false)
+                    if (battleScreen.FieldEffects.ProtectMovesCount.Self > 0 && battleScreen.FieldEffects.LastMove.Self != null && battleScreen.FieldEffects.LastMove.Self.isProtectMove == false)
                     {
-                        battleScreen.FieldEffects.OwnProtectMovesCount = 0;
+                        battleScreen.FieldEffects.ProtectMovesCount.Self = 0;
                     }
-                    if (battleScreen.FieldEffects.OppProtectMovesCount > 0 && battleScreen.FieldEffects.OppLastMove != null && battleScreen.FieldEffects.OppLastMove.IsProtectMove == false)
+                    if (battleScreen.FieldEffects.ProtectMovesCount.Opponent > 0 && battleScreen.FieldEffects.LastMove.Opponent != null && battleScreen.FieldEffects.LastMove.Opponent.isProtectMove == false)
                     {
-                        battleScreen.FieldEffects.OppProtectMovesCount = 0;
+                        battleScreen.FieldEffects.ProtectMovesCount.Opponent = 0;
                     }
                 }
                 isAfterFaint = false;
-                if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OwnPokemon.HP <= 0)
+                if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.SelfPokemon.HP <= 0)
                 {
-                    battleScreen.OwnPokemon.Status = Pokemon.StatusProblems.Fainted;
+                    battleScreen.SelfPokemon.Status = Pokemon.StatusProblems.Fainted;
                     battleScreen.OwnFaint = true;
                     if (battleScreen.IsRemoteBattle && battleScreen.IsHost)
                     {
@@ -6073,9 +6080,9 @@ public class Battle
                     }
                     SwitchOutOwn(battleScreen, -1, -1);
                 }
-                if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OppPokemon.HP <= 0)
+                if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OpponentPokemon.HP <= 0)
                 {
-                    battleScreen.OppPokemon.Status = Pokemon.StatusProblems.Fainted;
+                    battleScreen.OpponentPokemon.Status = Pokemon.StatusProblems.Fainted;
                     battleScreen.OppFaint = true;
                     if (battleScreen.IsRemoteBattle && battleScreen.IsHost)
                     {
@@ -6103,7 +6110,7 @@ public class Battle
                 ScreenFadeQueryObject cq2 = new ScreenFadeQueryObject(ScreenFadeQueryObject.FadeTypes.Vertical, Color.Black, false, 16);
                 cq2.PassThis = true;
                 battleScreen.BattleQuery.AddRange(new QueryObject[] { cq1, cq2 });
-                battleScreen.FirstRound = false;
+                BattleScreen.FirstRound = false;
                 StartRound(battleScreen);
                 battleScreen.ClearMainMenuTime = true;
                 battleScreen.ClearMoveMenuTime = true;
@@ -6129,94 +6136,94 @@ public class Battle
         }
         else
         {
-            return battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OppPokemon.HP <= 0;
+            return battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OpponentPokemon.HP <= 0;
         }
     }
 
     private void EndTurnOwn(BattleScreen battleScreen)
     {
-        battleScreen.FieldEffects.OwnTurnCounts += 1;
-        battleScreen.FieldEffects.OwnPokemonTurns += 1;
+        battleScreen.FieldEffects.TurnCounts.Self += 1;
+        battleScreen.FieldEffects.PokemonTurns.Self += 1;
         if (_hasSwitchedInOwn)
         {
-            battleScreen.FieldEffects.OwnPokemonTurns = 0;
+            battleScreen.FieldEffects.PokemonTurns.Self = 0;
             _hasSwitchedInOwn = false;
         }
-        battleScreen.FieldEffects.OwnLockOn = 0;
-        battleScreen.FieldEffects.OwnPursuit = false;
-        if (battleScreen.FieldEffects.OwnSleepTurns > 0)
+        battleScreen.FieldEffects.LockOn.Self = 0;
+        battleScreen.FieldEffects.Pursuit.Self = false;
+        if (battleScreen.FieldEffects.SleepTurns.Self > 0)
         {
-            battleScreen.FieldEffects.OwnSleepTurns -= 1;
+            battleScreen.FieldEffects.SleepTurns.Self -= 1;
         }
-        if (battleScreen.FieldEffects.OwnCharge > 0)
+        if (battleScreen.FieldEffects.Charge.Self > 0)
         {
-            battleScreen.FieldEffects.OwnCharge -= 1;
+            battleScreen.FieldEffects.Charge.Self -= 1;
         }
-        if (battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.OwnPokemon.Item != null)
+            if (battleScreen.SelfPokemon.Item != null)
             {
-                if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "mental herb")
+                if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "mental herb")
                 {
                     bool usedMentalHerb = false;
-                    if (battleScreen.OwnPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) == true)
+                    if (battleScreen.SelfPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) == true)
                     {
-                        battleScreen.OwnPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " got healed from the infatuation" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.SelfPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " got healed from the infatuation" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    if (battleScreen.FieldEffects.OwnTaunt > 0)
+                    if (battleScreen.FieldEffects.Taunt.Self > 0)
                     {
-                        battleScreen.FieldEffects.OwnTaunt = 0;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " got healed from the Taunt" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.FieldEffects.Taunt.Self = 0;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " got healed from the Taunt" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    if (battleScreen.FieldEffects.OwnEncore > 0)
+                    if (battleScreen.FieldEffects.Encore.Self > 0)
                     {
-                        battleScreen.FieldEffects.OwnEncore = 0;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " got healed from the Encore" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.FieldEffects.Encore.Self = 0;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " got healed from the Encore" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    if (battleScreen.FieldEffects.OwnTorment > 0)
+                    if (battleScreen.FieldEffects.Torment.Self > 0)
                     {
-                        battleScreen.FieldEffects.OwnTorment = 0;
-                        battleScreen.FieldEffects.OwnTormentMove = null;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " got healed from the Torment" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.FieldEffects.Torment.Self = 0;
+                        battleScreen.FieldEffects.TormentMove.Self = null;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " got healed from the Torment" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    foreach (Attack a in battleScreen.OwnPokemon.Attacks)
+                    foreach (Attack a in battleScreen.SelfPokemon.Attacks)
                     {
                         if (a.Disabled > 0)
                         {
                             a.Disabled = 0;
-                            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled" + Environment.NewLine + "due to Mental Herb!"));
+                            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled" + Environment.NewLine + "due to Mental Herb!"));
                         }
                     }
                     if (usedMentalHerb == true)
                     {
-                        battleScreen.OwnPokemon.Item = null;
+                        battleScreen.SelfPokemon.Item = null;
                     }
                 }
-                if (battleScreen.OwnPokemon.Item != null && battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "white herb")
+                if (battleScreen.SelfPokemon.Item != null && battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "white herb")
                 {
                     bool hasNegativeStats = false;
-                    if (battleScreen.OwnPokemon.StatAttack < 0) { battleScreen.OwnPokemon.StatAttack = 0; hasNegativeStats = true; }
-                    if (battleScreen.OwnPokemon.StatDefense < 0) { battleScreen.OwnPokemon.StatDefense = 0; hasNegativeStats = true; }
-                    if (battleScreen.OwnPokemon.StatSpAttack < 0) { battleScreen.OwnPokemon.StatSpAttack = 0; hasNegativeStats = true; }
-                    if (battleScreen.OwnPokemon.StatSpDefense < 0) { battleScreen.OwnPokemon.StatSpDefense = 0; hasNegativeStats = true; }
-                    if (battleScreen.OwnPokemon.StatSpeed < 0) { battleScreen.OwnPokemon.StatSpeed = 0; hasNegativeStats = true; }
-                    if (battleScreen.OwnPokemon.Accuracy < 0) { battleScreen.OwnPokemon.Accuracy = 0; hasNegativeStats = true; }
-                    if (battleScreen.OwnPokemon.Evasion < 0) { battleScreen.OwnPokemon.Evasion = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.StatAttack < 0) { battleScreen.SelfPokemon.StatAttack = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.StatDefense < 0) { battleScreen.SelfPokemon.StatDefense = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.StatSpAttack < 0) { battleScreen.SelfPokemon.StatSpAttack = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.StatSpDefense < 0) { battleScreen.SelfPokemon.StatSpDefense = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.StatSpeed < 0) { battleScreen.SelfPokemon.StatSpeed = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.Accuracy < 0) { battleScreen.SelfPokemon.Accuracy = 0; hasNegativeStats = true; }
+                    if (battleScreen.SelfPokemon.Evasion < 0) { battleScreen.SelfPokemon.Evasion = 0; hasNegativeStats = true; }
                     if (hasNegativeStats == true)
                     {
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " negative stats got healed due to White Herb!"));
-                        battleScreen.OwnPokemon.Item = null;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " negative stats got healed due to White Herb!"));
+                        battleScreen.SelfPokemon.Item = null;
                     }
                 }
             }
         }
-        battleScreen.FieldEffects.OwnPokemonDamagedLastTurn = battleScreen.FieldEffects.OwnPokemonDamagedThisTurn;
-        battleScreen.FieldEffects.OwnPokemonDamagedThisTurn = false;
+        battleScreen.FieldEffects.PokemonDamagedLastTurn.Self = battleScreen.FieldEffects.PokemonDamagedThisTurn.Self;
+        battleScreen.FieldEffects.PokemonDamagedThisTurn.Self = false;
     }
 
     private void EndRoundOwn(BattleScreen battleScreen)
@@ -6232,264 +6239,264 @@ public class Battle
         {
             return;
         }
-        if (battleScreen.FieldEffects.OwnReflect > 0)
+        if (battleScreen.FieldEffects.Reflect.Self > 0)
         {
-            battleScreen.FieldEffects.OwnReflect -= 1;
-            if (battleScreen.FieldEffects.OwnReflect == 0)
+            battleScreen.FieldEffects.Reflect.Self -= 1;
+            if (battleScreen.FieldEffects.Reflect.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Reflect effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OwnLightScreen > 0)
+        if (battleScreen.FieldEffects.LightScreen.Self > 0)
         {
-            battleScreen.FieldEffects.OwnLightScreen -= 1;
-            if (battleScreen.FieldEffects.OwnLightScreen == 0)
+            battleScreen.FieldEffects.LightScreen.Self -= 1;
+            if (battleScreen.FieldEffects.LightScreen.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Light Screen effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OwnMist > 0)
+        if (battleScreen.FieldEffects.Mist.Self > 0)
         {
-            battleScreen.FieldEffects.OwnMist -= 1;
-            if (battleScreen.FieldEffects.OwnMist == 0)
+            battleScreen.FieldEffects.Mist.Self -= 1;
+            if (battleScreen.FieldEffects.Mist.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The mist on your side of the field faded!"));
             }
         }
-        if (battleScreen.FieldEffects.OwnSafeguard > 0)
+        if (battleScreen.FieldEffects.Safeguard.Self > 0)
         {
-            battleScreen.FieldEffects.OwnSafeguard -= 1;
-            if (battleScreen.FieldEffects.OwnSafeguard == 0)
+            battleScreen.FieldEffects.Safeguard.Self -= 1;
+            if (battleScreen.FieldEffects.Safeguard.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Safeguard effect wore off!"));
             }
         }
-        if (battleScreen.FieldEffects.OwnGuardSpec > 0)
+        if (battleScreen.FieldEffects.GuardSpec.Self > 0)
         {
-            battleScreen.FieldEffects.OwnGuardSpec -= 1;
-            if (battleScreen.FieldEffects.OwnGuardSpec == 0)
+            battleScreen.FieldEffects.GuardSpec.Self -= 1;
+            if (battleScreen.FieldEffects.GuardSpec.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Guard Spec. wore off."));
             }
         }
-        if (battleScreen.FieldEffects.OwnTailWind > 0)
+        if (battleScreen.FieldEffects.TailWind.Self > 0)
         {
-            battleScreen.FieldEffects.OwnTailWind -= 1;
-            if (battleScreen.FieldEffects.OwnTailWind == 0)
+            battleScreen.FieldEffects.TailWind.Self -= 1;
+            if (battleScreen.FieldEffects.TailWind.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Tail Wind effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OwnLuckyChant > 0)
+        if (battleScreen.FieldEffects.LuckyChant.Self > 0)
         {
-            battleScreen.FieldEffects.OwnLuckyChant -= 1;
-            if (battleScreen.FieldEffects.OwnLuckyChant == 0)
+            battleScreen.FieldEffects.LuckyChant.Self -= 1;
+            if (battleScreen.FieldEffects.LuckyChant.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Lucky Chant effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OwnWish > 0)
+        if (battleScreen.FieldEffects.Wish.Self > 0)
         {
-            battleScreen.FieldEffects.OwnWish -= 1;
-            if (battleScreen.FieldEffects.OwnWish == 0)
+            battleScreen.FieldEffects.Wish.Self -= 1;
+            if (battleScreen.FieldEffects.Wish.Self == 0)
             {
-                if (battleScreen.FieldEffects.OppHealBlock == 0)
+                if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
                 {
-                    if (battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP && battleScreen.OwnPokemon.HP > 0)
+                    if (battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP && battleScreen.SelfPokemon.HP > 0)
                     {
-                        GainHP((int)(battleScreen.OwnPokemon.MaxHP / 2), true, true, battleScreen, "A wish came true!", "wish");
+                        GainHP((int)(battleScreen.SelfPokemon.MaxHP / 2), true, true, battleScreen, "A wish came true!", "wish");
                     }
                 }
             }
         }
         if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sandstorm)
         {
-            if (battleScreen.OwnPokemon.Type1.Type != Element.Types.Ground && battleScreen.OwnPokemon.Type2.Type != Element.Types.Ground && battleScreen.OwnPokemon.Type1.Type != Element.Types.Steel && battleScreen.OwnPokemon.Type2.Type != Element.Types.Steel && battleScreen.OwnPokemon.Type1.Type != Element.Types.Rock && battleScreen.OwnPokemon.Type2.Type != Element.Types.Rock)
+            if (battleScreen.SelfPokemon.Type1.Type != Element.Types.Ground && battleScreen.SelfPokemon.Type2.Type != Element.Types.Ground && battleScreen.SelfPokemon.Type1.Type != Element.Types.Steel && battleScreen.SelfPokemon.Type2.Type != Element.Types.Steel && battleScreen.SelfPokemon.Type1.Type != Element.Types.Rock && battleScreen.SelfPokemon.Type2.Type != Element.Types.Rock)
             {
                 String[] sandAbilities = { "sand veil", "sand rush", "sand force", "overcoat", "magic guard", "cloud nine" };
-                if (sandAbilities.Contains(battleScreen.OwnPokemon.Ability.Name.ToLower()) == false)
+                if (sandAbilities.Contains(battleScreen.SelfPokemon.Ability.Name.ToLower()) == false)
                 {
-                    if (battleScreen.OwnPokemon.HP > 0)
+                    if (battleScreen.SelfPokemon.HP > 0)
                     {
-                        int sandHP = (int)(battleScreen.OwnPokemon.MaxHP / 16);
-                        ReduceHP(sandHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " took damage from the sandstorm!", "sandstorm");
+                        int sandHP = (int)(battleScreen.SelfPokemon.MaxHP / 16);
+                        ReduceHP(sandHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " took damage from the sandstorm!", "sandstorm");
                     }
                 }
             }
         }
         if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Hailstorm)
         {
-            if (battleScreen.OwnPokemon.Type1.Type != Element.Types.Ice && battleScreen.OwnPokemon.Type2.Type != Element.Types.Ice)
+            if (battleScreen.SelfPokemon.Type1.Type != Element.Types.Ice && battleScreen.SelfPokemon.Type2.Type != Element.Types.Ice)
             {
                 String[] hailAbilities = { "ice body", "snow cloak", "overcoat", "magic guard", "cloud nine" };
-                if (hailAbilities.Contains(battleScreen.OwnPokemon.Ability.Name.ToLower()) == false)
+                if (hailAbilities.Contains(battleScreen.SelfPokemon.Ability.Name.ToLower()) == false)
                 {
-                    if (battleScreen.OwnPokemon.HP > 0)
+                    if (battleScreen.SelfPokemon.HP > 0)
                     {
-                        int hailHP = (int)(battleScreen.OwnPokemon.MaxHP / 16);
-                        ReduceHP(hailHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " took damage from the hailstorm!", "hail");
+                        int hailHP = (int)(battleScreen.SelfPokemon.MaxHP / 16);
+                        ReduceHP(hailHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " took damage from the hailstorm!", "hail");
                     }
                 }
             }
         }
         if (battleScreen.FieldEffects.GrassyTerrain > 0 && battleScreen.FieldEffects.IsGrounded(true, battleScreen) == true)
         {
-            if (battleScreen.OwnPokemon.HP > 0)
+            if (battleScreen.SelfPokemon.HP > 0)
             {
-                GainHP((int)(battleScreen.OwnPokemon.MaxHP / 16), true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " restored some HP due to the Grassy Terrain!", "grassyterrain");
+                GainHP((int)(battleScreen.SelfPokemon.MaxHP / 16), true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " restored some HP due to the Grassy Terrain!", "grassyterrain");
             }
         }
-        if (battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP > 0)
         {
             int hpChange = 0;
             String hpMessage = String.Empty;
-            switch (battleScreen.OwnPokemon.Ability.Name.ToLower())
+            switch (battleScreen.SelfPokemon.Ability.Name.ToLower())
             {
                 case "dry skin":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.OwnPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
-                    else if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.OwnPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.SelfPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
+                    else if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.SelfPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
                     break;
                 case "solar power":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.OwnPokemon.MaxHP / 8); hpMessage = "Solar Power"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.SelfPokemon.MaxHP / 8); hpMessage = "Solar Power"; }
                     break;
                 case "rain dish":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.OwnPokemon.MaxHP / 16); hpMessage = "Rain Dish"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.SelfPokemon.MaxHP / 16); hpMessage = "Rain Dish"; }
                     break;
                 case "hydration":
                     if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain)
                     {
-                        if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Sleep)
+                        if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Sleep)
                         {
-                            CureStatusProblem(true, true, battleScreen, "Hydration cured " + battleScreen.OwnPokemon.GetDisplayName() + "'s status problem.", "hydration");
+                            CureStatusProblem(true, true, battleScreen, "Hydration cured " + battleScreen.SelfPokemon.GetDisplayName() + "'s status problem.", "hydration");
                         }
                     }
                     break;
                 case "ice body":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Hailstorm) { hpChange = (int)(battleScreen.OwnPokemon.MaxHP / 16); hpMessage = "Ice Body"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Hailstorm) { hpChange = (int)(battleScreen.SelfPokemon.MaxHP / 16); hpMessage = "Ice Body"; }
                     break;
             }
             if (hpChange > 0)
             {
-                if (battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP)
+                if (battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP)
                 {
-                    GainHP(hpChange, true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " restored some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
+                    GainHP(hpChange, true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " restored some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
                 }
             }
             else if (hpChange < 0)
             {
-                ReduceHP(hpChange, true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " lost some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
+                ReduceHP(hpChange, true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " lost some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
             }
         }
-        if (battleScreen.FieldEffects.OwnIngrain > 0 && battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Ingrain.Self > 0 && battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP && battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OppHealBlock == 0)
+            if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
             {
-                int healHP = (int)(battleScreen.OwnPokemon.MaxHP / 16);
-                if (battleScreen.OwnPokemon.Item != null)
+                int healHP = (int)(battleScreen.SelfPokemon.MaxHP / 16);
+                if (battleScreen.SelfPokemon.Item != null)
                 {
-                    if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
                         healHP = (int)(healHP * 1.3f);
                     }
                 }
-                GainHP(healHP, true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " gained health from the Ingrain.", "ingrain");
+                GainHP(healHP, true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " gained health from the Ingrain.", "ingrain");
             }
         }
-        if (battleScreen.FieldEffects.OwnAquaRing > 0 && battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.AquaRing.Self > 0 && battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP && battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OppHealBlock == 0)
+            if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
             {
-                int healHP = (int)(battleScreen.OwnPokemon.MaxHP / 16);
-                if (battleScreen.OwnPokemon.Item != null)
+                int healHP = (int)(battleScreen.SelfPokemon.MaxHP / 16);
+                if (battleScreen.SelfPokemon.Item != null)
                 {
-                    if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
                         healHP = (int)(healHP * 1.3f);
                     }
                 }
-                GainHP(healHP, true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " gained health from the Aqua Ring.", "aquaring");
+                GainHP(healHP, true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " gained health from the Aqua Ring.", "aquaring");
             }
         }
-        if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "shed skin" && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "shed skin" && battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Sleep)
+            if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Sleep)
             {
                 if (Core.Random.Next(0, 100) < 33)
                 {
-                    battleScreen.BattleQuery.Add(battleScreen.FocusOwnPokemon());
-                    CureStatusProblem(true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + "'s Shed Skin cured its status problem.", "shedskin");
+                    battleScreen.BattleQuery.Add(battleScreen.FocusSelfPokemon());
+                    CureStatusProblem(true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + "'s Shed Skin cured its status problem.", "shedskin");
                 }
             }
         }
-        if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "speed boost" && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "speed boost" && battleScreen.SelfPokemon.HP > 0)
         {
-            RaiseStat(true, true, battleScreen, "Speed", 1, battleScreen.OwnPokemon.GetDisplayName() + "'s Speed Boost raised its speed.", "speedboost");
+            RaiseStat(true, true, battleScreen, "Speed", 1, battleScreen.SelfPokemon.GetDisplayName() + "'s Speed Boost raised its speed.", "speedboost");
         }
-        if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "truant")
+        if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "truant")
         {
-            if (battleScreen.FieldEffects.OwnTruantRound == 1)
+            if (battleScreen.FieldEffects.TruantRound.Self == 1)
             {
-                battleScreen.FieldEffects.OwnTruantRound = 0;
+                battleScreen.FieldEffects.TruantRound.Self = 0;
             }
             else
             {
-                battleScreen.FieldEffects.OwnTruantRound = 1;
+                battleScreen.FieldEffects.TruantRound.Self = 1;
             }
         }
-        if (battleScreen.OwnPokemon.Item != null)
+        if (battleScreen.SelfPokemon.Item != null)
         {
-            if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "black sludge" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+            if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "black sludge" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
             {
-                if (battleScreen.OwnPokemon.Type1.Type == Element.Types.Poison || battleScreen.OwnPokemon.Type2.Type == Element.Types.Poison)
+                if (battleScreen.SelfPokemon.Type1.Type == Element.Types.Poison || battleScreen.SelfPokemon.Type2.Type == Element.Types.Poison)
                 {
-                    if (battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP && battleScreen.OwnPokemon.HP > 0)
+                    if (battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP && battleScreen.SelfPokemon.HP > 0)
                     {
-                        GainHP((int)(battleScreen.OwnPokemon.MaxHP / 16), true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " gained HP from Black Sludge!", "blacksludge");
+                        GainHP((int)(battleScreen.SelfPokemon.MaxHP / 16), true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " gained HP from Black Sludge!", "blacksludge");
                     }
                 }
                 else
                 {
-                    if (battleScreen.OwnPokemon.HP > 0)
+                    if (battleScreen.SelfPokemon.HP > 0)
                     {
-                        ReduceHP((int)(battleScreen.OwnPokemon.MaxHP / 8), true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " lost HP due to Black Sludge!", "blacksludge");
+                        ReduceHP((int)(battleScreen.SelfPokemon.MaxHP / 8), true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " lost HP due to Black Sludge!", "blacksludge");
                     }
                 }
             }
         }
-        if (battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP && battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OppHealBlock == 0)
+            if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
             {
-                if (battleScreen.OwnPokemon.Item != null)
+                if (battleScreen.SelfPokemon.Item != null)
                 {
-                    if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "leftovers" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "leftovers" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        GainHP((int)(battleScreen.OwnPokemon.MaxHP / 16), true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " restored some HP from Leftovers!", "leftovers");
+                        GainHP((int)(battleScreen.SelfPokemon.MaxHP / 16), true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " restored some HP from Leftovers!", "leftovers");
                     }
                 }
             }
         }
-        if (battleScreen.FieldEffects.OppLeechSeed > 0)
+        if (battleScreen.FieldEffects.LeechSeed.Opponent > 0)
         {
-            if (battleScreen.OppPokemon.HP > 0 && battleScreen.OwnPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0 && battleScreen.SelfPokemon.HP > 0)
             {
-                int loseHP = (int)Math.Ceiling((double)battleScreen.OppPokemon.MaxHP / 8);
-                int currHP = battleScreen.OppPokemon.HP;
+                int loseHP = (int)Math.Ceiling((double)battleScreen.OpponentPokemon.MaxHP / 8);
+                int currHP = battleScreen.OpponentPokemon.HP;
                 if (loseHP > currHP) { loseHP = currHP; }
                 int addHP = loseHP;
-                if (battleScreen.OwnPokemon.Item != null)
+                if (battleScreen.SelfPokemon.Item != null)
                 {
-                    if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
                         addHP += (int)Math.Ceiling(addHP * (30.0 / 100));
                     }
                 }
-                ReduceHP(loseHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " lost HP due to Leech Seed!", "leechseed");
-                if (battleScreen.FieldEffects.OwnHealBlock == 0)
+                ReduceHP(loseHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " lost HP due to Leech Seed!", "leechseed");
+                if (battleScreen.FieldEffects.HealBlock.Self == 0)
                 {
-                    if (battleScreen.OppPokemon.Ability.Name.ToLower() == "liquid ooze" && battleScreen.FieldEffects.CanUseAbility(false, battleScreen) == true)
+                    if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "liquid ooze" && battleScreen.FieldEffects.CanUseAbility(false, battleScreen) == true)
                     {
-                        battleScreen.Battle.ReduceHP(addHP, true, true, battleScreen, "Liquid Ooze damaged " + battleScreen.OwnPokemon.GetDisplayName() + "!", "liquidooze");
+                        battleScreen.Battle.ReduceHP(addHP, true, true, battleScreen, "Liquid Ooze damaged " + battleScreen.SelfPokemon.GetDisplayName() + "!", "liquidooze");
                     }
                     else
                     {
@@ -6498,36 +6505,36 @@ public class Battle
                 }
             }
         }
-        if (battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "poison heal")
+            if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "poison heal")
             {
-                if (battleScreen.FieldEffects.OppHealBlock == 0)
+                if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
                 {
-                    if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Poison)
+                    if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Poison)
                     {
-                        GainHP((int)(battleScreen.OwnPokemon.MaxHP / 8), true, true, battleScreen, "Poison Heal healed " + battleScreen.OwnPokemon.GetDisplayName() + ".", "poison");
+                        GainHP((int)(battleScreen.SelfPokemon.MaxHP / 8), true, true, battleScreen, "Poison Heal healed " + battleScreen.SelfPokemon.GetDisplayName() + ".", "poison");
                     }
-                    if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.BadPoison)
+                    if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.BadPoison)
                     {
-                        battleScreen.FieldEffects.OwnPoisonCounter += 1;
-                        GainHP((int)(battleScreen.OwnPokemon.MaxHP / 8), true, true, battleScreen, "Poison Heal healed " + battleScreen.OwnPokemon.GetDisplayName() + ".", "poison");
+                        battleScreen.FieldEffects.PoisonCounter.Self += 1;
+                        GainHP((int)(battleScreen.SelfPokemon.MaxHP / 8), true, true, battleScreen, "Poison Heal healed " + battleScreen.SelfPokemon.GetDisplayName() + ".", "poison");
                     }
                 }
             }
             else
             {
-                if (battleScreen.OwnPokemon.Ability.Name.ToLower() != "magic guard")
+                if (battleScreen.SelfPokemon.Ability.Name.ToLower() != "magic guard")
                 {
-                    if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Poison)
+                    if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Poison)
                     {
                         ChangeCameraAngle(1, true, battleScreen);
                         if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                         {
-                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, true);
+                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, true);
                             poisonAnimation.AnimationPlaySound(@"Battle\Effects\Poisoned", 0, 0);
                             Entity bubbleEntity1 = poisonAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1f, 1f);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity1, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 2, 1);
                             battleScreen.BattleQuery.Add(poisonAnimation);
                         }
@@ -6535,25 +6542,25 @@ public class Battle
                         {
                             battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\Poisoned", false));
                         }
-                        ReduceHP((int)(battleScreen.OwnPokemon.MaxHP / 8), true, true, battleScreen, "The poison hurt " + battleScreen.OwnPokemon.GetDisplayName() + ".", "poison");
+                        ReduceHP((int)(battleScreen.SelfPokemon.MaxHP / 8), true, true, battleScreen, "The poison hurt " + battleScreen.SelfPokemon.GetDisplayName() + ".", "poison");
                     }
-                    if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.BadPoison)
+                    if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.BadPoison)
                     {
-                        battleScreen.FieldEffects.OwnPoisonCounter += 1;
-                        double multiplier = (battleScreen.FieldEffects.OwnPoisonCounter / 16.0);
+                        battleScreen.FieldEffects.PoisonCounter.Self += 1;
+                        double multiplier = (battleScreen.FieldEffects.PoisonCounter.Self / 16.0);
                         ChangeCameraAngle(1, true, battleScreen);
                         if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                         {
-                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, true);
+                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, true);
                             poisonAnimation.AnimationPlaySound(@"Battle\Effects\Poisoned", 0, 0);
                             Entity bubbleEntity1 = poisonAnimation.SpawnEntity(new Vector3(-0.25f, -0.25f, -0.25f), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1f, 1f);
                             Entity bubbleEntity2 = poisonAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 1, 1);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity1, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 2, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 2, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 2f, 1f);
                             Entity bubbleEntity3 = poisonAnimation.SpawnEntity(new Vector3(0.25f, -0.25f, 0.25f), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 2, 1);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity2, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 3, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity3, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 3, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity3, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 3f, 1f);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity3, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 4, 1);
                             battleScreen.BattleQuery.Add(poisonAnimation);
                         }
@@ -6561,31 +6568,31 @@ public class Battle
                         {
                             battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\Poisoned", false));
                         }
-                        ReduceHP((int)(battleScreen.OwnPokemon.MaxHP * multiplier), true, true, battleScreen, "The toxic hurt " + battleScreen.OwnPokemon.GetDisplayName() + ".", "badpoison");
+                        ReduceHP((int)(battleScreen.SelfPokemon.MaxHP * multiplier), true, true, battleScreen, "The toxic hurt " + battleScreen.SelfPokemon.GetDisplayName() + ".", "badpoison");
                     }
                 }
             }
         }
-        if (battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Burn)
+            if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Burn)
             {
-                if (battleScreen.OwnPokemon.Ability.Name.ToLower() != "water veil" && battleScreen.OwnPokemon.Ability.Name.ToLower() != "magic guard")
+                if (battleScreen.SelfPokemon.Ability.Name.ToLower() != "water veil" && battleScreen.SelfPokemon.Ability.Name.ToLower() != "magic guard")
                 {
-                    int reduceAmount = (int)(battleScreen.OwnPokemon.MaxHP / 16);
-                    if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "heatproof")
+                    int reduceAmount = (int)(battleScreen.SelfPokemon.MaxHP / 16);
+                    if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "heatproof")
                     {
-                        reduceAmount = (int)(battleScreen.OwnPokemon.MaxHP / 32);
+                        reduceAmount = (int)(battleScreen.SelfPokemon.MaxHP / 32);
                     }
                     ChangeCameraAngle(1, true, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject burnAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, true);
+                        AnimationQueryObject burnAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, true);
                         burnAnimation.AnimationPlaySound(@"Battle\Effects\Burned", 0, 0);
                         Entity flameEntity = burnAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f, 0.5f, 0.5f), 1.0f);
-                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 32, 32, 32), String.Empty), 0.75, 0);
-                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 64, 32, 32), String.Empty), 1.5, 0);
-                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 96, 32, 32), String.Empty), 2.25, 0);
+                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 32, 32, 32), String.Empty), 0.75f, 0);
+                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 64, 32, 32), String.Empty), 1.5f, 0);
+                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 96, 32, 32), String.Empty), 2.25f, 0);
                         burnAnimation.AnimationChangeTexture(flameEntity, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 128, 32, 32), String.Empty), 3, 0);
                         battleScreen.BattleQuery.Add(burnAnimation);
                     }
@@ -6593,86 +6600,86 @@ public class Battle
                     {
                         battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\Burned", false));
                     }
-                    ReduceHP(reduceAmount, true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by the burn.", "burn");
+                    ReduceHP(reduceAmount, true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by the burn.", "burn");
                 }
             }
         }
-        if (battleScreen.FieldEffects.OwnNightmare > 0)
+        if (battleScreen.FieldEffects.Nightmare.Self > 0)
         {
-            if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Sleep && battleScreen.OwnPokemon.HP > 0)
+            if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Sleep && battleScreen.SelfPokemon.HP > 0)
             {
-                ReduceHP((int)(battleScreen.OwnPokemon.MaxHP / 4), true, false, battleScreen, "The nightmare haunted " + battleScreen.OwnPokemon.GetDisplayName() + "!", "nightmare");
+                ReduceHP((int)(battleScreen.SelfPokemon.MaxHP / 4), true, false, battleScreen, "The nightmare haunted " + battleScreen.SelfPokemon.GetDisplayName() + "!", "nightmare");
             }
             else
             {
-                battleScreen.FieldEffects.OwnNightmare = 0;
+                battleScreen.FieldEffects.Nightmare.Self = 0;
             }
         }
-        if (battleScreen.FieldEffects.OwnCurse > 0)
+        if (battleScreen.FieldEffects.Curse.Self > 0)
         {
-            if (battleScreen.OwnPokemon.HP > 0)
+            if (battleScreen.SelfPokemon.HP > 0)
             {
-                ReduceHP((int)(battleScreen.OwnPokemon.MaxHP / 4), true, false, battleScreen, "The curse haunted " + battleScreen.OwnPokemon.GetDisplayName() + "!", "curse");
+                ReduceHP((int)(battleScreen.SelfPokemon.MaxHP / 4), true, false, battleScreen, "The curse haunted " + battleScreen.SelfPokemon.GetDisplayName() + "!", "curse");
             }
         }
-        if (battleScreen.FieldEffects.OwnWaterPledge > 0)
+        if (battleScreen.FieldEffects.WaterPledge.Self > 0)
         {
-            battleScreen.FieldEffects.OwnWaterPledge -= 1;
-            if (battleScreen.FieldEffects.OwnWaterPledge == 0)
+            battleScreen.FieldEffects.WaterPledge.Self -= 1;
+            if (battleScreen.FieldEffects.WaterPledge.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The rainbow faded!"));
             }
         }
-        if (battleScreen.FieldEffects.OwnGrassPledge > 0)
+        if (battleScreen.FieldEffects.GrassPledge.Self > 0)
         {
-            battleScreen.FieldEffects.OwnGrassPledge -= 1;
-            if (battleScreen.FieldEffects.OwnGrassPledge == 0)
+            battleScreen.FieldEffects.GrassPledge.Self -= 1;
+            if (battleScreen.FieldEffects.GrassPledge.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The swamp faded!"));
             }
         }
-        if (battleScreen.FieldEffects.OwnFirePledge > 0)
+        if (battleScreen.FieldEffects.FirePledge.Self > 0)
         {
-            battleScreen.FieldEffects.OwnFirePledge -= 1;
-            if (battleScreen.FieldEffects.OwnFirePledge == 0)
+            battleScreen.FieldEffects.FirePledge.Self -= 1;
+            if (battleScreen.FieldEffects.FirePledge.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The fiery sea faded!"));
             }
             else
             {
-                if (battleScreen.OwnPokemon.HP > 0)
+                if (battleScreen.SelfPokemon.HP > 0)
                 {
-                    ReduceHP((int)(battleScreen.OwnPokemon.MaxHP / 8), true, false, battleScreen, "The firey sea hurt " + battleScreen.OwnPokemon.GetDisplayName() + "!", "firepledge");
+                    ReduceHP((int)(battleScreen.SelfPokemon.MaxHP / 8), true, false, battleScreen, "The firey sea hurt " + battleScreen.SelfPokemon.GetDisplayName() + "!", "firepledge");
                 }
             }
         }
-        if (battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OwnWrap > 0)
+            if (battleScreen.FieldEffects.Wrap.Self > 0)
             {
-                battleScreen.FieldEffects.OwnWrap -= 1;
-                if (battleScreen.FieldEffects.OwnWrap == 0)
+                battleScreen.FieldEffects.Wrap.Self -= 1;
+                if (battleScreen.FieldEffects.Wrap.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Wrap!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Wrap!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, true, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject wrapAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, false);
+                        AnimationQueryObject wrapAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, false);
                         wrapAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Wrap", 5.0f, 0);
                         Entity wrapEntity = wrapAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 0, 80, 40), String.Empty), new Vector3(1.0f, 0.5f, 1.0f), 1, 0, 0.75f);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 40, 80, 40), String.Empty), 0.75, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 80, 80, 40), String.Empty), 1.5, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 120, 80, 40), String.Empty), 2.25, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 160, 80, 40), String.Empty), 3, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 200, 80, 40), String.Empty), 3.75, 0.75);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 40, 80, 40), String.Empty), 0.75f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 80, 80, 40), String.Empty), 1.5f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 120, 80, 40), String.Empty), 2.25f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 160, 80, 40), String.Empty), 3f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 200, 80, 40), String.Empty), 3.75f, 0.75f);
                         wrapAnimation.AnimationScale(null, false, 0.75f, 1.0f, 0.75f, 0.02f, 5, 0);
                         wrapAnimation.AnimationScale(wrapEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 5, 0);
                         wrapAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 7, 0);
@@ -6681,30 +6688,30 @@ public class Battle
                         wrapAnimation.AnimationScale(wrapEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 9, 0);
                         wrapAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 11, 0);
                         wrapAnimation.AnimationScale(wrapEntity, false, 1.0f, 0.5f, 1.0f, 0.04f, 11, 0);
-                        wrapAnimation.AnimationFade(wrapEntity, true, 0.03, 0.0, 11, 0);
+                        wrapAnimation.AnimationFade(wrapEntity, true, 0.03f, 0.0f, 11, 0);
                         battleScreen.BattleQuery.Add(wrapAnimation);
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Wrap!", "wrap");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Wrap!", "wrap");
                 }
             }
-            if (battleScreen.FieldEffects.OwnWhirlpool > 0)
+            if (battleScreen.FieldEffects.Whirlpool.Self > 0)
             {
-                battleScreen.FieldEffects.OwnWhirlpool -= 1;
-                if (battleScreen.FieldEffects.OwnWhirlpool == 0)
+                battleScreen.FieldEffects.Whirlpool.Self -= 1;
+                if (battleScreen.FieldEffects.Whirlpool.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Whirlpool!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Whirlpool!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, true, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject whirlpoolAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, false, true);
+                        AnimationQueryObject whirlpoolAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, false, true);
                         whirlpoolAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Whirlpool", 0.0f, 0);
                         Entity whirlpoolEntity = whirlpoolAnimation.SpawnEntity(new Vector3(0, -0.3f, 0), TextureManager.GetTexture(@"Textures\Battle\Water\Whirlpool"), new Vector3(0.0f), 1.0f, 0.0f, 0.0f);
                         whirlpoolAnimation.AnimationRotate(whirlpoolEntity, false, (float)(MathHelper.Pi * 1.5), 0, 0, (float)(MathHelper.Pi * 1.5), 0, 0, 0, 0, false);
@@ -6713,51 +6720,51 @@ public class Battle
                         whirlpoolAnimation.AnimationScale(whirlpoolEntity, true, 0.0f, 0.0f, 0.0f, 0.025f, 5.0f, 0.0f);
                         battleScreen.BattleQuery.Add(whirlpoolAnimation);
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Whirlpool!", "whirlpool");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Whirlpool!", "whirlpool");
                 }
             }
-            if (battleScreen.FieldEffects.OwnSandTomb > 0)
+            if (battleScreen.FieldEffects.SandTomb.Self > 0)
             {
-                battleScreen.FieldEffects.OwnSandTomb -= 1;
-                if (battleScreen.FieldEffects.OwnSandTomb == 0)
+                battleScreen.FieldEffects.SandTomb.Self -= 1;
+                if (battleScreen.FieldEffects.SandTomb.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Sand Tomb!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Sand Tomb!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Sand Tomb!", "sandtomb");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Sand Tomb!", "sandtomb");
                 }
             }
-            if (battleScreen.FieldEffects.OwnBind > 0)
+            if (battleScreen.FieldEffects.Bind.Self > 0)
             {
-                battleScreen.FieldEffects.OwnBind -= 1;
-                if (battleScreen.FieldEffects.OwnBind == 0)
+                battleScreen.FieldEffects.Bind.Self -= 1;
+                if (battleScreen.FieldEffects.Bind.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Bind!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Bind!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, true, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject bindAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, false);
+                        AnimationQueryObject bindAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, false);
                         bindAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Bind", 5.0f, 0);
                         Entity bindEntity = bindAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 0, 80, 40), String.Empty), new Vector3(1.0f, 0.5f, 1.0f), 1, 0, 0.75f);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 40, 80, 40), String.Empty), 0.75, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 80, 80, 40), String.Empty), 1.5, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 120, 80, 40), String.Empty), 2.25, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 160, 80, 40), String.Empty), 3, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 200, 80, 40), String.Empty), 3.75, 0.75);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 40, 80, 40), String.Empty), 0.75f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 80, 80, 40), String.Empty), 1.5f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 120, 80, 40), String.Empty), 2.25f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 160, 80, 40), String.Empty), 3f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 200, 80, 40), String.Empty), 3.75f, 0.75f);
                         bindAnimation.AnimationScale(null, false, 0.75f, 1.0f, 0.75f, 0.02f, 5, 0);
                         bindAnimation.AnimationScale(bindEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 5, 0);
                         bindAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 7, 0);
@@ -6766,30 +6773,30 @@ public class Battle
                         bindAnimation.AnimationScale(bindEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 9, 0);
                         bindAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 11, 0);
                         bindAnimation.AnimationScale(bindEntity, false, 1.0f, 0.5f, 1.0f, 0.04f, 11, 0);
-                        bindAnimation.AnimationFade(bindEntity, true, 0.03, 0.0, 11, 0);
+                        bindAnimation.AnimationFade(bindEntity, true, 0.03f, 0.0f, 11, 0);
                         battleScreen.BattleQuery.Add(bindAnimation);
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Bind!", "bind");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Bind!", "bind");
                 }
             }
-            if (battleScreen.FieldEffects.OwnClamp > 0)
+            if (battleScreen.FieldEffects.Clamp.Self > 0)
             {
-                battleScreen.FieldEffects.OwnClamp -= 1;
-                if (battleScreen.FieldEffects.OwnClamp == 0)
+                battleScreen.FieldEffects.Clamp.Self -= 1;
+                if (battleScreen.FieldEffects.Clamp.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Clamp!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Clamp!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, true, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject clampAnimation = new AnimationQueryObject(battleScreen.OwnPokemonNPC, true);
+                        AnimationQueryObject clampAnimation = new AnimationQueryObject(battleScreen.SelfPokemonNPC, true);
                         float offsetLeft = 0.35f;
                         float offsetRight = -0.35f;
                         clampAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Clamp", 0, 0);
@@ -6803,169 +6810,169 @@ public class Battle
                         clampAnimation.AnimationFade(spawnEntity, true, 1.0f, 0.0f, 4.5f, 0);
                         battleScreen.BattleQuery.Add(clampAnimation);
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Clamp!", "clamp");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Clamp!", "clamp");
                 }
             }
-            if (battleScreen.FieldEffects.OwnFireSpin > 0)
+            if (battleScreen.FieldEffects.FireSpin.Self > 0)
             {
-                battleScreen.FieldEffects.OwnFireSpin -= 1;
-                if (battleScreen.FieldEffects.OwnFireSpin == 0)
+                battleScreen.FieldEffects.FireSpin.Self -= 1;
+                if (battleScreen.FieldEffects.FireSpin.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Fire Spin!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Fire Spin!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Fire Spin!", "firespin");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Fire Spin!", "firespin");
                 }
             }
-            if (battleScreen.FieldEffects.OwnMagmaStorm > 0)
+            if (battleScreen.FieldEffects.MagmaStorm.Self > 0)
             {
-                battleScreen.FieldEffects.OwnMagmaStorm -= 1;
-                if (battleScreen.FieldEffects.OwnMagmaStorm == 0)
+                battleScreen.FieldEffects.MagmaStorm.Self -= 1;
+                if (battleScreen.FieldEffects.MagmaStorm.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Magma Storm!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Magma Storm!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Magma Storm!", "magmastorm");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Magma Storm!", "magmastorm");
                 }
             }
-            if (battleScreen.FieldEffects.OwnInfestation > 0)
+            if (battleScreen.FieldEffects.Infestation.Self > 0)
             {
-                battleScreen.FieldEffects.OwnInfestation -= 1;
-                if (battleScreen.FieldEffects.OwnInfestation == 0)
+                battleScreen.FieldEffects.Infestation.Self -= 1;
+                if (battleScreen.FieldEffects.Infestation.Self == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " was freed from Infestation!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " was freed from Infestation!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OwnPokemon.MaxHP / 6); }
+                        if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.SelfPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " is hurt by Infestation!", "infestation");
+                    ReduceHP(multiHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " is hurt by Infestation!", "infestation");
                 }
             }
         }
-        if (battleScreen.OppPokemon.Ability.Name.ToLower() == "bad dreams" && battleScreen.OwnPokemon.HP > 0 && battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Sleep)
+        if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "bad dreams" && battleScreen.SelfPokemon.HP > 0 && battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Sleep)
         {
-            ReduceHP((int)(battleScreen.OwnPokemon.MaxHP / 8), true, false, battleScreen, "The bad dreams haunted " + battleScreen.OwnPokemon.GetDisplayName() + "!", "baddreams");
+            ReduceHP((int)(battleScreen.SelfPokemon.MaxHP / 8), true, false, battleScreen, "The bad dreams haunted " + battleScreen.SelfPokemon.GetDisplayName() + "!", "baddreams");
         }
-        if (battleScreen.FieldEffects.OwnOutrage > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Outrage.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnOutrage -= 1;
-            if (battleScreen.FieldEffects.OwnOutrage == 0)
+            battleScreen.FieldEffects.Outrage.Self -= 1;
+            if (battleScreen.FieldEffects.Outrage.Self == 0)
             {
-                InflictConfusion(true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + "'s Outrage stopped.", "outrage");
+                InflictConfusion(true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + "'s Outrage stopped.", "outrage");
             }
         }
-        if (battleScreen.FieldEffects.OwnPetalDance > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.PetalDance.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnPetalDance -= 1;
-            if (battleScreen.FieldEffects.OwnPetalDance == 0)
+            battleScreen.FieldEffects.PetalDance.Self -= 1;
+            if (battleScreen.FieldEffects.PetalDance.Self == 0)
             {
-                InflictConfusion(true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + "'s Petal Dance stopped.", "petaldance");
+                InflictConfusion(true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + "'s Petal Dance stopped.", "petaldance");
             }
         }
-        if (battleScreen.FieldEffects.OwnThrash > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Thrash.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnThrash -= 1;
-            if (battleScreen.FieldEffects.OwnThrash == 0)
+            battleScreen.FieldEffects.Thrash.Self -= 1;
+            if (battleScreen.FieldEffects.Thrash.Self == 0)
             {
-                InflictConfusion(true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + "'s Thrash stopped.", "thrash");
+                InflictConfusion(true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + "'s Thrash stopped.", "thrash");
             }
         }
-        if (battleScreen.FieldEffects.OwnUproar > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Uproar.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnUproar -= 1;
-            if (battleScreen.FieldEffects.OwnUproar == 0)
+            battleScreen.FieldEffects.Uproar.Self -= 1;
+            if (battleScreen.FieldEffects.Uproar.Self == 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s uproar stopped."));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s uproar stopped."));
             }
         }
-        foreach (Attack a in battleScreen.OwnPokemon.Attacks)
+        foreach (Attack a in battleScreen.SelfPokemon.Attacks)
         {
             if (a.Disabled > 0)
             {
                 a.Disabled -= 1;
                 if (a.Disabled == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled."));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled."));
                 }
             }
         }
-        if (battleScreen.FieldEffects.OwnEncore > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Encore.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnEncore -= 1;
-            if (battleScreen.FieldEffects.OwnEncore == 0)
+            battleScreen.FieldEffects.Encore.Self -= 1;
+            if (battleScreen.FieldEffects.Encore.Self == 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s encore stopped."));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s encore stopped."));
             }
         }
-        if (battleScreen.FieldEffects.OwnTaunt > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Taunt.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnTaunt -= 1;
-            if (battleScreen.FieldEffects.OwnTaunt == 0)
+            battleScreen.FieldEffects.Taunt.Self -= 1;
+            if (battleScreen.FieldEffects.Taunt.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Taunt effect wore off."));
             }
         }
-        if (battleScreen.FieldEffects.OwnMagnetRise > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.MagnetRise.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnMagnetRise -= 1;
-            if (battleScreen.FieldEffects.OwnMagnetRise == 0)
+            battleScreen.FieldEffects.MagnetRise.Self -= 1;
+            if (battleScreen.FieldEffects.MagnetRise.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Own Magnet Rise effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OwnHealBlock > 0)
+        if (battleScreen.FieldEffects.HealBlock.Self > 0)
         {
-            battleScreen.FieldEffects.OwnHealBlock -= 1;
-            if (battleScreen.FieldEffects.OwnHealBlock == 0)
+            battleScreen.FieldEffects.HealBlock.Self -= 1;
+            if (battleScreen.FieldEffects.HealBlock.Self == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The effects of Heal Block faded."));
             }
         }
-        if (battleScreen.FieldEffects.OwnEmbargo > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Embargo.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnEmbargo -= 1;
-            if (battleScreen.FieldEffects.OwnEmbargo == 0)
+            battleScreen.FieldEffects.Embargo.Self -= 1;
+            if (battleScreen.FieldEffects.Embargo.Self == 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " is not under the Embargo effect anymore."));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " is not under the Embargo effect anymore."));
             }
         }
-        if (battleScreen.FieldEffects.OwnYawn > 0 && battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Yawn.Self > 0 && battleScreen.SelfPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OwnYawn -= 1;
-            if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.None && battleScreen.FieldEffects.OwnYawn == 0)
+            battleScreen.FieldEffects.Yawn.Self -= 1;
+            if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.None && battleScreen.FieldEffects.Yawn.Self == 0)
             {
                 InflictSleep(true, false, battleScreen, -1, String.Empty, "yawn");
             }
         }
         String futureSightOwn = "Future Sight";
-        if (battleScreen.FieldEffects.OwnFutureSightID == 1)
+        if (battleScreen.FieldEffects.FutureSightID.Self == 1)
         {
             futureSightOwn = "Doom Desire";
         }
-        if (battleScreen.FieldEffects.OwnFutureSightTurns > 0)
+        if (battleScreen.FieldEffects.FutureSightTurns.Self > 0)
         {
-            battleScreen.FieldEffects.OwnFutureSightTurns -= 1;
-            if (battleScreen.FieldEffects.OwnFutureSightTurns == 0)
+            battleScreen.FieldEffects.FutureSightTurns.Self -= 1;
+            if (battleScreen.FieldEffects.FutureSightTurns.Self == 0)
             {
-                if (battleScreen.OppPokemon.HP > 0)
+                if (battleScreen.OpponentPokemon.HP > 0)
                 {
-                    ReduceHP(battleScreen.FieldEffects.OwnFutureSightDamage, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " took the " + futureSightOwn + " attack!", futureSightOwn.Replace(" ", String.Empty).ToLower());
+                    ReduceHP(battleScreen.FieldEffects.FutureSightDamage.Self, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " took the " + futureSightOwn + " attack!", futureSightOwn.Replace(" ", String.Empty).ToLower());
                 }
                 else
                 {
@@ -6973,65 +6980,65 @@ public class Battle
                 }
             }
         }
-        if (battleScreen.FieldEffects.OwnPerishSongCount > 0)
+        if (battleScreen.FieldEffects.PerishSongCount.Self > 0)
         {
-            battleScreen.FieldEffects.OwnPerishSongCount -= 1;
-            if (battleScreen.OwnPokemon.HP > 0)
+            battleScreen.FieldEffects.PerishSongCount.Self -= 1;
+            if (battleScreen.SelfPokemon.HP > 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s Perish Count is at " + battleScreen.FieldEffects.OwnPerishSongCount.ToString() + "!"));
-                if (battleScreen.FieldEffects.OwnPerishSongCount == 0)
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s Perish Count is at " + battleScreen.FieldEffects.PerishSongCount.Self.ToString() + "!"));
+                if (battleScreen.FieldEffects.PerishSongCount.Self == 0)
                 {
-                    ReduceHP(battleScreen.OwnPokemon.HP, true, false, battleScreen, String.Empty, "move:perishsong");
-                    FaintPokemon(true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " fainted due to Perish Song!");
+                    ReduceHP(battleScreen.SelfPokemon.HP, true, false, battleScreen, String.Empty, "move:perishsong");
+                    FaintPokemon(true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " fainted due to Perish Song!");
                 }
             }
         }
-        if (battleScreen.OwnPokemon.HP > 0 && battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.None)
+        if (battleScreen.SelfPokemon.HP > 0 && battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.None)
         {
-            if (battleScreen.OwnPokemon.Item != null)
+            if (battleScreen.SelfPokemon.Item != null)
             {
-                if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "flame orb" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "flame orb" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                 {
                     InflictBurn(true, true, battleScreen, "Flame Orb inflicts a burn!", "flameorb");
                 }
             }
         }
-        if (battleScreen.OwnPokemon.HP > 0 && battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.None)
+        if (battleScreen.SelfPokemon.HP > 0 && battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.None)
         {
-            if (battleScreen.OwnPokemon.Item != null)
+            if (battleScreen.SelfPokemon.Item != null)
             {
-                if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "toxic orb" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "toxic orb" && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                 {
                     InflictPoison(true, true, battleScreen, true, "Toxic Orb inflicts a poisoning!", "toxicorb");
                 }
             }
         }
-        if (battleScreen.FieldEffects.OwnCudChewIndex != -1 && battleScreen.FieldEffects.OwnCudChewBerry != null)
+        if (battleScreen.FieldEffects.CudChewIndex.Self != -1 && battleScreen.FieldEffects.CudChewBerry.Self != null)
         {
-            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + " regurgitated the " + battleScreen.FieldEffects.OwnCudChewBerry.Name + " Berry due to Cud Chew!"));
+            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + " regurgitated the " + battleScreen.FieldEffects.CudChewBerry.Self.Name + " Berry due to Cud Chew!"));
             String[] regularBerries = { "oran", "sitrus", "figy", "wiki", "mago", "aguav", "iapapa", "liechi", "ganlon", "salac", "petaya", "apicot", "lansat", "starf" };
-            if (regularBerries.Contains(battleScreen.FieldEffects.OwnCudChewBerry.Name.ToLower()))
+            if (regularBerries.Contains(battleScreen.FieldEffects.CudChewBerry.Self.Name.ToLower()))
             {
-                UseBerry(true, true, battleScreen.FieldEffects.OwnCudChewBerry, battleScreen, String.Empty, "ability:cudchew");
+                UseBerry(true, true, battleScreen.FieldEffects.CudChewBerry.Self, battleScreen, String.Empty, "ability:cudchew");
             }
             else
             {
-                UseEffectBerry(true, true, battleScreen.FieldEffects.OwnCudChewBerry, battleScreen, String.Empty, "ability:cudchew");
+                UseEffectBerry(true, true, battleScreen.FieldEffects.CudChewBerry.Self, battleScreen, String.Empty, "ability:cudchew");
             }
-            battleScreen.FieldEffects.OwnCudChewBerry = null;
-            battleScreen.FieldEffects.OwnCudChewIndex = -1;
+            battleScreen.FieldEffects.CudChewBerry.Self = null;
+            battleScreen.FieldEffects.CudChewIndex.Self = -1;
         }
-        if (battleScreen.OwnPokemon.HP > 0)
+        if (battleScreen.SelfPokemon.HP > 0)
         {
-            if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "moody")
+            if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "moody")
             {
                 List<int> cannotRaise = [];
                 List<int> cannotLower = [];
-                if (battleScreen.OwnPokemon.StatAttack == 6) { cannotRaise.Add(0); } else if (battleScreen.OwnPokemon.StatAttack == -6) { cannotLower.Add(0); }
-                if (battleScreen.OwnPokemon.StatDefense == 6) { cannotRaise.Add(1); } else if (battleScreen.OwnPokemon.StatDefense == -6) { cannotLower.Add(1); }
-                if (battleScreen.OwnPokemon.StatSpAttack == 6) { cannotRaise.Add(2); } else if (battleScreen.OwnPokemon.StatSpAttack == -6) { cannotLower.Add(2); }
-                if (battleScreen.OwnPokemon.StatSpDefense == 6) { cannotRaise.Add(3); } else if (battleScreen.OwnPokemon.StatSpDefense == -6) { cannotLower.Add(3); }
-                if (battleScreen.OwnPokemon.StatSpeed == 6) { cannotRaise.Add(4); } else if (battleScreen.OwnPokemon.StatSpeed == -6) { cannotLower.Add(4); }
+                if (battleScreen.SelfPokemon.StatAttack == 6) { cannotRaise.Add(0); } else if (battleScreen.SelfPokemon.StatAttack == -6) { cannotLower.Add(0); }
+                if (battleScreen.SelfPokemon.StatDefense == 6) { cannotRaise.Add(1); } else if (battleScreen.SelfPokemon.StatDefense == -6) { cannotLower.Add(1); }
+                if (battleScreen.SelfPokemon.StatSpAttack == 6) { cannotRaise.Add(2); } else if (battleScreen.SelfPokemon.StatSpAttack == -6) { cannotLower.Add(2); }
+                if (battleScreen.SelfPokemon.StatSpDefense == 6) { cannotRaise.Add(3); } else if (battleScreen.SelfPokemon.StatSpDefense == -6) { cannotLower.Add(3); }
+                if (battleScreen.SelfPokemon.StatSpeed == 6) { cannotRaise.Add(4); } else if (battleScreen.SelfPokemon.StatSpeed == -6) { cannotLower.Add(4); }
                 if (cannotRaise.Count < 5)
                 {
                     int statToRaise = Core.Random.Next(0, 5);
@@ -7074,87 +7081,87 @@ public class Battle
 
     private void EndTurnOpp(BattleScreen battleScreen)
     {
-        battleScreen.FieldEffects.OppTurnCounts += 1;
-        battleScreen.FieldEffects.OppPokemonTurns += 1;
+        battleScreen.FieldEffects.TurnCounts.Opponent += 1;
+        battleScreen.FieldEffects.PokemonTurns.Opponent += 1;
         if (_hasSwitchedInOpp)
         {
-            battleScreen.FieldEffects.OppPokemonTurns = 0;
+            battleScreen.FieldEffects.PokemonTurns.Opponent = 0;
             _hasSwitchedInOpp = false;
         }
-        battleScreen.FieldEffects.OppLockOn = 0;
-        battleScreen.FieldEffects.OppPursuit = false;
-        if (battleScreen.FieldEffects.OppSleepTurns > 0)
+        battleScreen.FieldEffects.LockOn.Opponent = 0;
+        battleScreen.FieldEffects.Pursuit.Opponent = false;
+        if (battleScreen.FieldEffects.SleepTurns.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppSleepTurns -= 1;
+            battleScreen.FieldEffects.SleepTurns.Opponent -= 1;
         }
-        if (battleScreen.FieldEffects.OppCharge > 0)
+        if (battleScreen.FieldEffects.Charge.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppCharge -= 1;
+            battleScreen.FieldEffects.Charge.Opponent -= 1;
         }
-        if (battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.OppPokemon.Item != null)
+            if (battleScreen.OpponentPokemon.Item != null)
             {
-                if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "mental herb")
+                if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "mental herb")
                 {
                     bool usedMentalHerb = false;
-                    if (battleScreen.OppPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) == true)
+                    if (battleScreen.OpponentPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation) == true)
                     {
-                        battleScreen.OppPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " got healed from the infatuation" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.OpponentPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " got healed from the infatuation" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    if (battleScreen.FieldEffects.OppTaunt > 0)
+                    if (battleScreen.FieldEffects.Taunt.Opponent > 0)
                     {
-                        battleScreen.FieldEffects.OppTaunt = 0;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " got healed from the Taunt" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.FieldEffects.Taunt.Opponent = 0;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " got healed from the Taunt" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    if (battleScreen.FieldEffects.OppEncore > 0)
+                    if (battleScreen.FieldEffects.Encore.Opponent > 0)
                     {
-                        battleScreen.FieldEffects.OppEncore = 0;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " got healed from the Encore" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.FieldEffects.Encore.Opponent = 0;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " got healed from the Encore" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    if (battleScreen.FieldEffects.OppTorment > 0)
+                    if (battleScreen.FieldEffects.Torment.Opponent > 0)
                     {
-                        battleScreen.FieldEffects.OppTorment = 0;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " got healed from the Torment" + Environment.NewLine + "due to Mental Herb!"));
+                        battleScreen.FieldEffects.Torment.Opponent = 0;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " got healed from the Torment" + Environment.NewLine + "due to Mental Herb!"));
                         usedMentalHerb = true;
                     }
-                    foreach (Attack a in battleScreen.OppPokemon.Attacks)
+                    foreach (Attack a in battleScreen.OpponentPokemon.Attacks)
                     {
                         if (a.Disabled > 0)
                         {
                             a.Disabled = 0;
-                            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled" + Environment.NewLine + "due to Mental Herb!"));
+                            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled" + Environment.NewLine + "due to Mental Herb!"));
                         }
                     }
                     if (usedMentalHerb == true)
                     {
-                        battleScreen.OppPokemon.Item = null;
+                        battleScreen.OpponentPokemon.Item = null;
                     }
                 }
-                if (battleScreen.OppPokemon.Item != null && battleScreen.OppPokemon.Item.OriginalName.ToLower() == "white herb")
+                if (battleScreen.OpponentPokemon.Item != null && battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "white herb")
                 {
                     bool hasNegativeStats = false;
-                    if (battleScreen.OppPokemon.StatAttack < 0) { battleScreen.OppPokemon.StatAttack = 0; hasNegativeStats = true; }
-                    if (battleScreen.OppPokemon.StatDefense < 0) { battleScreen.OppPokemon.StatDefense = 0; hasNegativeStats = true; }
-                    if (battleScreen.OppPokemon.StatSpAttack < 0) { battleScreen.OppPokemon.StatSpAttack = 0; hasNegativeStats = true; }
-                    if (battleScreen.OppPokemon.StatSpDefense < 0) { battleScreen.OppPokemon.StatSpDefense = 0; hasNegativeStats = true; }
-                    if (battleScreen.OppPokemon.StatSpeed < 0) { battleScreen.OppPokemon.StatSpeed = 0; hasNegativeStats = true; }
-                    if (battleScreen.OppPokemon.Accuracy < 0) { battleScreen.OppPokemon.Accuracy = 0; hasNegativeStats = true; }
-                    if (battleScreen.OppPokemon.Evasion < 0) { battleScreen.OppPokemon.Evasion = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.StatAttack < 0) { battleScreen.OpponentPokemon.StatAttack = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.StatDefense < 0) { battleScreen.OpponentPokemon.StatDefense = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.StatSpAttack < 0) { battleScreen.OpponentPokemon.StatSpAttack = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.StatSpDefense < 0) { battleScreen.OpponentPokemon.StatSpDefense = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.StatSpeed < 0) { battleScreen.OpponentPokemon.StatSpeed = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.Accuracy < 0) { battleScreen.OpponentPokemon.Accuracy = 0; hasNegativeStats = true; }
+                    if (battleScreen.OpponentPokemon.Evasion < 0) { battleScreen.OpponentPokemon.Evasion = 0; hasNegativeStats = true; }
                     if (hasNegativeStats == true)
                     {
-                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " negative stats got healed" + Environment.NewLine + "due to White Herb!"));
-                        battleScreen.OppPokemon.Item = null;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " negative stats got healed" + Environment.NewLine + "due to White Herb!"));
+                        battleScreen.OpponentPokemon.Item = null;
                     }
                 }
             }
         }
-        battleScreen.FieldEffects.OppPokemonDamagedLastTurn = battleScreen.FieldEffects.OppPokemonDamagedThisTurn;
-        battleScreen.FieldEffects.OppPokemonDamagedThisTurn = false;
+        battleScreen.FieldEffects.PokemonDamagedLastTurn.Opponent = battleScreen.FieldEffects.PokemonDamagedThisTurn.Opponent;
+        battleScreen.FieldEffects.PokemonDamagedThisTurn.Opponent = false;
     }
 
     private void EndRoundOpp(BattleScreen battleScreen)
@@ -7166,264 +7173,264 @@ public class Battle
         }
         TriggerItemEffect(battleScreen, true);
         TriggerItemEffect(battleScreen, false);
-        if (battleScreen.FieldEffects.OppReflect > 0)
+        if (battleScreen.FieldEffects.Reflect.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppReflect -= 1;
-            if (battleScreen.FieldEffects.OppReflect == 0)
+            battleScreen.FieldEffects.Reflect.Opponent -= 1;
+            if (battleScreen.FieldEffects.Reflect.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Reflect effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OppLightScreen > 0)
+        if (battleScreen.FieldEffects.LightScreen.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppLightScreen -= 1;
-            if (battleScreen.FieldEffects.OppLightScreen == 0)
+            battleScreen.FieldEffects.LightScreen.Opponent -= 1;
+            if (battleScreen.FieldEffects.LightScreen.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Light Screen effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OppMist > 0)
+        if (battleScreen.FieldEffects.Mist.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppMist -= 1;
-            if (battleScreen.FieldEffects.OppMist == 0)
+            battleScreen.FieldEffects.Mist.Opponent -= 1;
+            if (battleScreen.FieldEffects.Mist.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The mist on the opponent's side of the field faded!"));
             }
         }
-        if (battleScreen.FieldEffects.OppSafeguard > 0)
+        if (battleScreen.FieldEffects.Safeguard.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppSafeguard -= 1;
-            if (battleScreen.FieldEffects.OppSafeguard == 0)
+            battleScreen.FieldEffects.Safeguard.Opponent -= 1;
+            if (battleScreen.FieldEffects.Safeguard.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Safeguard effect wore off!"));
             }
         }
-        if (battleScreen.FieldEffects.OppGuardSpec > 0)
+        if (battleScreen.FieldEffects.GuardSpec.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppGuardSpec -= 1;
-            if (battleScreen.FieldEffects.OppGuardSpec == 0)
+            battleScreen.FieldEffects.GuardSpec.Opponent -= 1;
+            if (battleScreen.FieldEffects.GuardSpec.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Guard Spec. wore off."));
             }
         }
-        if (battleScreen.FieldEffects.OppTailWind > 0)
+        if (battleScreen.FieldEffects.TailWind.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppTailWind -= 1;
-            if (battleScreen.FieldEffects.OppTailWind == 0)
+            battleScreen.FieldEffects.TailWind.Opponent -= 1;
+            if (battleScreen.FieldEffects.TailWind.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Tail Wind effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OppLuckyChant > 0)
+        if (battleScreen.FieldEffects.LuckyChant.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppLuckyChant -= 1;
-            if (battleScreen.FieldEffects.OppLuckyChant == 0)
+            battleScreen.FieldEffects.LuckyChant.Opponent -= 1;
+            if (battleScreen.FieldEffects.LuckyChant.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Lucky Chant effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OppWish > 0)
+        if (battleScreen.FieldEffects.Wish.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppWish -= 1;
-            if (battleScreen.FieldEffects.OppWish == 0)
+            battleScreen.FieldEffects.Wish.Opponent -= 1;
+            if (battleScreen.FieldEffects.Wish.Opponent == 0)
             {
-                if (battleScreen.FieldEffects.OwnHealBlock == 0)
+                if (battleScreen.FieldEffects.HealBlock.Self == 0)
                 {
-                    if (battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP && battleScreen.OppPokemon.HP > 0)
+                    if (battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP && battleScreen.OpponentPokemon.HP > 0)
                     {
-                        GainHP((int)(battleScreen.OppPokemon.MaxHP / 2), false, false, battleScreen, "A wish came true!", "wish");
+                        GainHP((int)(battleScreen.OpponentPokemon.MaxHP / 2), false, false, battleScreen, "A wish came true!", "wish");
                     }
                 }
             }
         }
         if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sandstorm)
         {
-            if (battleScreen.OppPokemon.Type1.Type != Element.Types.Ground && battleScreen.OppPokemon.Type2.Type != Element.Types.Ground && battleScreen.OppPokemon.Type1.Type != Element.Types.Steel && battleScreen.OppPokemon.Type2.Type != Element.Types.Steel && battleScreen.OppPokemon.Type1.Type != Element.Types.Rock && battleScreen.OppPokemon.Type2.Type != Element.Types.Rock)
+            if (battleScreen.OpponentPokemon.Type1.Type != Element.Types.Ground && battleScreen.OpponentPokemon.Type2.Type != Element.Types.Ground && battleScreen.OpponentPokemon.Type1.Type != Element.Types.Steel && battleScreen.OpponentPokemon.Type2.Type != Element.Types.Steel && battleScreen.OpponentPokemon.Type1.Type != Element.Types.Rock && battleScreen.OpponentPokemon.Type2.Type != Element.Types.Rock)
             {
                 String[] sandAbilities = { "sand veil", "sand rush", "sand force", "overcoat", "magic guard", "cloud nine" };
-                if (sandAbilities.Contains(battleScreen.OppPokemon.Ability.Name.ToLower()) == false)
+                if (sandAbilities.Contains(battleScreen.OpponentPokemon.Ability.Name.ToLower()) == false)
                 {
-                    if (battleScreen.OppPokemon.HP > 0)
+                    if (battleScreen.OpponentPokemon.HP > 0)
                     {
-                        int sandHP = (int)(battleScreen.OppPokemon.MaxHP / 16);
-                        ReduceHP(sandHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " took damage from the sandstorm!", "sandstorm");
+                        int sandHP = (int)(battleScreen.OpponentPokemon.MaxHP / 16);
+                        ReduceHP(sandHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " took damage from the sandstorm!", "sandstorm");
                     }
                 }
             }
         }
         if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Hailstorm)
         {
-            if (battleScreen.OppPokemon.Type1.Type != Element.Types.Ice && battleScreen.OppPokemon.Type2.Type != Element.Types.Ice)
+            if (battleScreen.OpponentPokemon.Type1.Type != Element.Types.Ice && battleScreen.OpponentPokemon.Type2.Type != Element.Types.Ice)
             {
                 String[] hailAbilities = { "ice body", "snow cloak", "overcoat", "magic guard", "cloud nine" };
-                if (hailAbilities.Contains(battleScreen.OppPokemon.Ability.Name.ToLower()) == false)
+                if (hailAbilities.Contains(battleScreen.OpponentPokemon.Ability.Name.ToLower()) == false)
                 {
-                    if (battleScreen.OppPokemon.HP > 0)
+                    if (battleScreen.OpponentPokemon.HP > 0)
                     {
-                        int hailHP = (int)(battleScreen.OppPokemon.MaxHP / 16);
-                        ReduceHP(hailHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " took damage from the hailstorm!", "sandstorm");
+                        int hailHP = (int)(battleScreen.OpponentPokemon.MaxHP / 16);
+                        ReduceHP(hailHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " took damage from the hailstorm!", "sandstorm");
                     }
                 }
             }
         }
         if (battleScreen.FieldEffects.GrassyTerrain > 0 && battleScreen.FieldEffects.IsGrounded(false, battleScreen) == true)
         {
-            if (battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
-                GainHP((int)(battleScreen.OppPokemon.MaxHP / 16), false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " restored some HP due to the Grassy Terrain!", "grassyterrain");
+                GainHP((int)(battleScreen.OpponentPokemon.MaxHP / 16), false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " restored some HP due to the Grassy Terrain!", "grassyterrain");
             }
         }
-        if (battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP > 0)
         {
             int hpChange = 0;
             String hpMessage = String.Empty;
-            switch (battleScreen.OppPokemon.Ability.Name.ToLower())
+            switch (battleScreen.OpponentPokemon.Ability.Name.ToLower())
             {
                 case "dry skin":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.OppPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
-                    else if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.OppPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.OpponentPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
+                    else if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.OpponentPokemon.MaxHP / 8); hpMessage = "Dry Skin"; }
                     break;
                 case "solar power":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.OppPokemon.MaxHP / 8); hpMessage = "Solar Power"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Sunny) { hpChange = -(int)(battleScreen.OpponentPokemon.MaxHP / 8); hpMessage = "Solar Power"; }
                     break;
                 case "rain dish":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.OppPokemon.MaxHP / 16); hpMessage = "Rain Dish"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain) { hpChange = (int)(battleScreen.OpponentPokemon.MaxHP / 16); hpMessage = "Rain Dish"; }
                     break;
                 case "hydration":
                     if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Rain)
                     {
-                        if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Sleep)
+                        if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Sleep)
                         {
-                            CureStatusProblem(false, false, battleScreen, "Hydration cured " + battleScreen.OppPokemon.GetDisplayName() + "'s status problem.", "hydration");
+                            CureStatusProblem(false, false, battleScreen, "Hydration cured " + battleScreen.OpponentPokemon.GetDisplayName() + "'s status problem.", "hydration");
                         }
                     }
                     break;
                 case "ice body":
-                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Hailstorm) { hpChange = (int)(battleScreen.OppPokemon.MaxHP / 16); hpMessage = "Ice Body"; }
+                    if (battleScreen.FieldEffects.Weather == BattleWeather.WeatherTypes.Hailstorm) { hpChange = (int)(battleScreen.OpponentPokemon.MaxHP / 16); hpMessage = "Ice Body"; }
                     break;
             }
             if (hpChange > 0)
             {
-                if (battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP)
+                if (battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP)
                 {
-                    GainHP(hpChange, false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " restored some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
+                    GainHP(hpChange, false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " restored some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
                 }
             }
             else if (hpChange < 0)
             {
-                ReduceHP(hpChange, false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " lost some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
+                ReduceHP(hpChange, false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " lost some HP due to " + hpMessage + ".", hpMessage.Replace(" ", String.Empty).ToLower());
             }
         }
-        if (battleScreen.FieldEffects.OppIngrain > 0 && battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Ingrain.Opponent > 0 && battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP && battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OwnHealBlock == 0)
+            if (battleScreen.FieldEffects.HealBlock.Self == 0)
             {
-                int healHP = (int)(battleScreen.OppPokemon.MaxHP / 16);
-                if (battleScreen.OppPokemon.Item != null)
+                int healHP = (int)(battleScreen.OpponentPokemon.MaxHP / 16);
+                if (battleScreen.OpponentPokemon.Item != null)
                 {
-                    if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
                         healHP = (int)(healHP * 1.3f);
                     }
                 }
-                GainHP(healHP, false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " gained health from the Ingrain.", "ingrain");
+                GainHP(healHP, false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " gained health from the Ingrain.", "ingrain");
             }
         }
-        if (battleScreen.FieldEffects.OppAquaRing > 0 && battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.AquaRing.Opponent > 0 && battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP && battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OwnHealBlock == 0)
+            if (battleScreen.FieldEffects.HealBlock.Self == 0)
             {
-                int healHP = (int)(battleScreen.OppPokemon.MaxHP / 16);
-                if (battleScreen.OppPokemon.Item != null)
+                int healHP = (int)(battleScreen.OpponentPokemon.MaxHP / 16);
+                if (battleScreen.OpponentPokemon.Item != null)
                 {
-                    if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
                         healHP = (int)(healHP * 1.3f);
                     }
                 }
-                GainHP(healHP, false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " gained health from the Aqua Ring.", "aquaring");
+                GainHP(healHP, false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " gained health from the Aqua Ring.", "aquaring");
             }
         }
-        if (battleScreen.OppPokemon.Ability.Name.ToLower() == "shed skin" && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "shed skin" && battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Sleep)
+            if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.BadPoison || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Poison || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Paralyzed || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Freeze || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Burn || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Sleep)
             {
                 if (Core.Random.Next(0, 100) < 33)
                 {
-                    battleScreen.BattleQuery.Add(battleScreen.FocusOppPokemon());
-                    CureStatusProblem(false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + "'s Shed Skin cured its status problem.", "shedskin");
+                    battleScreen.BattleQuery.Add(battleScreen.FocusOpponentPokemon());
+                    CureStatusProblem(false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + "'s Shed Skin cured its status problem.", "shedskin");
                 }
             }
         }
-        if (battleScreen.OppPokemon.Ability.Name.ToLower() == "speed boost" && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "speed boost" && battleScreen.OpponentPokemon.HP > 0)
         {
-            RaiseStat(false, false, battleScreen, "Speed", 1, battleScreen.OppPokemon.GetDisplayName() + "'s Speed Boost raised its speed.", "speedboost");
+            RaiseStat(false, false, battleScreen, "Speed", 1, battleScreen.OpponentPokemon.GetDisplayName() + "'s Speed Boost raised its speed.", "speedboost");
         }
-        if (battleScreen.OppPokemon.Ability.Name.ToLower() == "truant")
+        if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "truant")
         {
-            if (battleScreen.FieldEffects.OppTruantRound == 1)
+            if (battleScreen.FieldEffects.TruantRound.Opponent == 1)
             {
-                battleScreen.FieldEffects.OppTruantRound = 0;
+                battleScreen.FieldEffects.TruantRound.Opponent = 0;
             }
             else
             {
-                battleScreen.FieldEffects.OppTruantRound = 1;
+                battleScreen.FieldEffects.TruantRound.Opponent = 1;
             }
         }
-        if (battleScreen.OppPokemon.Item != null)
+        if (battleScreen.OpponentPokemon.Item != null)
         {
-            if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "black sludge" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+            if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "black sludge" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
             {
-                if (battleScreen.OppPokemon.Type1.Type == Element.Types.Poison || battleScreen.OppPokemon.Type2.Type == Element.Types.Poison)
+                if (battleScreen.OpponentPokemon.Type1.Type == Element.Types.Poison || battleScreen.OpponentPokemon.Type2.Type == Element.Types.Poison)
                 {
-                    if (battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP && battleScreen.OppPokemon.HP > 0)
+                    if (battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP && battleScreen.OpponentPokemon.HP > 0)
                     {
-                        GainHP((int)(battleScreen.OppPokemon.MaxHP / 16), false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " gained HP from Black Sludge!", "blacksludge");
+                        GainHP((int)(battleScreen.OpponentPokemon.MaxHP / 16), false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " gained HP from Black Sludge!", "blacksludge");
                     }
                 }
                 else
                 {
-                    if (battleScreen.OppPokemon.HP > 0)
+                    if (battleScreen.OpponentPokemon.HP > 0)
                     {
-                        ReduceHP((int)(battleScreen.OppPokemon.MaxHP / 8), false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " lost HP due to Black Sludge!", "blacksludge");
+                        ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP / 8), false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " lost HP due to Black Sludge!", "blacksludge");
                     }
                 }
             }
         }
-        if (battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP && battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OwnHealBlock == 0)
+            if (battleScreen.FieldEffects.HealBlock.Self == 0)
             {
-                if (battleScreen.OppPokemon.Item != null)
+                if (battleScreen.OpponentPokemon.Item != null)
                 {
-                    if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "leftovers" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "leftovers" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
-                        GainHP((int)(battleScreen.OppPokemon.MaxHP / 16), false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " restored some HP from Leftovers!", "leftovers");
+                        GainHP((int)(battleScreen.OpponentPokemon.MaxHP / 16), false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " restored some HP from Leftovers!", "leftovers");
                     }
                 }
             }
         }
-        if (battleScreen.FieldEffects.OwnLeechSeed > 0)
+        if (battleScreen.FieldEffects.LeechSeed.Self > 0)
         {
-            if (battleScreen.OwnPokemon.HP > 0 && battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.SelfPokemon.HP > 0 && battleScreen.OpponentPokemon.HP > 0)
             {
-                int loseHP = (int)Math.Ceiling((double)battleScreen.OwnPokemon.MaxHP / 8);
-                int currHP = battleScreen.OwnPokemon.HP;
+                int loseHP = (int)Math.Ceiling((double)battleScreen.SelfPokemon.MaxHP / 8);
+                int currHP = battleScreen.SelfPokemon.HP;
                 if (loseHP > currHP) { loseHP = currHP; }
                 int addHP = loseHP;
-                if (battleScreen.OppPokemon.Item != null)
+                if (battleScreen.OpponentPokemon.Item != null)
                 {
-                    if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                    if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "big root" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                     {
                         addHP += (int)Math.Ceiling(addHP * (30.0 / 100));
                     }
                 }
-                ReduceHP(loseHP, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " lost HP due to Leech Seed!", "leechseed");
-                if (battleScreen.FieldEffects.OppHealBlock == 0)
+                ReduceHP(loseHP, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " lost HP due to Leech Seed!", "leechseed");
+                if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
                 {
-                    if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "liquid ooze" && battleScreen.FieldEffects.CanUseAbility(true, battleScreen) == true)
+                    if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "liquid ooze" && battleScreen.FieldEffects.CanUseAbility(true, battleScreen) == true)
                     {
-                        battleScreen.Battle.ReduceHP(addHP, false, false, battleScreen, "Liquid Ooze damaged " + battleScreen.OppPokemon.GetDisplayName() + "!", "liquidooze");
+                        battleScreen.Battle.ReduceHP(addHP, false, false, battleScreen, "Liquid Ooze damaged " + battleScreen.OpponentPokemon.GetDisplayName() + "!", "liquidooze");
                     }
                     else
                     {
@@ -7432,36 +7439,36 @@ public class Battle
                 }
             }
         }
-        if (battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.OppPokemon.Ability.Name.ToLower() == "poison heal")
+            if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "poison heal")
             {
-                if (battleScreen.FieldEffects.OwnHealBlock == 0)
+                if (battleScreen.FieldEffects.HealBlock.Self == 0)
                 {
-                    if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Poison)
+                    if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Poison)
                     {
-                        GainHP((int)(battleScreen.OppPokemon.MaxHP / 8), false, false, battleScreen, "Poison Heal healed " + battleScreen.OppPokemon.GetDisplayName() + ".", "poison");
+                        GainHP((int)(battleScreen.OpponentPokemon.MaxHP / 8), false, false, battleScreen, "Poison Heal healed " + battleScreen.OpponentPokemon.GetDisplayName() + ".", "poison");
                     }
-                    if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.BadPoison)
+                    if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.BadPoison)
                     {
-                        battleScreen.FieldEffects.OppPoisonCounter += 1;
-                        GainHP((int)(battleScreen.OppPokemon.MaxHP / 8), false, false, battleScreen, "Poison Heal healed " + battleScreen.OppPokemon.GetDisplayName() + ".", "poison");
+                        battleScreen.FieldEffects.PoisonCounter.Opponent += 1;
+                        GainHP((int)(battleScreen.OpponentPokemon.MaxHP / 8), false, false, battleScreen, "Poison Heal healed " + battleScreen.OpponentPokemon.GetDisplayName() + ".", "poison");
                     }
                 }
             }
             else
             {
-                if (battleScreen.OppPokemon.Ability.Name.ToLower() != "magic guard")
+                if (battleScreen.OpponentPokemon.Ability.Name.ToLower() != "magic guard")
                 {
-                    if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Poison)
+                    if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Poison)
                     {
                         ChangeCameraAngle(1, false, battleScreen);
                         if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                         {
-                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, false);
+                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, false);
                             poisonAnimation.AnimationPlaySound(@"Battle\Effects\Poisoned", 0, 0);
                             Entity bubbleEntity1 = poisonAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1f, 1f);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity1, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 2, 1);
                             battleScreen.BattleQuery.Add(poisonAnimation);
                         }
@@ -7469,25 +7476,25 @@ public class Battle
                         {
                             battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\Poisoned", false));
                         }
-                        ReduceHP((int)(battleScreen.OppPokemon.MaxHP / 8), false, false, battleScreen, "The poison hurt " + battleScreen.OppPokemon.GetDisplayName() + ".", "poison");
+                        ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP / 8), false, false, battleScreen, "The poison hurt " + battleScreen.OpponentPokemon.GetDisplayName() + ".", "poison");
                     }
-                    if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.BadPoison)
+                    if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.BadPoison)
                     {
-                        battleScreen.FieldEffects.OppPoisonCounter += 1;
-                        double multiplier = (battleScreen.FieldEffects.OppPoisonCounter / 16.0);
+                        battleScreen.FieldEffects.PoisonCounter.Opponent += 1;
+                        double multiplier = (battleScreen.FieldEffects.PoisonCounter.Opponent / 16.0);
                         ChangeCameraAngle(1, false, battleScreen);
                         if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                         {
-                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, false);
+                            AnimationQueryObject poisonAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, false);
                             poisonAnimation.AnimationPlaySound(@"Battle\Effects\Poisoned", 0, 0);
                             Entity bubbleEntity1 = poisonAnimation.SpawnEntity(new Vector3(-0.25f, -0.25f, -0.25f), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 0, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity1, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 1f, 1f);
                             Entity bubbleEntity2 = poisonAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 1, 1);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity1, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 2, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 2, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity2, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 2f, 1f);
                             Entity bubbleEntity3 = poisonAnimation.SpawnEntity(new Vector3(0.25f, -0.25f, 0.25f), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f), 1, 2, 1);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity2, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 3, 1);
-                            poisonAnimation.AnimationChangeTexture(bubbleEntity3, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 3, 1);
+                            poisonAnimation.AnimationChangeTexture(bubbleEntity3, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 32, 32, 32), String.Empty), 3f, 1f);
                             poisonAnimation.AnimationChangeTexture(bubbleEntity3, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Poisoned", new Rectangle(0, 64, 32, 32), String.Empty), 4, 1);
                             battleScreen.BattleQuery.Add(poisonAnimation);
                         }
@@ -7495,31 +7502,31 @@ public class Battle
                         {
                             battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\Poisoned", false));
                         }
-                        ReduceHP((int)(battleScreen.OppPokemon.MaxHP * multiplier), false, false, battleScreen, "The toxic hurt " + battleScreen.OppPokemon.GetDisplayName() + ".", "badpoison");
+                        ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP * multiplier), false, false, battleScreen, "The toxic hurt " + battleScreen.OpponentPokemon.GetDisplayName() + ".", "badpoison");
                     }
                 }
             }
         }
-        if (battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Burn)
+            if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Burn)
             {
-                if (battleScreen.OppPokemon.Ability.Name.ToLower() != "water veil" && battleScreen.OppPokemon.Ability.Name.ToLower() != "magic guard")
+                if (battleScreen.OpponentPokemon.Ability.Name.ToLower() != "water veil" && battleScreen.OpponentPokemon.Ability.Name.ToLower() != "magic guard")
                 {
-                    int reduceAmount = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OppPokemon.Ability.Name.ToLower() == "heatproof")
+                    int reduceAmount = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "heatproof")
                     {
-                        reduceAmount = (int)(battleScreen.OppPokemon.MaxHP / 16);
+                        reduceAmount = (int)(battleScreen.OpponentPokemon.MaxHP / 16);
                     }
                     ChangeCameraAngle(1, false, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject burnAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, false);
+                        AnimationQueryObject burnAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, false);
                         burnAnimation.AnimationPlaySound(@"Battle\Effects\Burned", 0, 0);
                         Entity flameEntity = burnAnimation.SpawnEntity(new Vector3(0, -0.25f, 0), TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 0, 32, 32), String.Empty), new Vector3(0.5f, 0.5f, 0.5f), 1.0f);
-                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 32, 32, 32), String.Empty), 0.75, 0);
-                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 64, 32, 32), String.Empty), 1.5, 0);
-                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 96, 32, 32), String.Empty), 2.25, 0);
+                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 32, 32, 32), String.Empty), 0.75f, 0);
+                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 64, 32, 32), String.Empty), 1.5f, 0);
+                        burnAnimation.AnimationChangeTexture(flameEntity, false, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 96, 32, 32), String.Empty), 2.25f, 0);
                         burnAnimation.AnimationChangeTexture(flameEntity, true, TextureManager.GetTexture(@"Textures\Battle\StatusEffect\Burned", new Rectangle(0, 128, 32, 32), String.Empty), 3, 0);
                         battleScreen.BattleQuery.Add(burnAnimation);
                     }
@@ -7527,86 +7534,86 @@ public class Battle
                     {
                         battleScreen.BattleQuery.Add(new PlaySoundQueryObject(@"Battle\Effects\Burned", false));
                     }
-                    ReduceHP(reduceAmount, false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by the burn.", "burn");
+                    ReduceHP(reduceAmount, false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by the burn.", "burn");
                 }
             }
         }
-        if (battleScreen.FieldEffects.OppNightmare > 0)
+        if (battleScreen.FieldEffects.Nightmare.Opponent > 0)
         {
-            if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Sleep && battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Sleep && battleScreen.OpponentPokemon.HP > 0)
             {
-                ReduceHP((int)(battleScreen.OppPokemon.MaxHP / 4), false, true, battleScreen, "The nightmare haunted " + battleScreen.OppPokemon.GetDisplayName() + "!", "nightmare");
+                ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP / 4), false, true, battleScreen, "The nightmare haunted " + battleScreen.OpponentPokemon.GetDisplayName() + "!", "nightmare");
             }
             else
             {
-                battleScreen.FieldEffects.OwnNightmare = 0;
+                battleScreen.FieldEffects.Nightmare.Self = 0;
             }
         }
-        if (battleScreen.FieldEffects.OppCurse > 0)
+        if (battleScreen.FieldEffects.Curse.Opponent > 0)
         {
-            if (battleScreen.OppPokemon.HP > 0)
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
-                ReduceHP((int)(battleScreen.OppPokemon.MaxHP / 4), false, true, battleScreen, "The curse haunted " + battleScreen.OppPokemon.GetDisplayName() + "!", "curse");
+                ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP / 4), false, true, battleScreen, "The curse haunted " + battleScreen.OpponentPokemon.GetDisplayName() + "!", "curse");
             }
         }
-        if (battleScreen.FieldEffects.OppWaterPledge > 0)
+        if (battleScreen.FieldEffects.WaterPledge.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppWaterPledge -= 1;
-            if (battleScreen.FieldEffects.OppWaterPledge == 0)
+            battleScreen.FieldEffects.WaterPledge.Opponent -= 1;
+            if (battleScreen.FieldEffects.WaterPledge.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The rainbow faded!"));
             }
         }
-        if (battleScreen.FieldEffects.OppGrassPledge > 0)
+        if (battleScreen.FieldEffects.GrassPledge.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppGrassPledge -= 1;
-            if (battleScreen.FieldEffects.OppGrassPledge == 0)
+            battleScreen.FieldEffects.GrassPledge.Opponent -= 1;
+            if (battleScreen.FieldEffects.GrassPledge.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The swamp faded!"));
             }
         }
-        if (battleScreen.FieldEffects.OppFirePledge > 0)
+        if (battleScreen.FieldEffects.FirePledge.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppFirePledge -= 1;
-            if (battleScreen.FieldEffects.OppFirePledge == 0)
+            battleScreen.FieldEffects.FirePledge.Opponent -= 1;
+            if (battleScreen.FieldEffects.FirePledge.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The fiery sea faded!"));
             }
             else
             {
-                if (battleScreen.OppPokemon.HP > 0)
+                if (battleScreen.OpponentPokemon.HP > 0)
                 {
-                    ReduceHP((int)(battleScreen.OppPokemon.MaxHP / 8), false, true, battleScreen, "The firey sea hurt " + battleScreen.OppPokemon.GetDisplayName() + "!", "firepledge");
+                    ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP / 8), false, true, battleScreen, "The firey sea hurt " + battleScreen.OpponentPokemon.GetDisplayName() + "!", "firepledge");
                 }
             }
         }
-        if (battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.FieldEffects.OppWrap > 0)
+            if (battleScreen.FieldEffects.Wrap.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppWrap -= 1;
-                if (battleScreen.FieldEffects.OppWrap == 0)
+                battleScreen.FieldEffects.Wrap.Opponent -= 1;
+                if (battleScreen.FieldEffects.Wrap.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Wrap!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Wrap!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, false, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject wrapAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, true);
+                        AnimationQueryObject wrapAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, true);
                         wrapAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Wrap", 5.0f, 0);
                         Entity wrapEntity = wrapAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 0, 80, 40), String.Empty), new Vector3(1.0f, 0.5f, 1.0f), 1, 0, 0.75f);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 40, 80, 40), String.Empty), 0.75, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 80, 80, 40), String.Empty), 1.5, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 120, 80, 40), String.Empty), 2.25, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 160, 80, 40), String.Empty), 3, 0.75);
-                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 200, 80, 40), String.Empty), 3.75, 0.75);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 40, 80, 40), String.Empty), 0.75f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 80, 80, 40), String.Empty), 1.5f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 120, 80, 40), String.Empty), 2.25f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 160, 80, 40), String.Empty), 3f, 0.75f);
+                        wrapAnimation.AnimationChangeTexture(wrapEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Wrap", new Rectangle(0, 200, 80, 40), String.Empty), 3.75f, 0.75f);
                         wrapAnimation.AnimationScale(null, false, 0.75f, 1.0f, 0.75f, 0.02f, 5, 0);
                         wrapAnimation.AnimationScale(wrapEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 5, 0);
                         wrapAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 7, 0);
@@ -7615,30 +7622,30 @@ public class Battle
                         wrapAnimation.AnimationScale(wrapEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 9, 0);
                         wrapAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 11, 0);
                         wrapAnimation.AnimationScale(wrapEntity, false, 1.0f, 0.5f, 1.0f, 0.04f, 11, 0);
-                        wrapAnimation.AnimationFade(wrapEntity, true, 0.03, 0.0, 11, 0);
+                        wrapAnimation.AnimationFade(wrapEntity, true, 0.03f, 0.0f, 11, 0);
                         battleScreen.BattleQuery.Add(wrapAnimation);
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Wrap!", "wrap");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Wrap!", "wrap");
                 }
             }
-            if (battleScreen.FieldEffects.OppWhirlpool > 0)
+            if (battleScreen.FieldEffects.Whirlpool.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppWhirlpool -= 1;
-                if (battleScreen.FieldEffects.OppWhirlpool == 0)
+                battleScreen.FieldEffects.Whirlpool.Opponent -= 1;
+                if (battleScreen.FieldEffects.Whirlpool.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Whirlpool!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Whirlpool!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, false, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject whirlpoolAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, true, true);
+                        AnimationQueryObject whirlpoolAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, true, true);
                         whirlpoolAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Whirlpool", 0.0f, 0);
                         Entity whirlpoolEntity = whirlpoolAnimation.SpawnEntity(new Vector3(0, -0.3f, 0), TextureManager.GetTexture(@"Textures\Battle\Water\Whirlpool"), new Vector3(0.0f), 1.0f, 0.0f, 0.0f);
                         whirlpoolAnimation.AnimationRotate(whirlpoolEntity, false, (float)(MathHelper.Pi * 1.5), 0, 0, (float)(MathHelper.Pi * 1.5), 0, 0, 0, 0, false);
@@ -7647,51 +7654,51 @@ public class Battle
                         whirlpoolAnimation.AnimationScale(whirlpoolEntity, true, 0.0f, 0.0f, 0.0f, 0.025f, 5.0f, 0.0f);
                         battleScreen.BattleQuery.Add(whirlpoolAnimation);
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Whirlpool!", "whirlpool");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Whirlpool!", "whirlpool");
                 }
             }
-            if (battleScreen.FieldEffects.OppSandTomb > 0)
+            if (battleScreen.FieldEffects.SandTomb.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppSandTomb -= 1;
-                if (battleScreen.FieldEffects.OppSandTomb == 0)
+                battleScreen.FieldEffects.SandTomb.Opponent -= 1;
+                if (battleScreen.FieldEffects.SandTomb.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Sand Tomb!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Sand Tomb!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Sand Tomb!", "sandtomb");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Sand Tomb!", "sandtomb");
                 }
             }
-            if (battleScreen.FieldEffects.OppBind > 0)
+            if (battleScreen.FieldEffects.Bind.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppBind -= 1;
-                if (battleScreen.FieldEffects.OppBind == 0)
+                battleScreen.FieldEffects.Bind.Opponent -= 1;
+                if (battleScreen.FieldEffects.Bind.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Bind!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Bind!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, false, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject bindAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, true);
+                        AnimationQueryObject bindAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, true);
                         bindAnimation.AnimationPlaySound(@"Battle\Attacks\Normal\Bind", 5.0f, 0);
                         Entity bindEntity = bindAnimation.SpawnEntity(new Vector3(0, -0.2f, 0), TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 0, 80, 40), String.Empty), new Vector3(1.0f, 0.5f, 1.0f), 1, 0, 0.75f);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 40, 80, 40), String.Empty), 0.75, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 80, 80, 40), String.Empty), 1.5, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 120, 80, 40), String.Empty), 2.25, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 160, 80, 40), String.Empty), 3, 0.75);
-                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 200, 80, 40), String.Empty), 3.75, 0.75);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 40, 80, 40), String.Empty), 0.75f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 80, 80, 40), String.Empty), 1.5f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 120, 80, 40), String.Empty), 2.25f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 160, 80, 40), String.Empty), 3f, 0.75f);
+                        bindAnimation.AnimationChangeTexture(bindEntity, false, TextureManager.GetTexture(@"Textures\Battle\Normal\Bind", new Rectangle(0, 200, 80, 40), String.Empty), 3.75f, 0.75f);
                         bindAnimation.AnimationScale(null, false, 0.75f, 1.0f, 0.75f, 0.02f, 5, 0);
                         bindAnimation.AnimationScale(bindEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 5, 0);
                         bindAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 7, 0);
@@ -7700,30 +7707,30 @@ public class Battle
                         bindAnimation.AnimationScale(bindEntity, false, 0.75f, 0.5f, 0.75f, 0.02f, 9, 0);
                         bindAnimation.AnimationScale(null, false, 1.0f, 1.0f, 1.0f, 0.04f, 11, 0);
                         bindAnimation.AnimationScale(bindEntity, false, 1.0f, 0.5f, 1.0f, 0.04f, 11, 0);
-                        bindAnimation.AnimationFade(bindEntity, true, 0.03, 0.0, 11, 0);
+                        bindAnimation.AnimationFade(bindEntity, true, 0.03f, 0.0f, 11, 0);
                         battleScreen.BattleQuery.Add(bindAnimation);
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Bind!", "bind");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Bind!", "bind");
                 }
             }
-            if (battleScreen.FieldEffects.OppClamp > 0)
+            if (battleScreen.FieldEffects.Clamp.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppClamp -= 1;
-                if (battleScreen.FieldEffects.OppClamp == 0)
+                battleScreen.FieldEffects.Clamp.Opponent -= 1;
+                if (battleScreen.FieldEffects.Clamp.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Clamp!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Clamp!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
                     ChangeCameraAngle(1, false, battleScreen);
                     if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                     {
-                        AnimationQueryObject clampAnimation = new AnimationQueryObject(battleScreen.OppPokemonNPC, false);
+                        AnimationQueryObject clampAnimation = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, false);
                         float offsetLeft = -0.35f;
                         float offsetRight = 0.35f;
                         clampAnimation.AnimationPlaySound(@"Battle\Attacks\Water\Clamp", 0, 0);
@@ -7737,169 +7744,169 @@ public class Battle
                         clampAnimation.AnimationFade(spawnEntity, true, 1.0f, 0.0f, 4.5f, 0);
                         battleScreen.BattleQuery.Add(clampAnimation);
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Clamp!", "clamp");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Clamp!", "clamp");
                 }
             }
-            if (battleScreen.FieldEffects.OppFireSpin > 0)
+            if (battleScreen.FieldEffects.FireSpin.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppFireSpin -= 1;
-                if (battleScreen.FieldEffects.OppFireSpin == 0)
+                battleScreen.FieldEffects.FireSpin.Opponent -= 1;
+                if (battleScreen.FieldEffects.FireSpin.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Fire Spin!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Fire Spin!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Fire Spin!", "firespin");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Fire Spin!", "firespin");
                 }
             }
-            if (battleScreen.FieldEffects.OppMagmaStorm > 0)
+            if (battleScreen.FieldEffects.MagmaStorm.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppMagmaStorm -= 1;
-                if (battleScreen.FieldEffects.OppMagmaStorm == 0)
+                battleScreen.FieldEffects.MagmaStorm.Opponent -= 1;
+                if (battleScreen.FieldEffects.MagmaStorm.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Magma Storm!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Magma Storm!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Magma Storm!", "magmastorm");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Magma Storm!", "magmastorm");
                 }
             }
-            if (battleScreen.FieldEffects.OppInfestation > 0)
+            if (battleScreen.FieldEffects.Infestation.Opponent > 0)
             {
-                battleScreen.FieldEffects.OppInfestation -= 1;
-                if (battleScreen.FieldEffects.OppInfestation == 0)
+                battleScreen.FieldEffects.Infestation.Opponent -= 1;
+                if (battleScreen.FieldEffects.Infestation.Opponent == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " was freed from Infestation!"));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " was freed from Infestation!"));
                 }
                 else
                 {
-                    int multiHP = (int)(battleScreen.OppPokemon.MaxHP / 8);
-                    if (battleScreen.OwnPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
+                    int multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 8);
+                    if (battleScreen.SelfPokemon.Item != null && battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                     {
-                        if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OppPokemon.MaxHP / 6); }
+                        if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "binding band") { multiHP = (int)(battleScreen.OpponentPokemon.MaxHP / 6); }
                     }
-                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " is hurt by Infestation!", "infestation");
+                    ReduceHP(multiHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " is hurt by Infestation!", "infestation");
                 }
             }
         }
-        if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "bad dreams" && battleScreen.OppPokemon.HP > 0 && battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Sleep)
+        if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "bad dreams" && battleScreen.OpponentPokemon.HP > 0 && battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Sleep)
         {
-            ReduceHP((int)(battleScreen.OppPokemon.MaxHP / 8), false, true, battleScreen, "The bad dreams haunted " + battleScreen.OppPokemon.GetDisplayName() + "!", "baddreams");
+            ReduceHP((int)(battleScreen.OpponentPokemon.MaxHP / 8), false, true, battleScreen, "The bad dreams haunted " + battleScreen.OpponentPokemon.GetDisplayName() + "!", "baddreams");
         }
-        if (battleScreen.FieldEffects.OppOutrage > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Outrage.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppOutrage -= 1;
-            if (battleScreen.FieldEffects.OppOutrage == 0)
+            battleScreen.FieldEffects.Outrage.Opponent -= 1;
+            if (battleScreen.FieldEffects.Outrage.Opponent == 0)
             {
-                InflictConfusion(false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + "'s Outrage stopped.", "outrage");
+                InflictConfusion(false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + "'s Outrage stopped.", "outrage");
             }
         }
-        if (battleScreen.FieldEffects.OppPetalDance > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.PetalDance.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppPetalDance -= 1;
-            if (battleScreen.FieldEffects.OppPetalDance == 0)
+            battleScreen.FieldEffects.PetalDance.Opponent -= 1;
+            if (battleScreen.FieldEffects.PetalDance.Opponent == 0)
             {
-                InflictConfusion(false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + "'s Petal Dance stopped.", "petaldance");
+                InflictConfusion(false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + "'s Petal Dance stopped.", "petaldance");
             }
         }
-        if (battleScreen.FieldEffects.OppThrash > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Thrash.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppThrash -= 1;
-            if (battleScreen.FieldEffects.OppThrash == 0)
+            battleScreen.FieldEffects.Thrash.Opponent -= 1;
+            if (battleScreen.FieldEffects.Thrash.Opponent == 0)
             {
-                InflictConfusion(false, false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + "'s Thrash stopped.", "thrash");
+                InflictConfusion(false, false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + "'s Thrash stopped.", "thrash");
             }
         }
-        if (battleScreen.FieldEffects.OppUproar > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Uproar.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppUproar -= 1;
-            if (battleScreen.FieldEffects.OppUproar == 0)
+            battleScreen.FieldEffects.Uproar.Opponent -= 1;
+            if (battleScreen.FieldEffects.Uproar.Opponent == 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s uproar stopped."));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s uproar stopped."));
             }
         }
-        foreach (Attack a in battleScreen.OppPokemon.Attacks)
+        foreach (Attack a in battleScreen.OpponentPokemon.Attacks)
         {
             if (a.Disabled > 0)
             {
                 a.Disabled -= 1;
                 if (a.Disabled == 0)
                 {
-                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled."));
+                    battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s" + " " + a.Name + " " + "is no longer disabled."));
                 }
             }
         }
-        if (battleScreen.FieldEffects.OppEncore > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Encore.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppEncore -= 1;
-            if (battleScreen.FieldEffects.OppEncore == 0)
+            battleScreen.FieldEffects.Encore.Opponent -= 1;
+            if (battleScreen.FieldEffects.Encore.Opponent == 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s encore stopped."));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s encore stopped."));
             }
         }
-        if (battleScreen.FieldEffects.OppTaunt > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Taunt.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppTaunt -= 1;
-            if (battleScreen.FieldEffects.OppTaunt == 0)
+            battleScreen.FieldEffects.Taunt.Opponent -= 1;
+            if (battleScreen.FieldEffects.Taunt.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Taunt effect wore off."));
             }
         }
-        if (battleScreen.FieldEffects.OppMagnetRise > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.MagnetRise.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppMagnetRise -= 1;
-            if (battleScreen.FieldEffects.OppMagnetRise == 0)
+            battleScreen.FieldEffects.MagnetRise.Opponent -= 1;
+            if (battleScreen.FieldEffects.MagnetRise.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("Opponent's Magnet Rise effect faded."));
             }
         }
-        if (battleScreen.FieldEffects.OppHealBlock > 0)
+        if (battleScreen.FieldEffects.HealBlock.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppHealBlock -= 1;
-            if (battleScreen.FieldEffects.OppHealBlock == 0)
+            battleScreen.FieldEffects.HealBlock.Opponent -= 1;
+            if (battleScreen.FieldEffects.HealBlock.Opponent == 0)
             {
                 battleScreen.BattleQuery.Add(new TextQueryObject("The effects of the opponent's Heal Block faded."));
             }
         }
-        if (battleScreen.FieldEffects.OppEmbargo > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Embargo.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppEmbargo -= 1;
-            if (battleScreen.FieldEffects.OppEmbargo == 0)
+            battleScreen.FieldEffects.Embargo.Opponent -= 1;
+            if (battleScreen.FieldEffects.Embargo.Opponent == 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " is not under the Embargo effect anymore."));
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " is not under the Embargo effect anymore."));
             }
         }
-        if (battleScreen.FieldEffects.OppYawn > 0 && battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.FieldEffects.Yawn.Opponent > 0 && battleScreen.OpponentPokemon.HP > 0)
         {
-            battleScreen.FieldEffects.OppYawn -= 1;
-            if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.None && battleScreen.FieldEffects.OppYawn == 0)
+            battleScreen.FieldEffects.Yawn.Opponent -= 1;
+            if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.None && battleScreen.FieldEffects.Yawn.Opponent == 0)
             {
                 InflictSleep(false, true, battleScreen, -1, String.Empty, "yawn");
             }
         }
         String futureSightOpp = "Future Sight";
-        if (battleScreen.FieldEffects.OppFutureSightID == 1)
+        if (battleScreen.FieldEffects.FutureSightID.Opponent == 1)
         {
             futureSightOpp = "Doom Desire";
         }
-        if (battleScreen.FieldEffects.OppFutureSightTurns > 0)
+        if (battleScreen.FieldEffects.FutureSightTurns.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppFutureSightTurns -= 1;
-            if (battleScreen.FieldEffects.OppFutureSightTurns == 0)
+            battleScreen.FieldEffects.FutureSightTurns.Opponent -= 1;
+            if (battleScreen.FieldEffects.FutureSightTurns.Opponent == 0)
             {
-                if (battleScreen.OwnPokemon.HP > 0)
+                if (battleScreen.SelfPokemon.HP > 0)
                 {
-                    ReduceHP(battleScreen.FieldEffects.OppFutureSightDamage, true, false, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + " took the " + futureSightOpp + " attack!", futureSightOpp.Replace(" ", String.Empty).ToLower());
+                    ReduceHP(battleScreen.FieldEffects.FutureSightDamage.Opponent, true, false, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + " took the " + futureSightOpp + " attack!", futureSightOpp.Replace(" ", String.Empty).ToLower());
                 }
                 else
                 {
@@ -7907,65 +7914,65 @@ public class Battle
                 }
             }
         }
-        if (battleScreen.FieldEffects.OppPerishSongCount > 0)
+        if (battleScreen.FieldEffects.PerishSongCount.Opponent > 0)
         {
-            battleScreen.FieldEffects.OppPerishSongCount -= 1;
-            if (battleScreen.OppPokemon.HP > 0)
+            battleScreen.FieldEffects.PerishSongCount.Opponent -= 1;
+            if (battleScreen.OpponentPokemon.HP > 0)
             {
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s Perish Count is at " + battleScreen.FieldEffects.OppPerishSongCount.ToString() + "!"));
-                if (battleScreen.FieldEffects.OppPerishSongCount == 0)
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s Perish Count is at " + battleScreen.FieldEffects.PerishSongCount.Opponent.ToString() + "!"));
+                if (battleScreen.FieldEffects.PerishSongCount.Opponent == 0)
                 {
-                    ReduceHP(battleScreen.OppPokemon.HP, false, true, battleScreen, String.Empty, "move:perishsong");
-                    FaintPokemon(false, battleScreen, battleScreen.OppPokemon.GetDisplayName() + " fainted due to Perish Song!");
+                    ReduceHP(battleScreen.OpponentPokemon.HP, false, true, battleScreen, String.Empty, "move:perishsong");
+                    FaintPokemon(false, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + " fainted due to Perish Song!");
                 }
             }
         }
-        if (battleScreen.OppPokemon.HP > 0 && battleScreen.OppPokemon.Status != Pokemon.StatusProblems.Burn)
+        if (battleScreen.OpponentPokemon.HP > 0 && battleScreen.OpponentPokemon.Status != Pokemon.StatusProblems.Burn)
         {
-            if (battleScreen.OppPokemon.Item != null)
+            if (battleScreen.OpponentPokemon.Item != null)
             {
-                if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "flame orb" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "flame orb" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                 {
                     InflictBurn(false, false, battleScreen, "Flame Orb inflicts a burn!", "flameorb");
                 }
             }
         }
-        if (battleScreen.OppPokemon.HP > 0 && battleScreen.OppPokemon.Status != Pokemon.StatusProblems.Poison && battleScreen.OppPokemon.Status != Pokemon.StatusProblems.BadPoison)
+        if (battleScreen.OpponentPokemon.HP > 0 && battleScreen.OpponentPokemon.Status != Pokemon.StatusProblems.Poison && battleScreen.OpponentPokemon.Status != Pokemon.StatusProblems.BadPoison)
         {
-            if (battleScreen.OppPokemon.Item != null)
+            if (battleScreen.OpponentPokemon.Item != null)
             {
-                if (battleScreen.OppPokemon.Item.OriginalName.ToLower() == "toxic orb" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
+                if (battleScreen.OpponentPokemon.Item.OriginalName.ToLower() == "toxic orb" && battleScreen.FieldEffects.CanUseItem(false) == true && battleScreen.FieldEffects.CanUseOwnItem(false, battleScreen) == true)
                 {
                     InflictPoison(false, false, battleScreen, true, "Toxic Orb inflicts a poisoning!", "toxicorb");
                 }
             }
         }
-        if (battleScreen.FieldEffects.OppCudChewIndex != -1 && battleScreen.FieldEffects.OppCudChewBerry != null)
+        if (battleScreen.FieldEffects.CudChewIndex.Opponent != -1 && battleScreen.FieldEffects.CudChewBerry.Opponent != null)
         {
-            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + " regurgitated the " + battleScreen.FieldEffects.OppCudChewBerry.Name + " Berry due to Cud Chew!"));
+            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + " regurgitated the " + battleScreen.FieldEffects.CudChewBerry.Opponent.Name + " Berry due to Cud Chew!"));
             String[] regularBerries = { "oran", "sitrus", "figy", "wiki", "mago", "aguav", "iapapa", "liechi", "ganlon", "salac", "petaya", "apicot", "lansat", "starf" };
-            if (regularBerries.Contains(battleScreen.FieldEffects.OppCudChewBerry.Name.ToLower()))
+            if (regularBerries.Contains(battleScreen.FieldEffects.CudChewBerry.Opponent.Name.ToLower()))
             {
-                UseBerry(false, false, battleScreen.FieldEffects.OppCudChewBerry, battleScreen, String.Empty, "ability:cudchew");
+                UseBerry(false, false, battleScreen.FieldEffects.CudChewBerry.Opponent, battleScreen, String.Empty, "ability:cudchew");
             }
             else
             {
-                UseEffectBerry(false, false, battleScreen.FieldEffects.OwnCudChewBerry, battleScreen, String.Empty, "ability:cudchew");
+                UseEffectBerry(false, false, battleScreen.FieldEffects.CudChewBerry.Self, battleScreen, String.Empty, "ability:cudchew");
             }
-            battleScreen.FieldEffects.OppCudChewBerry = null;
-            battleScreen.FieldEffects.OppCudChewIndex = -1;
+            battleScreen.FieldEffects.CudChewBerry.Opponent = null;
+            battleScreen.FieldEffects.CudChewIndex.Opponent = -1;
         }
-        if (battleScreen.OppPokemon.HP > 0)
+        if (battleScreen.OpponentPokemon.HP > 0)
         {
-            if (battleScreen.OppPokemon.Ability.Name.ToLower() == "moody")
+            if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "moody")
             {
                 List<int> cannotRaise = [];
                 List<int> cannotLower = [];
-                if (battleScreen.OppPokemon.StatAttack == 6) { cannotRaise.Add(0); } else if (battleScreen.OppPokemon.StatAttack == -6) { cannotLower.Add(0); }
-                if (battleScreen.OppPokemon.StatDefense == 6) { cannotRaise.Add(1); } else if (battleScreen.OppPokemon.StatDefense == -6) { cannotLower.Add(1); }
-                if (battleScreen.OppPokemon.StatSpAttack == 6) { cannotRaise.Add(2); } else if (battleScreen.OppPokemon.StatSpAttack == -6) { cannotLower.Add(2); }
-                if (battleScreen.OppPokemon.StatSpDefense == 6) { cannotRaise.Add(3); } else if (battleScreen.OppPokemon.StatSpDefense == -6) { cannotLower.Add(3); }
-                if (battleScreen.OppPokemon.StatSpeed == 6) { cannotRaise.Add(4); } else if (battleScreen.OppPokemon.StatSpeed == -6) { cannotLower.Add(4); }
+                if (battleScreen.OpponentPokemon.StatAttack == 6) { cannotRaise.Add(0); } else if (battleScreen.OpponentPokemon.StatAttack == -6) { cannotLower.Add(0); }
+                if (battleScreen.OpponentPokemon.StatDefense == 6) { cannotRaise.Add(1); } else if (battleScreen.OpponentPokemon.StatDefense == -6) { cannotLower.Add(1); }
+                if (battleScreen.OpponentPokemon.StatSpAttack == 6) { cannotRaise.Add(2); } else if (battleScreen.OpponentPokemon.StatSpAttack == -6) { cannotLower.Add(2); }
+                if (battleScreen.OpponentPokemon.StatSpDefense == 6) { cannotRaise.Add(3); } else if (battleScreen.OpponentPokemon.StatSpDefense == -6) { cannotLower.Add(3); }
+                if (battleScreen.OpponentPokemon.StatSpeed == 6) { cannotRaise.Add(4); } else if (battleScreen.OpponentPokemon.StatSpeed == -6) { cannotLower.Add(4); }
                 if (cannotRaise.Count < 5)
                 {
                     int statToRaise = Core.Random.Next(0, 5);
@@ -8008,132 +8015,132 @@ public class Battle
 
     public void SwitchOutOwn(BattleScreen battleScreen, int switchInIndex, int insertIndex, String message = "", bool hasSwitched = false)
     {
-        if (battleScreen.FieldEffects.OwnConfusionTurns > 0)
+        if (battleScreen.FieldEffects.ConfusionTurns.Self > 0)
         {
-            battleScreen.FieldEffects.TempOwnConfusionTurns = battleScreen.FieldEffects.OwnConfusionTurns;
+            battleScreen.FieldEffects.TempConfusionTurns.Self = battleScreen.FieldEffects.ConfusionTurns.Self;
         }
-        if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "natural cure")
+        if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "natural cure")
         {
             ChangeCameraAngle(1, true, battleScreen);
-            if (battleScreen.OwnPokemon.Status != Pokemon.StatusProblems.Fainted && battleScreen.OwnPokemon.Status != Pokemon.StatusProblems.None)
+            if (battleScreen.SelfPokemon.Status != Pokemon.StatusProblems.Fainted && battleScreen.SelfPokemon.Status != Pokemon.StatusProblems.None)
             {
-                battleScreen.OwnPokemon.Status = Pokemon.StatusProblems.None;
-                battleScreen.AddToQuery(insertIndex, new TextQueryObject(battleScreen.OwnPokemon.GetDisplayName() + "'s status problem got healed by Natural Cure"));
+                battleScreen.SelfPokemon.Status = Pokemon.StatusProblems.None;
+                battleScreen.AddToQuery(insertIndex, new TextQueryObject(battleScreen.SelfPokemon.GetDisplayName() + "'s status problem got healed by Natural Cure"));
             }
         }
-        if (battleScreen.OwnPokemon.Ability.Name.ToLower() == "regenerator")
+        if (battleScreen.SelfPokemon.Ability.Name.ToLower() == "regenerator")
         {
             ChangeCameraAngle(1, true, battleScreen);
-            if ((battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OwnPokemon.HP == 0) == false)
+            if ((battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.SelfPokemon.HP == 0) == false)
             {
-                int restoreHP = (int)(battleScreen.OwnPokemon.MaxHP / 3);
-                if (restoreHP > 0 && battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP && battleScreen.OwnPokemon.HP > 0)
+                int restoreHP = (int)(battleScreen.SelfPokemon.MaxHP / 3);
+                if (restoreHP > 0 && battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP && battleScreen.SelfPokemon.HP > 0)
                 {
-                    battleScreen.Battle.GainHP(restoreHP, true, true, battleScreen, battleScreen.OwnPokemon.GetDisplayName() + "'s HP was restored!", "ability:regenerator");
+                    battleScreen.Battle.GainHP(restoreHP, true, true, battleScreen, battleScreen.SelfPokemon.GetDisplayName() + "'s HP was restored!", "ability:regenerator");
                 }
             }
         }
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == true)
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == true)
         {
             ChangeCameraAngle(1, true, battleScreen);
-            battleScreen.FieldEffects.OwnBatonPassStats = [];
-            battleScreen.FieldEffects.OwnBatonPassStats.AddRange(new int[] { battleScreen.OwnPokemon.StatAttack, battleScreen.OwnPokemon.StatDefense, battleScreen.OwnPokemon.StatSpAttack, battleScreen.OwnPokemon.StatSpDefense, battleScreen.OwnPokemon.StatSpeed, battleScreen.OwnPokemon.Evasion, battleScreen.OwnPokemon.Accuracy });
-            battleScreen.FieldEffects.OwnBatonPassConfusion = battleScreen.OwnPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) == true;
+            battleScreen.FieldEffects.BatonPassStats.Self = [];
+            battleScreen.FieldEffects.BatonPassStats.Self.AddRange(new int[] { battleScreen.SelfPokemon.StatAttack, battleScreen.SelfPokemon.StatDefense, battleScreen.SelfPokemon.StatSpAttack, battleScreen.SelfPokemon.StatSpDefense, battleScreen.SelfPokemon.StatSpeed, battleScreen.SelfPokemon.Evasion, battleScreen.SelfPokemon.Accuracy });
+            battleScreen.FieldEffects.BatonPassConfusion.Self = battleScreen.SelfPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) == true;
         }
-        battleScreen.OwnPokemon.ResetTemp();
-        battleScreen.OwnPokemon.ClearAllVolatiles();
-        battleScreen.FieldEffects.OwnSleepTurns = 0;
-        battleScreen.FieldEffects.OwnTruantRound = 0;
-        battleScreen.FieldEffects.OwnTaunt = 0;
-        battleScreen.FieldEffects.OwnSmacked = 0;
-        battleScreen.FieldEffects.OwnRageCounter = 0;
-        battleScreen.FieldEffects.OwnUproar = 0;
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnFocusEnergy = 0; }
-        battleScreen.FieldEffects.OwnEndure = 0;
-        battleScreen.FieldEffects.OwnProtectCounter = 0;
-        battleScreen.FieldEffects.OwnDetectCounter = 0;
-        battleScreen.FieldEffects.OwnKingsShieldCounter = 0;
-        battleScreen.FieldEffects.OwnProtectMovesCount = 0;
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnIngrain = 0; }
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnSubstitute = 0; }
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnMagnetRise = 0; }
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnAquaRing = 0; }
-        battleScreen.FieldEffects.OwnPoisonCounter = 0;
-        battleScreen.FieldEffects.OwnNightmare = 0;
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnCurse = 0; }
-        battleScreen.FieldEffects.OwnOutrage = 0;
-        battleScreen.FieldEffects.OwnThrash = 0;
-        battleScreen.FieldEffects.OwnPetalDance = 0;
-        battleScreen.FieldEffects.OwnEncore = 0;
-        battleScreen.FieldEffects.OwnEncoreMove = null;
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnEmbargo = 0; }
-        battleScreen.FieldEffects.OwnYawn = 0;
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnPerishSongCount = 0; }
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnConfusionTurns = 0; }
-        battleScreen.FieldEffects.OwnTorment = 0;
-        battleScreen.FieldEffects.OwnTormentMove = null;
-        battleScreen.FieldEffects.OwnChoiceMove = null;
-        battleScreen.FieldEffects.OwnRecharge = 0;
-        battleScreen.FieldEffects.OwnRolloutCounter = 0;
-        battleScreen.FieldEffects.OwnIceBallCounter = 0;
-        battleScreen.FieldEffects.OwnDefenseCurl = 0;
-        battleScreen.FieldEffects.OwnCharge = 0;
-        battleScreen.FieldEffects.OwnSolarBeam = 0;
-        battleScreen.FieldEffects.OwnSolarBlade = 0;
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnLeechSeed = 0; }
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == false) { battleScreen.FieldEffects.OwnLockOn = 0; }
-        battleScreen.FieldEffects.OwnLansatBerry = 0;
-        battleScreen.FieldEffects.OwnCustapBerry = 0;
-        battleScreen.FieldEffects.OwnTrappedCounter = 0;
-        battleScreen.FieldEffects.OwnFuryCutter = 0;
-        battleScreen.FieldEffects.OwnEchoedVoice = 0;
-        battleScreen.FieldEffects.OwnPokemonTurns = 0;
-        battleScreen.FieldEffects.OwnStockpileCount = 0;
-        battleScreen.FieldEffects.OwnDestinyBond = false;
-        battleScreen.FieldEffects.OwnGastroAcid = false;
-        battleScreen.FieldEffects.OwnTarShot = false;
-        battleScreen.FieldEffects.OwnForesight = 0;
-        battleScreen.FieldEffects.OwnOdorSleuth = 0;
-        battleScreen.FieldEffects.OwnMiracleEye = 0;
-        battleScreen.FieldEffects.OwnFlyCounter = 0;
-        battleScreen.FieldEffects.OwnDigCounter = 0;
-        battleScreen.FieldEffects.OwnBounceCounter = 0;
-        battleScreen.FieldEffects.OwnDiveCounter = 0;
-        battleScreen.FieldEffects.OwnShadowForceCounter = 0;
-        battleScreen.FieldEffects.OwnPhantomForceCounter = 0;
-        battleScreen.FieldEffects.OwnSkyDropCounter = 0;
-        battleScreen.FieldEffects.OwnGeomancyCounter = 0;
-        battleScreen.FieldEffects.OwnSkyAttackCounter = 0;
-        battleScreen.FieldEffects.OwnRazorWindCounter = 0;
-        battleScreen.FieldEffects.OwnSkullBashCounter = 0;
-        battleScreen.FieldEffects.OwnWrap = 0;
-        battleScreen.FieldEffects.OwnWhirlpool = 0;
-        battleScreen.FieldEffects.OwnBind = 0;
-        battleScreen.FieldEffects.OwnClamp = 0;
-        battleScreen.FieldEffects.OwnFireSpin = 0;
-        battleScreen.FieldEffects.OwnMagmaStorm = 0;
-        battleScreen.FieldEffects.OwnSandTomb = 0;
-        battleScreen.FieldEffects.OwnInfestation = 0;
-        battleScreen.FieldEffects.OwnBideCounter = 0;
-        battleScreen.FieldEffects.OwnBideDamage = 0;
-        battleScreen.FieldEffects.OwnRoostUsed = false;
-        battleScreen.FieldEffects.OppTrappedCounter = 0;
-        battleScreen.FieldEffects.OppWrap = 0;
-        battleScreen.FieldEffects.OppWhirlpool = 0;
-        battleScreen.FieldEffects.OppBind = 0;
-        battleScreen.FieldEffects.OppClamp = 0;
-        battleScreen.FieldEffects.OppFireSpin = 0;
-        battleScreen.FieldEffects.OppMagmaStorm = 0;
-        battleScreen.FieldEffects.OppSandTomb = 0;
-        battleScreen.FieldEffects.OppInfestation = 0;
-        if (battleScreen.OppPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation))
+        battleScreen.SelfPokemon.ResetTemp();
+        battleScreen.SelfPokemon.ClearAllVolatiles();
+        battleScreen.FieldEffects.SleepTurns.Self = 0;
+        battleScreen.FieldEffects.TruantRound.Self = 0;
+        battleScreen.FieldEffects.Taunt.Self = 0;
+        battleScreen.FieldEffects.Smacked.Self = 0;
+        battleScreen.FieldEffects.RageCounter.Self = 0;
+        battleScreen.FieldEffects.Uproar.Self = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.FocusEnergy.Self = 0; }
+        battleScreen.FieldEffects.Endure.Self = 0;
+        battleScreen.FieldEffects.ProtectCounter.Self = 0;
+        battleScreen.FieldEffects.DetectCounter.Self = 0;
+        battleScreen.FieldEffects.KingsShieldCounter.Self = 0;
+        battleScreen.FieldEffects.ProtectMovesCount.Self = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.Ingrain.Self = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.Substitute.Self = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.MagnetRise.Self = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.AquaRing.Self = 0; }
+        battleScreen.FieldEffects.PoisonCounter.Self = 0;
+        battleScreen.FieldEffects.Nightmare.Self = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.Curse.Self = 0; }
+        battleScreen.FieldEffects.Outrage.Self = 0;
+        battleScreen.FieldEffects.Thrash.Self = 0;
+        battleScreen.FieldEffects.PetalDance.Self = 0;
+        battleScreen.FieldEffects.Encore.Self = 0;
+        battleScreen.FieldEffects.EncoreMove.Self = null;
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.Embargo.Self = 0; }
+        battleScreen.FieldEffects.Yawn.Self = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.PerishSongCount.Self = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.ConfusionTurns.Self = 0; }
+        battleScreen.FieldEffects.Torment.Self = 0;
+        battleScreen.FieldEffects.TormentMove.Self = null;
+        battleScreen.FieldEffects.ChoiceMove.Self = null;
+        battleScreen.FieldEffects.Recharge.Self = 0;
+        battleScreen.FieldEffects.RolloutCounter.Self = 0;
+        battleScreen.FieldEffects.IceBallCounter.Self = 0;
+        battleScreen.FieldEffects.DefenseCurl.Self = 0;
+        battleScreen.FieldEffects.Charge.Self = 0;
+        battleScreen.FieldEffects.SolarBeam.Self = 0;
+        battleScreen.FieldEffects.SolarBlade.Self = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.LeechSeed.Self = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == false) { battleScreen.FieldEffects.LockOn.Self = 0; }
+        battleScreen.FieldEffects.LansatBerry.Self = 0;
+        battleScreen.FieldEffects.CustapBerry.Self = 0;
+        battleScreen.FieldEffects.TrappedCounter.Self = 0;
+        battleScreen.FieldEffects.FuryCutter.Self = 0;
+        battleScreen.FieldEffects.EchoedVoice.Self = 0;
+        battleScreen.FieldEffects.PokemonTurns.Self = 0;
+        battleScreen.FieldEffects.StockpileCount.Self = 0;
+        battleScreen.FieldEffects.DestinyBond.Self = false;
+        battleScreen.FieldEffects.GastroAcid.Self = false;
+        battleScreen.FieldEffects.TarShot.Self = false;
+        battleScreen.FieldEffects.Foresight.Self = 0;
+        battleScreen.FieldEffects.OdorSleuth.Self = 0;
+        battleScreen.FieldEffects.MiracleEye.Self = 0;
+        battleScreen.FieldEffects.FlyCounter.Self = 0;
+        battleScreen.FieldEffects.DigCounter.Self = 0;
+        battleScreen.FieldEffects.BounceCounter.Self = 0;
+        battleScreen.FieldEffects.DiveCounter.Self = 0;
+        battleScreen.FieldEffects.ShadowForceCounter.Self = 0;
+        battleScreen.FieldEffects.PhantomForceCounter.Self = 0;
+        battleScreen.FieldEffects.SkyDropCounter.Self = 0;
+        battleScreen.FieldEffects.GeomancyCounter.Self = 0;
+        battleScreen.FieldEffects.SkyAttackCounter.Self = 0;
+        battleScreen.FieldEffects.RazorWindCounter.Self = 0;
+        battleScreen.FieldEffects.SkullBashCounter.Self = 0;
+        battleScreen.FieldEffects.Wrap.Self = 0;
+        battleScreen.FieldEffects.Whirlpool.Self = 0;
+        battleScreen.FieldEffects.Bind.Self = 0;
+        battleScreen.FieldEffects.Clamp.Self = 0;
+        battleScreen.FieldEffects.FireSpin.Self = 0;
+        battleScreen.FieldEffects.MagmaStorm.Self = 0;
+        battleScreen.FieldEffects.SandTomb.Self = 0;
+        battleScreen.FieldEffects.Infestation.Self = 0;
+        battleScreen.FieldEffects.BideCounter.Self = 0;
+        battleScreen.FieldEffects.BideDamage.Self = 0;
+        battleScreen.FieldEffects.RoostUsed.Self = false;
+        battleScreen.FieldEffects.TrappedCounter.Opponent = 0;
+        battleScreen.FieldEffects.Wrap.Opponent = 0;
+        battleScreen.FieldEffects.Whirlpool.Opponent = 0;
+        battleScreen.FieldEffects.Bind.Opponent = 0;
+        battleScreen.FieldEffects.Clamp.Opponent = 0;
+        battleScreen.FieldEffects.FireSpin.Opponent = 0;
+        battleScreen.FieldEffects.MagmaStorm.Opponent = 0;
+        battleScreen.FieldEffects.SandTomb.Opponent = 0;
+        battleScreen.FieldEffects.Infestation.Opponent = 0;
+        if (battleScreen.OpponentPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation))
         {
-            battleScreen.OppPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
+            battleScreen.OpponentPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
         }
-        battleScreen.OwnPokemon.Ability.SwitchOut(battleScreen.OwnPokemon);
+        battleScreen.SelfPokemon.Ability.SwitchOut(battleScreen.SelfPokemon);
         if (Core.Player.ShowBattleAnimations == 0 || battleScreen.IsPVPBattle == true)
         {
-            battleScreen.AddToQuery(insertIndex, new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OwnPokemon, 2, -1, -1, -1, -1));
+            battleScreen.AddToQuery(insertIndex, new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.SelfPokemon, 2, -1, -1, -1, -1));
         }
         if (Core.Player.CountFightablePokemon > 0)
         {
@@ -8165,20 +8172,20 @@ public class Battle
 
     public void ApplyOwnBatonPass(BattleScreen battleScreen)
     {
-        if (battleScreen.FieldEffects.OwnUsedBatonPass == true)
+        if (battleScreen.FieldEffects.UsedBatonPass.Self == true)
         {
-            battleScreen.FieldEffects.OwnUsedBatonPass = false;
-            battleScreen.OwnPokemon.StatAttack = battleScreen.FieldEffects.OwnBatonPassStats[0];
-            battleScreen.OwnPokemon.StatDefense = battleScreen.FieldEffects.OwnBatonPassStats[1];
-            battleScreen.OwnPokemon.StatSpAttack = battleScreen.FieldEffects.OwnBatonPassStats[2];
-            battleScreen.OwnPokemon.StatSpDefense = battleScreen.FieldEffects.OwnBatonPassStats[3];
-            battleScreen.OwnPokemon.StatSpeed = battleScreen.FieldEffects.OwnBatonPassStats[4];
-            battleScreen.OwnPokemon.Evasion = battleScreen.FieldEffects.OwnBatonPassStats[5];
-            battleScreen.OwnPokemon.Accuracy = battleScreen.FieldEffects.OwnBatonPassStats[6];
-            if (battleScreen.FieldEffects.OwnBatonPassConfusion == true)
+            battleScreen.FieldEffects.UsedBatonPass.Self = false;
+            battleScreen.SelfPokemon.StatAttack = battleScreen.FieldEffects.BatonPassStats.Self[0];
+            battleScreen.SelfPokemon.StatDefense = battleScreen.FieldEffects.BatonPassStats.Self[1];
+            battleScreen.SelfPokemon.StatSpAttack = battleScreen.FieldEffects.BatonPassStats.Self[2];
+            battleScreen.SelfPokemon.StatSpDefense = battleScreen.FieldEffects.BatonPassStats.Self[3];
+            battleScreen.SelfPokemon.StatSpeed = battleScreen.FieldEffects.BatonPassStats.Self[4];
+            battleScreen.SelfPokemon.Evasion = battleScreen.FieldEffects.BatonPassStats.Self[5];
+            battleScreen.SelfPokemon.Accuracy = battleScreen.FieldEffects.BatonPassStats.Self[6];
+            if (battleScreen.FieldEffects.BatonPassConfusion.Self == true)
             {
-                battleScreen.FieldEffects.OwnBatonPassConfusion = false;
-                battleScreen.OwnPokemon.AddVolatileStatus(Pokemon.VolatileStatus.Confusion);
+                battleScreen.FieldEffects.BatonPassConfusion.Self = false;
+                battleScreen.SelfPokemon.AddVolatileStatus(Pokemon.VolatileStatus.Confusion);
             }
         }
     }
@@ -8192,25 +8199,25 @@ public class Battle
             String insertMessage = message;
             if (insertMessage == String.Empty)
             {
-                insertMessage = "Come back, " + battleScreen.OwnPokemon.GetDisplayName() + "!";
+                insertMessage = "Come back, " + battleScreen.SelfPokemon.GetDisplayName() + "!";
             }
             battleScreen.AddToQuery(insertIndex, new TextQueryObject(insertMessage));
             float returnPositionOffsetY = 0.0f;
-            if (battleScreen.OwnPokemonNPC.Model != null)
+            if (battleScreen.SelfPokemonNPC.Model != null)
             {
                 returnPositionOffsetY = 0.5f;
             }
-            AnimationQueryObject ballReturn = new AnimationQueryObject(battleScreen.OwnPokemonNPC, false);
+            AnimationQueryObject ballReturn = new AnimationQueryObject(battleScreen.SelfPokemonNPC, false);
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
                 ballReturn.AnimationPlaySound(@"Battle\Pokeball\Open", 0, 0);
                 for (int smokeReturned = 0; smokeReturned <= 38; smokeReturned++)
                 {
-                    Vector3 smokePosition = new Vector3((float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0));
+                    Vector3 smokePosition = new Vector3((float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0));
                     Vector3 smokeDestination = new Vector3(0, returnPositionOffsetY, 0);
                     Texture2D smokeTexture = TextureManager.GetTexture(@"Textures\Battle\Smoke");
-                    Vector3 smokeScale = new Vector3((float)(Random.Next(2, 6) / 10.0));
-                    float smokeSpeed = (float)(Random.Next(1, 3) / 20.0f);
+                    Vector3 smokeScale = new Vector3((float)(Core.Random.Next(2, 6) / 10.0));
+                    float smokeSpeed = (float)(Core.Random.Next(1, 3) / 20.0f);
                     Entity smokeEntity = ballReturn.SpawnEntity(smokePosition, smokeTexture, smokeScale, 1.0f);
                     ballReturn.AnimationMove(smokeEntity, true, smokeDestination.X, smokeDestination.Y, smokeDestination.Z, smokeSpeed, false, false, 0.0f, 0.0f);
                 }
@@ -8219,7 +8226,7 @@ public class Battle
             {
                 ballReturn.AnimationFade(null, false, 1, 0, 1, 0);
                 ballReturn.AnimationPlaySound(@"Battle\Pokeball\Throw", 1, 0);
-                Entity ballReturnEntity = ballReturn.SpawnEntity(new Vector3(0, 0 + returnPositionOffsetY, 0), battleScreen.OwnPokemon.CatchBall.Texture, new Vector3(0.3f), 1.0f);
+                Entity ballReturnEntity = ballReturn.SpawnEntity(new Vector3(0, 0 + returnPositionOffsetY, 0), battleScreen.SelfPokemon.catchBall.Texture, new Vector3(0.3f), 1.0f);
                 ballReturn.AnimationMove(ballReturnEntity, true, -2, 0 + returnPositionOffsetY, 0, 0.1f, false, true, 1, 0, spinZSpeed: 0.3f);
                 battleScreen.AddToQuery(insertIndex, ballReturn);
             }
@@ -8239,26 +8246,26 @@ public class Battle
             {
                 for (int i = 0; i <= Core.Player.Pokemons.Count - 1; i++)
                 {
-                    if (Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg() == false)
+                    if (Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg == false)
                     {
                         index = i;
                         break;
                     }
                 }
             }
-            battleScreen.OwnPokemonIndex = index;
-            if (battleScreen.ParticipatedPokemon.Contains(battleScreen.OwnPokemonIndex) == false)
+            battleScreen.SelfPokemonIndex = index;
+            if (battleScreen.ParticipatedPokemon.Contains(battleScreen.SelfPokemonIndex) == false)
             {
-                battleScreen.ParticipatedPokemon.Add(battleScreen.OwnPokemonIndex);
+                battleScreen.ParticipatedPokemon.Add(battleScreen.SelfPokemonIndex);
             }
-            battleScreen.OwnPokemon = Core.Player.Pokemons[index];
+            battleScreen.SelfPokemon = Core.Player.Pokemons[index];
             ApplyOwnBatonPass(battleScreen);
             String ownShiny = "N";
-            if (battleScreen.OwnPokemon.IsShiny == true) { ownShiny = "S"; }
+            if (battleScreen.SelfPokemon.IsShiny == true) { ownShiny = "S"; }
             String ownModel = battleScreen.GetModelName(true);
             if (ownModel == String.Empty)
             {
-                battleScreen.AddToQuery(insertIndex, new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OwnPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.OwnPokemon, true), 0, 1, -1, -1));
+                battleScreen.AddToQuery(insertIndex, new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.SelfPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.SelfPokemon, true), 0, 1, -1, -1));
             }
             else
             {
@@ -8266,41 +8273,41 @@ public class Battle
             }
             float sendBallPositionOffsetY = 0.0f;
             float sendPokemonPositionOffsetY = 0.0f;
-            if (battleScreen.OwnPokemonNPC.Model != null)
+            if (battleScreen.SelfPokemonNPC.Model != null)
             {
                 sendBallPositionOffsetY = 0.5f;
                 sendPokemonPositionOffsetY = -0.5f;
             }
             if (Core.Player.ShowBattleAnimations == 0 || battleScreen.IsPVPBattle == true)
             {
-                battleScreen.AddToQuery(insertIndex, new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OwnPokemon, 1, -1, -1, -1, -1));
-                battleScreen.BattleQuery.Add(new PlaySoundQueryObject(battleScreen.OwnPokemon.Number.ToString(), true));
+                battleScreen.AddToQuery(insertIndex, new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.SelfPokemon, 1, -1, -1, -1, -1));
+                battleScreen.BattleQuery.Add(new PlaySoundQueryObject(battleScreen.SelfPokemon.Number.ToString(), true));
             }
-            battleScreen.AddToQuery(insertIndex, new TextQueryObject("Go, " + battleScreen.OwnPokemon.GetDisplayName() + "!"));
-            AnimationQueryObject ballThrow = new AnimationQueryObject(battleScreen.OwnPokemonNPC, false);
+            battleScreen.AddToQuery(insertIndex, new TextQueryObject("Go, " + battleScreen.SelfPokemon.GetDisplayName() + "!"));
+            AnimationQueryObject ballThrow = new AnimationQueryObject(battleScreen.SelfPokemonNPC, false);
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
                 ballThrow.AnimationPlaySound(@"Battle\Pokeball\Throw", 0, 0);
-                Entity ballThrowEntity = ballThrow.SpawnEntity(new Vector3(-2, -0.15f, 0), battleScreen.OwnPokemon.CatchBall.Texture, new Vector3(0.3f), 1.0f);
+                Entity ballThrowEntity = ballThrow.SpawnEntity(new Vector3(-2, -0.15f, 0), battleScreen.SelfPokemon.catchBall.Texture, new Vector3(0.3f), 1.0f);
                 ballThrow.AnimationMove(ballThrowEntity, true, 0, (float)(0.35 + sendBallPositionOffsetY), 0, 0.1f, false, true, 0f, 0.5f, spinZSpeed: -0.3f, moveYSpeed: 0.025f);
                 ballThrow.AnimationPlaySound(@"Battle\Pokeball\Open", 3, 0);
                 for (int smokeSpawned = 0; smokeSpawned <= 38; smokeSpawned++)
                 {
                     Vector3 smokePosition = new Vector3(0, 0.35f + sendBallPositionOffsetY, 0);
-                    Vector3 smokeDestination = new Vector3((float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0) + sendBallPositionOffsetY, (float)(Random.Next(-10, 10) / 10.0));
+                    Vector3 smokeDestination = new Vector3((float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0) + sendBallPositionOffsetY, (float)(Core.Random.Next(-10, 10) / 10.0));
                     Texture2D smokeTexture = TextureManager.GetTexture(@"Textures\Battle\Smoke");
-                    Vector3 smokeScale = new Vector3((float)(Random.Next(2, 6) / 10.0));
-                    float smokeSpeed = (float)(Random.Next(1, 3) / 20.0f);
+                    Vector3 smokeScale = new Vector3((float)(Core.Random.Next(2, 6) / 10.0));
+                    float smokeSpeed = (float)(Core.Random.Next(1, 3) / 20.0f);
                     Entity smokeEntity = ballThrow.SpawnEntity(smokePosition, smokeTexture, smokeScale, 1.0f, 3);
                     ballThrow.AnimationMove(smokeEntity, true, smokeDestination.X, smokeDestination.Y, smokeDestination.Z, smokeSpeed, false, false, 3.0f, 0.0f);
                 }
             }
-            String crySuffixOwn = PokemonForms.GetCrySuffix(battleScreen.OwnPokemon);
+            String crySuffixOwn = PokemonForms.GetCrySuffix(battleScreen.SelfPokemon);
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
                 ballThrow.AnimationSetPosition(null, false, 12, 0.5f, 13, 0, 0);
                 ballThrow.AnimationFade(null, false, 1, 1, 3, 0);
-                ballThrow.AnimationPlaySound(battleScreen.OwnPokemon.Number.ToString(), 4, 0, isPokemon: true, crySuffix: crySuffixOwn);
+                ballThrow.AnimationPlaySound(battleScreen.SelfPokemon.Number.ToString(), 4, 0, isPokemon: true, crySuffix: crySuffixOwn);
                 ballThrow.AnimationMove(null, false, 0, -0.5f + sendPokemonPositionOffsetY, 0, 0.05f, false, false, 5, 0, movementCurve: 3);
                 battleScreen.AddToQuery(insertIndex, ballThrow);
             }
@@ -8309,9 +8316,9 @@ public class Battle
         {
             battleScreen.FieldEffects.UsedPokemon.Add(newPokemonIndex);
         }
-        if (battleScreen.OwnPokemon.Item != null)
+        if (battleScreen.SelfPokemon.Item != null)
         {
-            if (battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "amulet coin" || battleScreen.OwnPokemon.Item.OriginalName.ToLower() == "luck incense")
+            if (battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "amulet coin" || battleScreen.SelfPokemon.Item.OriginalName.ToLower() == "luck incense")
             {
                 if (battleScreen.FieldEffects.CanUseItem(true) == true && battleScreen.FieldEffects.CanUseOwnItem(true, battleScreen) == true)
                 {
@@ -8319,15 +8326,15 @@ public class Battle
                 }
             }
         }
-        Pokemon p = battleScreen.OwnPokemon;
+        Pokemon p = battleScreen.SelfPokemon;
         bool spikeAffected = battleScreen.FieldEffects.IsGrounded(true, battleScreen);
         bool rockAffected = true;
         if (spikeAffected == true)
         {
-            if (battleScreen.FieldEffects.OppSpikes > 0 && (p.Ability.Name.ToLower() != "magic guard" || battleScreen.FieldEffects.CanUseAbility(true, battleScreen, 1) == false))
+            if (battleScreen.FieldEffects.Spikes.Opponent > 0 && (p.Ability.Name.ToLower() != "magic guard" || battleScreen.FieldEffects.CanUseAbility(true, battleScreen, 1) == false))
             {
                 double spikeDamage = 1.0;
-                switch (battleScreen.FieldEffects.OppSpikes)
+                switch (battleScreen.FieldEffects.Spikes.Opponent)
                 {
                     case 1: spikeDamage = (p.MaxHP / 100.0) * 12.5; break;
                     case 2: spikeDamage = (p.MaxHP / 100.0) * 16.7; break;
@@ -8338,33 +8345,33 @@ public class Battle
         }
         if (spikeAffected == true)
         {
-            if (battleScreen.FieldEffects.OppStickyWeb > 0)
+            if (battleScreen.FieldEffects.StickyWeb.Opponent > 0)
             {
                 LowerStat(true, true, battleScreen, "Speed", 1, "Your Pokémon was caught in a Sticky Web!", "stickyweb");
             }
         }
         if (spikeAffected == true)
         {
-            if (battleScreen.FieldEffects.OppToxicSpikes > 0 && p.Status == Pokemon.StatusProblems.None && p.Type1.Type != Element.Types.Poison && p.Type2.Type != Element.Types.Poison)
+            if (battleScreen.FieldEffects.ToxicSpikes.Opponent > 0 && p.Status == Pokemon.StatusProblems.None && p.Type1.Type != Element.Types.Poison && p.Type2.Type != Element.Types.Poison)
             {
-                switch (battleScreen.FieldEffects.OppToxicSpikes)
+                switch (battleScreen.FieldEffects.ToxicSpikes.Opponent)
                 {
                     case 1: InflictPoison(true, false, battleScreen, false, "The Toxic Spikes hurt " + p.GetDisplayName() + "!", "toxicspikes"); break;
                     case 2: InflictPoison(true, false, battleScreen, true, "The Toxic Spikes hurt " + p.GetDisplayName() + "!", "toxicspikes"); break;
                 }
             }
-            if (battleScreen.FieldEffects.OppToxicSpikes > 0)
+            if (battleScreen.FieldEffects.ToxicSpikes.Opponent > 0)
             {
                 if (p.Type1.Type == Element.Types.Poison || p.Type2.Type == Element.Types.Poison)
                 {
                     battleScreen.AddToQuery(insertIndex, new TextQueryObject(p.GetDisplayName() + " removed the Toxic Spikes!"));
-                    battleScreen.FieldEffects.OppToxicSpikes = 0;
+                    battleScreen.FieldEffects.ToxicSpikes.Opponent = 0;
                 }
             }
         }
         if (rockAffected == true)
         {
-            if (battleScreen.FieldEffects.OppStealthRock > 0 && (p.Ability.Name.ToLower() != "magic guard" || battleScreen.FieldEffects.CanUseAbility(true, battleScreen, 1) == false))
+            if (battleScreen.FieldEffects.StealthRock.Opponent > 0 && (p.Ability.Name.ToLower() != "magic guard" || battleScreen.FieldEffects.CanUseAbility(true, battleScreen, 1) == false))
             {
                 double rocksDamage = 1.0;
                 float effectiveness = BattleCalculation.ReverseTypeEffectiveness(Element.GetElementMultiplier(new Element(Element.Types.Rock), p.Type1)) * BattleCalculation.ReverseTypeEffectiveness(Element.GetElementMultiplier(new Element(Element.Types.Rock), p.Type2));
@@ -8381,16 +8388,16 @@ public class Battle
         }
         TriggerAbilityEffect(battleScreen, true);
         TriggerItemEffect(battleScreen, true);
-        if (battleScreen.OwnPokemon.Status == Pokemon.StatusProblems.Sleep)
+        if (battleScreen.SelfPokemon.Status == Pokemon.StatusProblems.Sleep)
         {
-            battleScreen.FieldEffects.OwnSleepTurns = Core.Random.Next(1, 4);
+            battleScreen.FieldEffects.SleepTurns.Self = Core.Random.Next(1, 4);
         }
-        if (battleScreen.FieldEffects.OwnHealingWish == true)
+        if (battleScreen.FieldEffects.HealingWish.Self == true)
         {
-            battleScreen.FieldEffects.OwnHealingWish = false;
-            if (battleScreen.OwnPokemon.HP < battleScreen.OwnPokemon.MaxHP || battleScreen.OwnPokemon.Status != Pokemon.StatusProblems.None)
+            battleScreen.FieldEffects.HealingWish.Self = false;
+            if (battleScreen.SelfPokemon.HP < battleScreen.SelfPokemon.MaxHP || battleScreen.SelfPokemon.Status != Pokemon.StatusProblems.None)
             {
-                GainHP(battleScreen.OwnPokemon.MaxHP - battleScreen.OwnPokemon.HP, true, true, battleScreen, "The Healing Wish came true for " + battleScreen.OwnPokemon.GetDisplayName() + "!", "move:healingwish");
+                GainHP(battleScreen.SelfPokemon.MaxHP - battleScreen.SelfPokemon.HP, true, true, battleScreen, "The Healing Wish came true for " + battleScreen.SelfPokemon.GetDisplayName() + "!", "move:healingwish");
                 CureStatusProblem(true, true, battleScreen, String.Empty, "move:healingwish");
             }
         }
@@ -8420,132 +8427,132 @@ public class Battle
 
     public void SwitchOutOpp(BattleScreen battleScreen, int index, String message = "", bool hasSwitched = false, bool canAddSwitchPokemonQuery = true)
     {
-        if (battleScreen.OppPokemon.Ability.Name.ToLower() == "natural cure")
+        if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "natural cure")
         {
-            if (battleScreen.OppPokemon.Status != Pokemon.StatusProblems.Fainted && battleScreen.OppPokemon.Status != Pokemon.StatusProblems.None)
+            if (battleScreen.OpponentPokemon.Status != Pokemon.StatusProblems.Fainted && battleScreen.OpponentPokemon.Status != Pokemon.StatusProblems.None)
             {
-                battleScreen.OppPokemon.Status = Pokemon.StatusProblems.None;
-                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OppPokemon.GetDisplayName() + "'s status problem got healed by Natural Cure"));
+                battleScreen.OpponentPokemon.Status = Pokemon.StatusProblems.None;
+                battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.OpponentPokemon.GetDisplayName() + "'s status problem got healed by Natural Cure"));
             }
         }
-        if (battleScreen.OppPokemon.Ability.Name.ToLower() == "regenerator")
+        if (battleScreen.OpponentPokemon.Ability.Name.ToLower() == "regenerator")
         {
-            if ((battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OppPokemon.HP == 0) == false)
+            if ((battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Fainted || battleScreen.OpponentPokemon.HP == 0) == false)
             {
-                int restoreHP = (int)(battleScreen.OppPokemon.MaxHP / 3);
-                if (restoreHP > 0 && battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP && battleScreen.OppPokemon.HP > 0)
+                int restoreHP = (int)(battleScreen.OpponentPokemon.MaxHP / 3);
+                if (restoreHP > 0 && battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP && battleScreen.OpponentPokemon.HP > 0)
                 {
-                    battleScreen.Battle.GainHP(restoreHP, false, true, battleScreen, battleScreen.OppPokemon.GetDisplayName() + "'s HP was restored!", "ability:regenerator");
+                    battleScreen.Battle.GainHP(restoreHP, false, true, battleScreen, battleScreen.OpponentPokemon.GetDisplayName() + "'s HP was restored!", "ability:regenerator");
                 }
             }
         }
-        if (battleScreen.FieldEffects.OppUsedBatonPass == true)
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == true)
         {
-            battleScreen.FieldEffects.OppBatonPassStats = [];
-            battleScreen.FieldEffects.OppBatonPassStats.AddRange(new int[] { battleScreen.OppPokemon.StatAttack, battleScreen.OppPokemon.StatDefense, battleScreen.OppPokemon.StatSpAttack, battleScreen.OppPokemon.StatSpDefense, battleScreen.OppPokemon.StatSpeed, battleScreen.OppPokemon.Evasion, battleScreen.OppPokemon.Accuracy });
-            battleScreen.FieldEffects.OppBatonPassConfusion = battleScreen.OppPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) == true;
+            battleScreen.FieldEffects.BatonPassStats.Opponent = [];
+            battleScreen.FieldEffects.BatonPassStats.Opponent.AddRange(new int[] { battleScreen.OpponentPokemon.StatAttack, battleScreen.OpponentPokemon.StatDefense, battleScreen.OpponentPokemon.StatSpAttack, battleScreen.OpponentPokemon.StatSpDefense, battleScreen.OpponentPokemon.StatSpeed, battleScreen.OpponentPokemon.Evasion, battleScreen.OpponentPokemon.Accuracy });
+            battleScreen.FieldEffects.BatonPassConfusion.Opponent = battleScreen.OpponentPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Confusion) == true;
         }
-        battleScreen.OppPokemon.ResetTemp();
-        battleScreen.OppPokemon.ClearAllVolatiles();
-        battleScreen.FieldEffects.OppSleepTurns = 0;
-        battleScreen.FieldEffects.OppTruantRound = 0;
-        battleScreen.FieldEffects.OppTaunt = 0;
-        battleScreen.FieldEffects.OppSmacked = 0;
-        battleScreen.FieldEffects.OppRageCounter = 0;
-        battleScreen.FieldEffects.OppUproar = 0;
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppFocusEnergy = 0; }
-        battleScreen.FieldEffects.OppEndure = 0;
-        battleScreen.FieldEffects.OppProtectCounter = 0;
-        battleScreen.FieldEffects.OppDetectCounter = 0;
-        battleScreen.FieldEffects.OppKingsShieldCounter = 0;
-        battleScreen.FieldEffects.OppProtectMovesCount = 0;
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppIngrain = 0; }
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppSubstitute = 0; }
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppMagnetRise = 0; }
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppAquaRing = 0; }
-        battleScreen.FieldEffects.OppPoisonCounter = 0;
-        battleScreen.FieldEffects.OppNightmare = 0;
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppCurse = 0; }
-        battleScreen.FieldEffects.OppOutrage = 0;
-        battleScreen.FieldEffects.OppThrash = 0;
-        battleScreen.FieldEffects.OppPetalDance = 0;
-        battleScreen.FieldEffects.OppEncore = 0;
-        battleScreen.FieldEffects.OppEncoreMove = null;
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppEmbargo = 0; }
-        battleScreen.FieldEffects.OppYawn = 0;
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppPerishSongCount = 0; }
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppConfusionTurns = 0; }
-        battleScreen.FieldEffects.OppTorment = 0;
-        battleScreen.FieldEffects.OppTormentMove = null;
-        battleScreen.FieldEffects.OppChoiceMove = null;
-        battleScreen.FieldEffects.OppRecharge = 0;
-        battleScreen.FieldEffects.OppRolloutCounter = 0;
-        battleScreen.FieldEffects.OppIceBallCounter = 0;
-        battleScreen.FieldEffects.OppDefenseCurl = 0;
-        battleScreen.FieldEffects.OppCharge = 0;
-        battleScreen.FieldEffects.OppSolarBeam = 0;
-        battleScreen.FieldEffects.OppSolarBlade = 0;
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppLeechSeed = 0; }
-        if (battleScreen.FieldEffects.OppUsedBatonPass == false) { battleScreen.FieldEffects.OppLockOn = 0; }
-        battleScreen.FieldEffects.OppLansatBerry = 0;
-        battleScreen.FieldEffects.OppCustapBerry = 0;
-        battleScreen.FieldEffects.OppTrappedCounter = 0;
-        battleScreen.FieldEffects.OppFuryCutter = 0;
-        battleScreen.FieldEffects.OppEchoedVoice = 0;
-        battleScreen.FieldEffects.OppPokemonTurns = 0;
-        battleScreen.FieldEffects.OppStockpileCount = 0;
-        battleScreen.FieldEffects.OppDestinyBond = false;
-        battleScreen.FieldEffects.OppGastroAcid = false;
-        battleScreen.FieldEffects.OppTarShot = false;
-        battleScreen.FieldEffects.OppFlyCounter = 0;
-        battleScreen.FieldEffects.OppDigCounter = 0;
-        battleScreen.FieldEffects.OppBounceCounter = 0;
-        battleScreen.FieldEffects.OppDiveCounter = 0;
-        battleScreen.FieldEffects.OppShadowForceCounter = 0;
-        battleScreen.FieldEffects.OppPhantomForceCounter = 0;
-        battleScreen.FieldEffects.OppSkyDropCounter = 0;
-        battleScreen.FieldEffects.OppGeomancyCounter = 0;
-        battleScreen.FieldEffects.OppSkyAttackCounter = 0;
-        battleScreen.FieldEffects.OppRazorWindCounter = 0;
-        battleScreen.FieldEffects.OppSkullBashCounter = 0;
-        battleScreen.FieldEffects.OppForesight = 0;
-        battleScreen.FieldEffects.OppOdorSleuth = 0;
-        battleScreen.FieldEffects.OppMiracleEye = 0;
-        battleScreen.FieldEffects.OppWrap = 0;
-        battleScreen.FieldEffects.OppWhirlpool = 0;
-        battleScreen.FieldEffects.OppBind = 0;
-        battleScreen.FieldEffects.OppClamp = 0;
-        battleScreen.FieldEffects.OppFireSpin = 0;
-        battleScreen.FieldEffects.OppMagmaStorm = 0;
-        battleScreen.FieldEffects.OppSandTomb = 0;
-        battleScreen.FieldEffects.OppInfestation = 0;
-        battleScreen.FieldEffects.OppBideCounter = 0;
-        battleScreen.FieldEffects.OppBideDamage = 0;
-        battleScreen.FieldEffects.OppRoostUsed = false;
-        battleScreen.FieldEffects.OwnTrappedCounter = 0;
-        battleScreen.FieldEffects.OwnWrap = 0;
-        battleScreen.FieldEffects.OwnWhirlpool = 0;
-        battleScreen.FieldEffects.OwnBind = 0;
-        battleScreen.FieldEffects.OwnClamp = 0;
-        battleScreen.FieldEffects.OwnFireSpin = 0;
-        battleScreen.FieldEffects.OwnMagmaStorm = 0;
-        battleScreen.FieldEffects.OwnSandTomb = 0;
-        battleScreen.FieldEffects.OwnInfestation = 0;
-        if (battleScreen.OwnPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation))
+        battleScreen.OpponentPokemon.ResetTemp();
+        battleScreen.OpponentPokemon.ClearAllVolatiles();
+        battleScreen.FieldEffects.SleepTurns.Opponent = 0;
+        battleScreen.FieldEffects.TruantRound.Opponent = 0;
+        battleScreen.FieldEffects.Taunt.Opponent = 0;
+        battleScreen.FieldEffects.Smacked.Opponent = 0;
+        battleScreen.FieldEffects.RageCounter.Opponent = 0;
+        battleScreen.FieldEffects.Uproar.Opponent = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.FocusEnergy.Opponent = 0; }
+        battleScreen.FieldEffects.Endure.Opponent = 0;
+        battleScreen.FieldEffects.ProtectCounter.Opponent = 0;
+        battleScreen.FieldEffects.DetectCounter.Opponent = 0;
+        battleScreen.FieldEffects.KingsShieldCounter.Opponent = 0;
+        battleScreen.FieldEffects.ProtectMovesCount.Opponent = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.Ingrain.Opponent = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.Substitute.Opponent = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.MagnetRise.Opponent = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.AquaRing.Opponent = 0; }
+        battleScreen.FieldEffects.PoisonCounter.Opponent = 0;
+        battleScreen.FieldEffects.Nightmare.Opponent = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.Curse.Opponent = 0; }
+        battleScreen.FieldEffects.Outrage.Opponent = 0;
+        battleScreen.FieldEffects.Thrash.Opponent = 0;
+        battleScreen.FieldEffects.PetalDance.Opponent = 0;
+        battleScreen.FieldEffects.Encore.Opponent = 0;
+        battleScreen.FieldEffects.EncoreMove.Opponent = null;
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.Embargo.Opponent = 0; }
+        battleScreen.FieldEffects.Yawn.Opponent = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.PerishSongCount.Opponent = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.ConfusionTurns.Opponent = 0; }
+        battleScreen.FieldEffects.Torment.Opponent = 0;
+        battleScreen.FieldEffects.TormentMove.Opponent = null;
+        battleScreen.FieldEffects.ChoiceMove.Opponent = null;
+        battleScreen.FieldEffects.Recharge.Opponent = 0;
+        battleScreen.FieldEffects.RolloutCounter.Opponent = 0;
+        battleScreen.FieldEffects.IceBallCounter.Opponent = 0;
+        battleScreen.FieldEffects.DefenseCurl.Opponent = 0;
+        battleScreen.FieldEffects.Charge.Opponent = 0;
+        battleScreen.FieldEffects.SolarBeam.Opponent = 0;
+        battleScreen.FieldEffects.SolarBlade.Opponent = 0;
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.LeechSeed.Opponent = 0; }
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == false) { battleScreen.FieldEffects.LockOn.Opponent = 0; }
+        battleScreen.FieldEffects.LansatBerry.Opponent = 0;
+        battleScreen.FieldEffects.CustapBerry.Opponent = 0;
+        battleScreen.FieldEffects.TrappedCounter.Opponent = 0;
+        battleScreen.FieldEffects.FuryCutter.Opponent = 0;
+        battleScreen.FieldEffects.EchoedVoice.Opponent = 0;
+        battleScreen.FieldEffects.PokemonTurns.Opponent = 0;
+        battleScreen.FieldEffects.StockpileCount.Opponent = 0;
+        battleScreen.FieldEffects.DestinyBond.Opponent = false;
+        battleScreen.FieldEffects.GastroAcid.Opponent = false;
+        battleScreen.FieldEffects.TarShot.Opponent = false;
+        battleScreen.FieldEffects.FlyCounter.Opponent = 0;
+        battleScreen.FieldEffects.DigCounter.Opponent = 0;
+        battleScreen.FieldEffects.BounceCounter.Opponent = 0;
+        battleScreen.FieldEffects.DiveCounter.Opponent = 0;
+        battleScreen.FieldEffects.ShadowForceCounter.Opponent = 0;
+        battleScreen.FieldEffects.PhantomForceCounter.Opponent = 0;
+        battleScreen.FieldEffects.SkyDropCounter.Opponent = 0;
+        battleScreen.FieldEffects.GeomancyCounter.Opponent = 0;
+        battleScreen.FieldEffects.SkyAttackCounter.Opponent = 0;
+        battleScreen.FieldEffects.RazorWindCounter.Opponent = 0;
+        battleScreen.FieldEffects.SkullBashCounter.Opponent = 0;
+        battleScreen.FieldEffects.Foresight.Opponent = 0;
+        battleScreen.FieldEffects.OdorSleuth.Opponent = 0;
+        battleScreen.FieldEffects.MiracleEye.Opponent = 0;
+        battleScreen.FieldEffects.Wrap.Opponent = 0;
+        battleScreen.FieldEffects.Whirlpool.Opponent = 0;
+        battleScreen.FieldEffects.Bind.Opponent = 0;
+        battleScreen.FieldEffects.Clamp.Opponent = 0;
+        battleScreen.FieldEffects.FireSpin.Opponent = 0;
+        battleScreen.FieldEffects.MagmaStorm.Opponent = 0;
+        battleScreen.FieldEffects.SandTomb.Opponent = 0;
+        battleScreen.FieldEffects.Infestation.Opponent = 0;
+        battleScreen.FieldEffects.BideCounter.Opponent = 0;
+        battleScreen.FieldEffects.BideDamage.Opponent = 0;
+        battleScreen.FieldEffects.RoostUsed.Opponent = false;
+        battleScreen.FieldEffects.TrappedCounter.Self = 0;
+        battleScreen.FieldEffects.Wrap.Self = 0;
+        battleScreen.FieldEffects.Whirlpool.Self = 0;
+        battleScreen.FieldEffects.Bind.Self = 0;
+        battleScreen.FieldEffects.Clamp.Self = 0;
+        battleScreen.FieldEffects.FireSpin.Self = 0;
+        battleScreen.FieldEffects.MagmaStorm.Self = 0;
+        battleScreen.FieldEffects.SandTomb.Self = 0;
+        battleScreen.FieldEffects.Infestation.Self = 0;
+        if (battleScreen.SelfPokemon.HasVolatileStatus(Pokemon.VolatileStatus.Infatuation))
         {
-            battleScreen.OwnPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
+            battleScreen.SelfPokemon.RemoveVolatileStatus(Pokemon.VolatileStatus.Infatuation);
         }
-        battleScreen.OppPokemon.Ability.SwitchOut(battleScreen.OppPokemon);
+        battleScreen.OpponentPokemon.Ability.SwitchOut(battleScreen.OpponentPokemon);
         if (battleScreen.IsTrainerBattle == false)
         {
-            battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OppPokemon, 2, -1, -1, -1, -1));
+            battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OpponentPokemon, 2, -1, -1, -1, -1));
             EndBattle(EndBattleReasons.WinWild, battleScreen, false);
         }
         else
         {
             if (battleScreen.TrainerHasFightablePokemon() == true)
             {
-                if (battleScreen.OppPokemon.HP <= 0 || battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Fainted)
+                if (battleScreen.OpponentPokemon.HP <= 0 || battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Fainted)
                 {
                     GainEXP(battleScreen);
                 }
@@ -8564,33 +8571,33 @@ public class Battle
                 ChangeCameraAngle(1, false, battleScreen);
                 if (message == String.Empty)
                 {
-                    message = battleScreen.Trainer.Name + ": \"Come back, " + battleScreen.OppPokemon.GetDisplayName() + "!\"";
+                    message = battleScreen.Trainer.Name + ": \"Come back, " + battleScreen.OpponentPokemon.GetDisplayName() + "!\"";
                 }
                 battleScreen.BattleQuery.Add(new TextQueryObject(message));
                 if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
                 {
-                    AnimationQueryObject ballReturn = new AnimationQueryObject(battleScreen.OppPokemonNPC, true);
+                    AnimationQueryObject ballReturn = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, true);
                     ballReturn.AnimationPlaySound(@"Battle\Pokeball\Open", 0, 0);
                     for (int smokeReturned = 0; smokeReturned <= 38; smokeReturned++)
                     {
-                        Vector3 smokePosition = new Vector3((float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0));
+                        Vector3 smokePosition = new Vector3((float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0));
                         Vector3 smokeDestination = new Vector3(0, 0, 0);
                         Texture2D smokeTexture = TextureManager.GetTexture(@"Textures\Battle\Smoke");
-                        Vector3 smokeScale = new Vector3((float)(Random.Next(2, 6) / 10.0));
-                        float smokeSpeed = (float)(Random.Next(1, 3) / 20.0f);
+                        Vector3 smokeScale = new Vector3((float)(Core.Random.Next(2, 6) / 10.0));
+                        float smokeSpeed = (float)(Core.Random.Next(1, 3) / 20.0f);
                         Entity smokeEntity = ballReturn.SpawnEntity(smokePosition, smokeTexture, smokeScale, 1);
                         ballReturn.AnimationMove(smokeEntity, true, smokeDestination.X, smokeDestination.Y, smokeDestination.Z, smokeSpeed, false, false, 0.0f, 0.0f);
                     }
                     ballReturn.AnimationFade(null, false, 1, 0, 1, 0);
                     ballReturn.AnimationMove(null, false, 0, 0.5f, 0, 0.5f, false, false, 2, 0);
                     ballReturn.AnimationPlaySound(@"Battle\Pokeball\Throw", 1, 0);
-                    Entity ballReturnEntity = ballReturn.SpawnEntity(new Vector3(0, 0, 0), battleScreen.OppPokemon.CatchBall.Texture, new Vector3(0.3f), 1.0f);
+                    Entity ballReturnEntity = ballReturn.SpawnEntity(new Vector3(0, 0, 0), battleScreen.OpponentPokemon.catchBall.Texture, new Vector3(0.3f), 1.0f);
                     ballReturn.AnimationMove(ballReturnEntity, true, -2, 0, 0, 0.1f, false, true, 0f, 0f, spinZSpeed: 0.3f);
                     battleScreen.BattleQuery.Add(ballReturn);
                 }
                 else
                 {
-                    battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OppPokemon, 2, -1, -1, -1, -1));
+                    battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OpponentPokemon, 2, -1, -1, -1, -1));
                 }
                 EndBattle(EndBattleReasons.WinTrainer, battleScreen, false);
                 if (battleScreen.IsRemoteBattle == true)
@@ -8603,20 +8610,20 @@ public class Battle
 
     public void ApplyOppBatonPass(BattleScreen battleScreen)
     {
-        if (battleScreen.FieldEffects.OppUsedBatonPass == true)
+        if (battleScreen.FieldEffects.UsedBatonPass.Opponent == true)
         {
-            battleScreen.FieldEffects.OppUsedBatonPass = false;
-            battleScreen.OppPokemon.StatAttack = battleScreen.FieldEffects.OppBatonPassStats[0];
-            battleScreen.OppPokemon.StatDefense = battleScreen.FieldEffects.OppBatonPassStats[1];
-            battleScreen.OppPokemon.StatSpAttack = battleScreen.FieldEffects.OppBatonPassStats[2];
-            battleScreen.OppPokemon.StatSpDefense = battleScreen.FieldEffects.OppBatonPassStats[3];
-            battleScreen.OppPokemon.StatSpeed = battleScreen.FieldEffects.OppBatonPassStats[4];
-            battleScreen.OppPokemon.Evasion = battleScreen.FieldEffects.OppBatonPassStats[5];
-            battleScreen.OppPokemon.Accuracy = battleScreen.FieldEffects.OppBatonPassStats[6];
-            if (battleScreen.FieldEffects.OppBatonPassConfusion == true)
+            battleScreen.FieldEffects.UsedBatonPass.Opponent = false;
+            battleScreen.OpponentPokemon.StatAttack = battleScreen.FieldEffects.BatonPassStats.Opponent[0];
+            battleScreen.OpponentPokemon.StatDefense = battleScreen.FieldEffects.BatonPassStats.Opponent[1];
+            battleScreen.OpponentPokemon.StatSpAttack = battleScreen.FieldEffects.BatonPassStats.Opponent[2];
+            battleScreen.OpponentPokemon.StatSpDefense = battleScreen.FieldEffects.BatonPassStats.Opponent[3];
+            battleScreen.OpponentPokemon.StatSpeed = battleScreen.FieldEffects.BatonPassStats.Opponent[4];
+            battleScreen.OpponentPokemon.Evasion = battleScreen.FieldEffects.BatonPassStats.Opponent[5];
+            battleScreen.OpponentPokemon.Accuracy = battleScreen.FieldEffects.BatonPassStats.Opponent[6];
+            if (battleScreen.FieldEffects.BatonPassConfusion.Opponent == true)
             {
-                battleScreen.FieldEffects.OppBatonPassConfusion = false;
-                battleScreen.OppPokemon.AddVolatileStatus(Pokemon.VolatileStatus.Confusion);
+                battleScreen.FieldEffects.BatonPassConfusion.Opponent = false;
+                battleScreen.OpponentPokemon.AddVolatileStatus(Pokemon.VolatileStatus.Confusion);
             }
         }
     }
@@ -8638,55 +8645,55 @@ public class Battle
         {
             ChangeCameraAngle(1, false, battleScreen);
             _hasSwitchedInOpp = true;
-            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.Trainer.Name + ": \"Come back, " + battleScreen.OppPokemon.GetDisplayName() + "!\""));
+            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.Trainer.Name + ": \"Come back, " + battleScreen.OpponentPokemon.GetDisplayName() + "!\""));
             float returnPositionOffsetY = 0.0f;
-            if (battleScreen.OppPokemonNPC.Model != null)
+            if (battleScreen.OpponentPokemonNPC.Model != null)
             {
                 returnPositionOffsetY = 0.5f;
             }
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
-                AnimationQueryObject ballReturn = new AnimationQueryObject(battleScreen.OppPokemonNPC, true);
+                AnimationQueryObject ballReturn = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, true);
                 ballReturn.AnimationPlaySound(@"Battle\Pokeball\Open", 0, 0);
                 for (int smokeReturned = 0; smokeReturned <= 38; smokeReturned++)
                 {
-                    Vector3 smokePosition = new Vector3((float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0));
+                    Vector3 smokePosition = new Vector3((float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0));
                     Vector3 smokeDestination = new Vector3(0, returnPositionOffsetY, 0);
                     Texture2D smokeTexture = TextureManager.GetTexture(@"Textures\Battle\Smoke");
-                    Vector3 smokeScale = new Vector3((float)(Random.Next(2, 6) / 10.0));
-                    float smokeSpeed = (float)(Random.Next(1, 3) / 20.0f);
+                    Vector3 smokeScale = new Vector3((float)(Core.Random.Next(2, 6) / 10.0));
+                    float smokeSpeed = (float)(Core.Random.Next(1, 3) / 20.0f);
                     Entity smokeEntity = ballReturn.SpawnEntity(smokePosition, smokeTexture, smokeScale, 1);
                     ballReturn.AnimationMove(smokeEntity, true, smokeDestination.X, smokeDestination.Y, smokeDestination.Z, smokeSpeed, false, false, 0.0f, 0.0f);
                 }
                 ballReturn.AnimationFade(null, false, 1, 0, 1, 0);
                 ballReturn.AnimationPlaySound(@"Battle\Pokeball\Throw", 1, 0);
-                Entity ballReturnEntity = ballReturn.SpawnEntity(new Vector3(0, 0 + returnPositionOffsetY, 0), battleScreen.OppPokemon.CatchBall.Texture, new Vector3(0.3f), 1.0f);
+                Entity ballReturnEntity = ballReturn.SpawnEntity(new Vector3(0, 0 + returnPositionOffsetY, 0), battleScreen.OpponentPokemon.catchBall.Texture, new Vector3(0.3f), 1.0f);
                 ballReturn.AnimationMove(ballReturnEntity, true, -2, 0 + returnPositionOffsetY, 0, 0.1f, false, true, 1.0f, 0f, spinZSpeed: 0.3f);
                 battleScreen.BattleQuery.Add(ballReturn);
             }
             else
             {
-                battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OppPokemon, 1, -1, -1, -1, -1));
+                battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OpponentPokemon, 1, -1, -1, -1, -1));
             }
             battleScreen.SendInNewTrainerPokemon(index);
             ApplyOppBatonPass(battleScreen);
-            if (battleScreen.ParticipatedPokemon.Contains(battleScreen.OwnPokemonIndex) == false)
+            if (battleScreen.ParticipatedPokemon.Contains(battleScreen.SelfPokemonIndex) == false)
             {
-                battleScreen.ParticipatedPokemon.Add(battleScreen.OwnPokemonIndex);
+                battleScreen.ParticipatedPokemon.Add(battleScreen.SelfPokemonIndex);
             }
-            if (battleScreen.FieldEffects.OwnDigCounter == 0 && battleScreen.FieldEffects.OwnFlyCounter == 0 && battleScreen.FieldEffects.OwnDiveCounter == 0)
+            if (battleScreen.FieldEffects.DigCounter.Self == 0 && battleScreen.FieldEffects.FlyCounter.Self == 0 && battleScreen.FieldEffects.DiveCounter.Self == 0)
             {
                 if (Core.Player.BattleStyle != 1 && OppStep.StepType != BattleRoundConst.StepTypes.Switch && battleScreen.IsPVPBattle == false && canAddSwitchPokemonQuery == true)
                 {
                     addSwitch = true;
-                    battleScreen.BattleQuery.Add(new SwitchPokemonQueryObject(battleScreen, battleScreen.OppPokemon));
+                    battleScreen.BattleQuery.Add(new SwitchPokemonQueryObject(battleScreen, battleScreen.OpponentPokemon));
                     battleScreen.Battle.ChangeCameraAngle(1, false, battleScreen);
                 }
             }
             String oppModel = battleScreen.GetModelName(false);
             if (oppModel == String.Empty)
             {
-                battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OppPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.OppPokemon, true), -1, -1, 0, 1));
+                battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OpponentPokemon, PokemonForms.GetOverworldSpriteName(battleScreen.OpponentPokemon, true), -1, -1, 0, 1));
             }
             else
             {
@@ -8694,31 +8701,31 @@ public class Battle
             }
             float sendBallPositionOffsetY = 0.0f;
             float sendPokemonPositionOffsetY = 0.0f;
-            if (battleScreen.OppPokemonNPC.Model != null)
+            if (battleScreen.OpponentPokemonNPC.Model != null)
             {
                 sendBallPositionOffsetY = 0.5f;
                 sendPokemonPositionOffsetY = -0.5f;
             }
-            battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OppPokemon, 1, -1, -1, -1, -1));
+            battleScreen.BattleQuery.Add(new ToggleEntityQueryObject(true, ToggleEntityQueryObject.BattleEntities.OpponentPokemon, 1, -1, -1, -1, -1));
             if (Core.Player.ShowBattleAnimations == 0 || battleScreen.IsPVPBattle == true)
             {
-                battleScreen.BattleQuery.Add(new PlaySoundQueryObject(battleScreen.OppPokemon.Number.ToString(), true));
+                battleScreen.BattleQuery.Add(new PlaySoundQueryObject(battleScreen.OpponentPokemon.Number.ToString(), true));
             }
-            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.Trainer.Name + ": \"Go, " + battleScreen.OppPokemon.GetDisplayName() + "!\""));
-            AnimationQueryObject ballThrow = new AnimationQueryObject(battleScreen.OppPokemonNPC, false);
+            battleScreen.BattleQuery.Add(new TextQueryObject(battleScreen.Trainer.Name + ": \"Go, " + battleScreen.OpponentPokemon.GetDisplayName() + "!\""));
+            AnimationQueryObject ballThrow = new AnimationQueryObject(battleScreen.OpponentPokemonNPC, false);
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
                 ballThrow.AnimationPlaySound(@"Battle\Pokeball\Throw", 0, 0);
-                Entity ballThrowEntity = ballThrow.SpawnEntity(new Vector3(2, -0.15f, 0), battleScreen.OppPokemon.CatchBall.Texture, new Vector3(0.3f), 1.0f);
+                Entity ballThrowEntity = ballThrow.SpawnEntity(new Vector3(2, -0.15f, 0), battleScreen.OpponentPokemon.catchBall.Texture, new Vector3(0.3f), 1.0f);
                 ballThrow.AnimationMove(ballThrowEntity, true, 0, 0.35f + sendBallPositionOffsetY, 0, 0.1f, false, true, 0f, 0.5f, spinZSpeed: 0.3f, moveYSpeed: 0.025f);
                 ballThrow.AnimationPlaySound(@"Battle\Pokeball\Open", 3, 0);
                 for (int smokeSpawned = 0; smokeSpawned <= 38; smokeSpawned++)
                 {
                     Vector3 smokePosition = new Vector3(0, 0.35f + sendBallPositionOffsetY, 0);
-                    Vector3 smokeDestination = new Vector3((float)(Random.Next(-10, 10) / 10.0), (float)(Random.Next(-10, 10) / 10.0) + sendBallPositionOffsetY, (float)(Random.Next(-10, 10) / 10.0));
+                    Vector3 smokeDestination = new Vector3((float)(Core.Random.Next(-10, 10) / 10.0), (float)(Core.Random.Next(-10, 10) / 10.0) + sendBallPositionOffsetY, (float)(Core.Random.Next(-10, 10) / 10.0));
                     Texture2D smokeTexture = TextureManager.GetTexture(@"Textures\Battle\Smoke");
-                    Vector3 smokeScale = new Vector3((float)(Random.Next(2, 6) / 10.0));
-                    float smokeSpeed = (float)(Random.Next(1, 3) / 20.0f);
+                    Vector3 smokeScale = new Vector3((float)(Core.Random.Next(2, 6) / 10.0));
+                    float smokeSpeed = (float)(Core.Random.Next(1, 3) / 20.0f);
                     Entity smokeEntity = ballThrow.SpawnEntity(smokePosition, smokeTexture, smokeScale, 1, 3);
                     ballThrow.AnimationMove(smokeEntity, true, smokeDestination.X, smokeDestination.Y, smokeDestination.Z, smokeSpeed, false, false, 3.0f, 0.0f);
                 }
@@ -8727,27 +8734,27 @@ public class Battle
             {
                 battleScreen.Battle.ChangeCameraAngle(1, false, battleScreen);
             }
-            String crySuffixOpp = PokemonForms.GetCrySuffix(battleScreen.OppPokemon);
+            String crySuffixOpp = PokemonForms.GetCrySuffix(battleScreen.OpponentPokemon);
             if (Core.Player.ShowBattleAnimations != 0 && battleScreen.IsPVPBattle == false)
             {
                 ballThrow.AnimationSetPosition(null, false, 15, 0.5f, 13, 0, 0);
                 ballThrow.AnimationFade(null, false, 1, 1, 3, 0);
-                ballThrow.AnimationPlaySound(battleScreen.OppPokemon.Number.ToString(), 4, 0, isPokemon: true, crySuffix: crySuffixOpp);
+                ballThrow.AnimationPlaySound(battleScreen.OpponentPokemon.Number.ToString(), 4, 0, isPokemon: true, crySuffix: crySuffixOpp);
                 ballThrow.AnimationMove(null, false, 0, -0.5f + sendPokemonPositionOffsetY, 0, 0.05f, false, false, 5, 0, movementCurve: 3);
                 battleScreen.BattleQuery.Add(ballThrow);
             }
         }
         if (addSwitch == false)
         {
-            Pokemon p = battleScreen.OppPokemon;
+            Pokemon p = battleScreen.OpponentPokemon;
             bool spikeAffected = battleScreen.FieldEffects.IsGrounded(false, battleScreen);
             bool rockAffected = true;
             if (spikeAffected == true)
             {
-                if (battleScreen.FieldEffects.OwnSpikes > 0 && p.Ability.Name.ToLower() != "magic guard")
+                if (battleScreen.FieldEffects.Spikes.Self > 0 && p.Ability.Name.ToLower() != "magic guard")
                 {
                     double spikeDamage = 1.0;
-                    switch (battleScreen.FieldEffects.OwnSpikes)
+                    switch (battleScreen.FieldEffects.Spikes.Self)
                     {
                         case 1: spikeDamage = (p.MaxHP / 100.0) * 12.5; break;
                         case 2: spikeDamage = (p.MaxHP / 100.0) * 16.7; break;
@@ -8758,33 +8765,33 @@ public class Battle
             }
             if (spikeAffected == true)
             {
-                if (battleScreen.FieldEffects.OwnStickyWeb > 0)
+                if (battleScreen.FieldEffects.StickyWeb.Self > 0)
                 {
                     LowerStat(false, false, battleScreen, "Speed", 1, "The opposing Pokémon was caught in a Sticky Web!", "stickyweb");
                 }
             }
             if (spikeAffected == true)
             {
-                if (battleScreen.FieldEffects.OwnToxicSpikes > 0 && p.Status == Pokemon.StatusProblems.None && p.Type1.Type != Element.Types.Poison && (p.Type2 != null && p.Type2.Type != Element.Types.Poison))
+                if (battleScreen.FieldEffects.ToxicSpikes.Self > 0 && p.Status == Pokemon.StatusProblems.None && p.Type1.Type != Element.Types.Poison && (p.Type2 != null && p.Type2.Type != Element.Types.Poison))
                 {
-                    switch (battleScreen.FieldEffects.OwnToxicSpikes)
+                    switch (battleScreen.FieldEffects.ToxicSpikes.Self)
                     {
                         case 1: InflictPoison(false, true, battleScreen, false, "The Toxic Spikes hurt " + p.GetDisplayName() + "!", "toxicspikes"); break;
                         case 2: InflictPoison(false, true, battleScreen, true, "The Toxic Spikes hurt " + p.GetDisplayName() + "!", "toxicspikes"); break;
                     }
                 }
-                if (battleScreen.FieldEffects.OwnToxicSpikes > 0)
+                if (battleScreen.FieldEffects.ToxicSpikes.Self > 0)
                 {
                     if (p.Type1.Type == Element.Types.Poison || p.Type2.Type == Element.Types.Poison)
                     {
                         battleScreen.BattleQuery.Add(new TextQueryObject(p.GetDisplayName() + " removed the Toxic Spikes!"));
-                        battleScreen.FieldEffects.OwnToxicSpikes = 0;
+                        battleScreen.FieldEffects.ToxicSpikes.Self = 0;
                     }
                 }
             }
             if (rockAffected == true)
             {
-                if (battleScreen.FieldEffects.OwnStealthRock > 0 && p.Ability.Name.ToLower() != "magic guard")
+                if (battleScreen.FieldEffects.StealthRock.Self > 0 && p.Ability.Name.ToLower() != "magic guard")
                 {
                     double rocksDamage = 1.0;
                     float effectiveness = BattleCalculation.ReverseTypeEffectiveness(Element.GetElementMultiplier(new Element(Element.Types.Rock), p.Type1)) * BattleCalculation.ReverseTypeEffectiveness(Element.GetElementMultiplier(new Element(Element.Types.Rock), p.Type2));
@@ -8801,16 +8808,16 @@ public class Battle
             }
             TriggerAbilityEffect(battleScreen, false);
             TriggerItemEffect(battleScreen, false);
-            if (battleScreen.OppPokemon.Status == Pokemon.StatusProblems.Sleep)
+            if (battleScreen.OpponentPokemon.Status == Pokemon.StatusProblems.Sleep)
             {
-                battleScreen.FieldEffects.OppSleepTurns = Core.Random.Next(1, 4);
+                battleScreen.FieldEffects.SleepTurns.Opponent = Core.Random.Next(1, 4);
             }
-            if (battleScreen.FieldEffects.OppHealingWish == true)
+            if (battleScreen.FieldEffects.HealingWish.Opponent == true)
             {
-                battleScreen.FieldEffects.OppHealingWish = false;
-                if (battleScreen.OppPokemon.HP < battleScreen.OppPokemon.MaxHP || battleScreen.OppPokemon.Status != Pokemon.StatusProblems.None)
+                battleScreen.FieldEffects.HealingWish.Opponent = false;
+                if (battleScreen.OpponentPokemon.HP < battleScreen.OpponentPokemon.MaxHP || battleScreen.OpponentPokemon.Status != Pokemon.StatusProblems.None)
                 {
-                    GainHP(battleScreen.OppPokemon.MaxHP - battleScreen.OppPokemon.HP, false, false, battleScreen, "The Healing Wish came true for " + battleScreen.OppPokemon.GetDisplayName() + "!", "move:healingwish");
+                    GainHP(battleScreen.OpponentPokemon.MaxHP - battleScreen.OpponentPokemon.HP, false, false, battleScreen, "The Healing Wish came true for " + battleScreen.OpponentPokemon.GetDisplayName() + "!", "move:healingwish");
                     CureStatusProblem(false, false, battleScreen, String.Empty, "move:healingwish");
                 }
             }
@@ -8890,10 +8897,10 @@ public class Battle
                     battleScreen.BattleQuery.Add(new PlayMusicQueryObject(musicLoop));
                     ChangeCameraAngle(1, true, battleScreen);
                     GainEXP(battleScreen);
-                    if (battleScreen.FieldEffects.OwnPayDayCounter > 0)
+                    if (battleScreen.FieldEffects.PayDayCounter.Self > 0)
                     {
-                        Core.Player.Money += battleScreen.FieldEffects.OwnPayDayCounter;
-                        battleScreen.BattleQuery.Add(new TextQueryObject(Core.Player.Name + " picked up $" + battleScreen.FieldEffects.OwnPayDayCounter + "!"));
+                        Core.Player.Money += battleScreen.FieldEffects.PayDayCounter.Self;
+                        battleScreen.BattleQuery.Add(new TextQueryObject(Core.Player.Name + " picked up $" + battleScreen.FieldEffects.PayDayCounter.Self + "!"));
                     }
                     battleScreen.BattleQuery.Add(new EndBattleQueryObject(false));
                     break;
@@ -8931,7 +8938,7 @@ public class Battle
                         battleScreen.BattleQuery.Add(q);
                         battleScreen.BattleQuery.Add(new TextQueryObject(ScriptVersion2.ScriptCommander.Parse(battleScreen.Trainer.PlayerLossMessage).ToString()));
                     }
-                    if (battleScreen.CanGainLoseMoney == true)
+                    if (BattleScreen.CanGainLoseMoney == true)
                     {
                         int highestLevel = 1;
                         foreach (Pokemon pokemon in Core.Player.Pokemons)
@@ -8974,12 +8981,12 @@ public class Battle
 
     private void GainEXP(BattleScreen battleScreen)
     {
-        if (battleScreen.IsPVPBattle == false && battleScreen.CanReceiveEXP == true)
+        if (battleScreen.IsPVPBattle == false && BattleScreen.CanReceiveEXP == true)
         {
             List<int> expPokemon = [];
             foreach (int i in battleScreen.ParticipatedPokemon)
             {
-                if (Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg() == false)
+                if (Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg == false)
                 {
                     expPokemon.Add(i);
                 }
@@ -8988,14 +8995,14 @@ public class Battle
             {
                 if (Core.Player.Inventory.GetItemAmount(658.ToString()) > 0 && Core.Player.EnableExpAll == true)
                 {
-                    if (expPokemon.Contains(i) == false && Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg() == false)
+                    if (expPokemon.Contains(i) == false && Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg == false)
                     {
                         expPokemon.Add(i);
                     }
                 }
                 else
                 {
-                    if (expPokemon.Contains(i) == false && Core.Player.Pokemons[i].Item != null && Core.Player.Pokemons[i].Item!.OriginalName.ToLower() == "exp. share" && Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg() == false)
+                    if (expPokemon.Contains(i) == false && Core.Player.Pokemons[i].Item != null && Core.Player.Pokemons[i].Item!.OriginalName.ToLower() == "exp. share" && Core.Player.Pokemons[i].Status != Pokemon.StatusProblems.Fainted && Core.Player.Pokemons[i].IsEgg == false)
                     {
                         expPokemon.Add(i);
                     }
@@ -9045,9 +9052,9 @@ public class Battle
                 {
                     for (int l = 1; l <= levelUpAmount; l++)
                     {
-                        if (Core.Player.Pokemons[pokeIndex].AttackLearns.ContainsKey(originalLevel + l))
+                        if (Core.Player.Pokemons[pokeIndex].attackLearns.ContainsKey(originalLevel + l))
                         {
-                            List<Attack> aList = Core.Player.Pokemons[pokeIndex].AttackLearns[originalLevel + l];
+                            List<Attack> aList = Core.Player.Pokemons[pokeIndex].attackLearns[originalLevel + l];
                             for (int a = 0; a <= aList.Count - 1; a++)
                             {
                                 if (attackLearnList.Contains(aList[a]) == false && Core.Player.Pokemons[pokeIndex].KnowsMove(aList[a]) == false)
@@ -9065,7 +9072,7 @@ public class Battle
                         battleScreen.BattleQuery.Add(new LearnMovesQueryObject(Core.Player.Pokemons[pokeIndex], attackLearnList[a], battleScreen));
                     }
                 }
-                Core.Player.Pokemons[pokeIndex].GainEffort(battleScreen.OppPokemon);
+                Core.Player.Pokemons[pokeIndex].GainEffort(battleScreen.OpponentPokemon);
             }
         }
         battleScreen.ParticipatedPokemon.Clear();

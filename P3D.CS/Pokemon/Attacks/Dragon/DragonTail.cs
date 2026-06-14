@@ -106,7 +106,7 @@ public class DragonTail : Attack
                                         {
                                             i = Core.Random.Next(0, battleScreen.Trainer.Pokemons.Count - 1);
                                         }
-                                        battleScreen.Battle.SwitchOutOpponent(battleScreen, i, "", false);
+                                        battleScreen.Battle.SwitchOutOpp(battleScreen, i, "", false);
                                     }
                                     else
                                     {
@@ -122,7 +122,7 @@ public class DragonTail : Attack
                                         {
                                             i = Core.Random.Next(0, Core.Player.Pokemons.Count - 1);
                                         }
-                                        battleScreen.Battle.SwitchOutSelf(battleScreen, i, -1);
+                                        battleScreen.Battle.SwitchOutOwn(battleScreen, i, -1);
                                     }
                                     else
                                     {

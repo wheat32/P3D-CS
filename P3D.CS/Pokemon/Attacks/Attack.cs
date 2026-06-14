@@ -253,7 +253,7 @@ public class Attack
     // Factory
     // -------------------------------------------------------------------------
 
-    // TODO Phase 5: replace with per-move subclass instantiation (Moves.Normal.Pound() etc.)
+    // TODO Phase 12: replace with per-move subclass instantiation (Moves.Normal.Pound() etc.)
     public static Attack GetAttackByID(int id)
     {
         Attack returnMove = new Attack();

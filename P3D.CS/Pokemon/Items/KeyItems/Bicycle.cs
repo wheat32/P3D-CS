@@ -16,6 +16,32 @@ public class Bicycle : KeyItem
 
     public override void Use()
     {
-        // TODO Phase 4: bicycle ride logic (requires Level.Riding, MusicManager)
+        if (Core.CurrentScreen.Identification != Screen.Identifications.OverworldScreen)
+            return;
+        Level level = Screen.Level!;
+        if (level.Riding == true)
+        {
+            level.Riding = false;
+            Core.Player.TempRideSkin = String.Empty;
+            if (level.IsRadioOn == false)
+            {
+                if (level.Surfing == true)
+                    MusicManager.Play("surf", true);
+                else if (MusicManager.GetSong(level.MusicLoop) != null)
+                    MusicManager.Play(level.MusicLoop, true, 0.01f);
+                else
+                    MusicManager.Play("silence");
+            }
+        }
+        else if (level.CanRide() == true)
+        {
+            level.Riding = true;
+            Core.Player.TempRideSkin = Core.Player.Skin;
+            MusicManager.Play("ride", true);
+        }
+        else
+        {
+            Screen.TextBox.Show(Localization.GetString("item_cannot_use_Here", "Can't use that here!"), []);
+        }
     }
 }

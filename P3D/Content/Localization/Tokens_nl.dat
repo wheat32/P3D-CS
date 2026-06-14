@@ -237,6 +237,9 @@ start_screen_tostart,om te beginnen.
 Main Menu:
 main_menu_newgame_line1,Nieuw
 main_menu_newgame_line2,Spel
+main_menu_quit_line1,Spel
+main_menu_quit_line2,Afsluiten
+main_menu_online_disabled,(Inactief)
 main_menu_options,Opties
 main_menu_gamejolt_ChangeToMale,Verander naar man
 main_menu_gamejolt_ChangeToFemale,Verander naar vrouw

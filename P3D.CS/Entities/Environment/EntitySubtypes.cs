@@ -3,11 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace P3D;
 
-// TODO Phase 4: full entity subtype ports
+// TODO Phase 12: full entity subtype ports
 
 public class AnimatedBlock : Entity
 {
     public void Initialize(List<List<int>>? animationData = null) => base.Initialize();
+    public static void ClearAnimationResources() { }
 }
 
 public class WallBlock : Entity
@@ -43,6 +44,7 @@ public class SignBlock : Entity
 public class WarpBlock : Entity
 {
     public new void Initialize() => base.Initialize();
+    public void Warp(bool instant) { }
 }
 
 public class Floor : Entity
@@ -96,11 +98,14 @@ public class CutDownTree : Entity
 public class Water : Entity
 {
     public new void Initialize() => base.Initialize();
+    public static void ClearAnimationResources() { }
+    public static void AddDefaultWaterAnimationResources() { }
 }
 
 public class Grass : Entity
 {
     public new void Initialize() => base.Initialize();
+    public static List<Entity> GetGrassTilesAroundPlayer(float radius) => [];
 }
 
 public class BerryPlant : Entity
@@ -121,13 +126,16 @@ public class LoamySoil : Entity
 public class ItemObject : Entity
 {
     public new void Initialize() => base.Initialize();
+    public bool IsHiddenItem() => false;
 }
 
 public class ScriptBlock : Entity
 {
     public static bool TriggeredScriptBlock;
+    public String ScriptID { get; set; } = String.Empty;
 
     public new void Initialize() => base.Initialize();
+    public int GetActivationID() => 0;
 }
 
 public class TurningSign : Entity
@@ -159,6 +167,8 @@ public class StrengthRock : Entity
 public class Waterfall : Entity
 {
     public new void Initialize() => base.Initialize();
+    public static void ClearAnimationResources() { }
+    public static void AddDefaultWaterAnimationResources() { }
 }
 
 public class Whirlpool : Entity
@@ -176,6 +186,7 @@ public class StrengthTrigger : Entity
 public class ModelEntity : Entity
 {
     public new void Initialize() => base.Initialize();
+    public void LoadModel(String modelPath) { }
 }
 
 public class RotationTile : Entity
@@ -256,7 +267,7 @@ public class NPC : Entity
     public static void RemoveNPCData(String id) { }
 }
 
-// TODO Phase 4: full MessageBulb port
+// TODO Phase 12: full MessageBulb port
 public class MessageBulb : Entity
 {
     public enum NotificationTypes

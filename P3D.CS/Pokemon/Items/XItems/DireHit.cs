@@ -16,7 +16,20 @@ public class DireHit : XItem
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 5: battle stat boost (requires BattleScreen)
-        return false;
+        Screen s = Core.CurrentScreen;
+        while (s.Identification != Screen.Identifications.BattleScreen && s.PreScreen != null)
+            s = s.PreScreen;
+        if (s.Identification != Screen.Identifications.BattleScreen)
+            return false;
+        BattleScreen bs = (BattleScreen)s;
+        if (bs.FieldEffects.FocusEnergy.Self > 0)
+        {
+            Screen.TextBox.Show(bs.SelfPokemon!.GetDisplayName() + " is already pumped up!", []);
+            return false;
+        }
+        bs.FieldEffects.FocusEnergy = (1, bs.FieldEffects.FocusEnergy.Opponent);
+        Screen.TextBox.Show(bs.SelfPokemon!.GetDisplayName() + " is getting pumped!", []);
+        RemoveItem();
+        return true;
     }
 }

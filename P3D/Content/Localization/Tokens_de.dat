@@ -236,6 +236,9 @@ start_screen_tostart,zum Starten.
 Main Menu:
 main_menu_newgame_line1,Neues
 main_menu_newgame_line2,Spiel
+main_menu_quit_line1,Spiel
+main_menu_quit_line2,Beenden
+main_menu_online_disabled,(Deaktiviert)
 main_menu_options,Optionen
 main_menu_gamejolt_ChangeToMale,Wechsle zu Männlich
 main_menu_gamejolt_ChangeToFemale,Wechsle zu Weiblich

@@ -5,6 +5,9 @@ main_menu_continue,Fortsett
 main_menu_load_game,Last Spill
 main_menu_new_game,Nytt Spill
 main_menu_quit_game,Avslutt Spill
+main_menu_quit_line1,Avslutt
+main_menu_quit_line2,Spillet
+main_menu_online_disabled,(Deaktivert)
 LoadScreen:
 load_menu_name,Navn
 load_menu_badges,Merker

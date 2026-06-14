@@ -7,7 +7,7 @@ using P3D.Items;
 namespace P3D.BattleSystem;
 
 // ---------------------------------------------------------------------------
-// TODO Phase 5: replace all stubs below with fully ported implementations
+// TODO Phase 12: replace all stubs below with fully ported implementations
 // ---------------------------------------------------------------------------
 
 // ---- Battle step stubs (used by moves like Encore that check what the opponent just did) ----
@@ -49,16 +49,7 @@ public class BattleStep
 // BattleMenu is fully ported in Battle/BattleMenu.cs
 // BattleScreen is fully ported in Battle/BattleScreen.cs
 
-// ---- BattleCatchScreen ----
-public class BattleCatchScreen : Screen
-{
-    public BattleCatchScreen(BattleScreen battleScreen, Items.Item ball)
-    {
-        PreScreen = battleScreen;
-        Identification = Identifications.BattleCatchScreen;
-    }
-}
-
+// BattleCatchScreen is fully ported in Screens/Battle/BattleCatchScreen.cs
 // BattleCalculation is fully ported in Battle/BattleCalculation.cs
 
 // ---- AttackSpecialBasePower ----
@@ -115,5 +106,7 @@ public static class PlayerStatistics
 {
     public static void Track(String key, int amount) { }
     public static void Track(String key, double amount) { }
+    public static int CountStatistics() => 0;
+    public static String GetData() => String.Empty;
 }
 

@@ -44,12 +44,13 @@ public static class Localization
 
     public static void LoadTokenFile(String path, bool isGameModeFile)
     {
-        String fullPath = GameController.GamePath + path;
-        String tokenFullPath = fullPath + "Tokens_" + LanguageSuffix + ".dat";
+        String[] pathParts = path.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+        String fullPath = Path.Combine([GameController.GamePath, ..pathParts]);
+        String tokenFullPath = Path.Combine(fullPath, "Tokens_" + LanguageSuffix + ".dat");
 
         Logger.Debug("Token filepath: " + tokenFullPath);
 
-        if (Directory.GetFiles(fullPath).Length > 0)
+        if (Directory.Exists(fullPath) == true && Directory.GetFiles(fullPath).Length > 0)
         {
             if (File.Exists(tokenFullPath) == false)
             {

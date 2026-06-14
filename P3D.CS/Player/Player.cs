@@ -63,6 +63,8 @@ public class Player : HashSecureBase
         }
     } = DEFAULT_OT;
 
+    public bool IsFlying { get; set; }
+
     public bool SandBoxMode
     {
         get
@@ -110,6 +112,11 @@ public class Player : HashSecureBase
     public String RivalName { get; set; } = "???";
     public String RivalSkin { get; set; } = DEFAULT_RIVAL_SKIN;
     public String Gender { get; set; } = "Male";
+    public bool Male
+    {
+        get => Gender != "Female";
+        set => Gender = value == true ? "Male" : "Female";
+    }
     public int Money { get; set; }
     public int Points { get; set; }
     public int BP { get; set; }
@@ -224,6 +231,7 @@ public class Player : HashSecureBase
         public static int PokemonSummaryPageIndex;
         public static int PCBoxIndex;
         public static Vector2 StorageSystemCursorPosition = new Vector2(1, 0);
+        public static StorageSystemScreen.SelectionModes PCSelectionType = StorageSystemScreen.SelectionModes.SingleMove;
         public static int OptionScreenIndex;
         public static bool[] MapSwitch = new bool[4];
         public static Vector3 LastPosition;
@@ -234,6 +242,7 @@ public class Player : HashSecureBase
         public static int PokedexModeIndex;
         public static int PokedexHabitatIndex;
         public static int PokegearPage;
+        public static int LastPokegearPage;
         public static int LastCall = 32;
         public static int LastUsedRepel = -1;
         public static int MapSteps;
@@ -275,7 +284,7 @@ public class Player : HashSecureBase
 
     public void LoadGame(String filePrefix)
     {
-        // TODO Phase 3: wire up full LoadGame dependencies
+        // TODO Phase 12: wire up full LoadGame dependencies
         FilePrefix = filePrefix;
         PokeFiles.Clear();
         GameMode = DEFAULT_GAMEMODE;
@@ -746,15 +755,135 @@ public class Player : HashSecureBase
 
     private void LoadParty()
     {
-        // TODO Phase 3: implement full LoadParty using Pokemon.GetPokemonByData
         Pokemons.Clear();
+        String data = IsGameJoltSave == true
+            ? Core.GameJoltSave.Party
+            : File.ReadAllText(
+                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Party.dat"));
+        foreach (String line in data.SplitAtNewline())
+        {
+            if (line.StartsWith("{") == false) continue;
+            Pokemon p = Pokemon.GetPokemonByData(line);
+            if (p != null)
+            {
+                Pokemons.Add(p);
+            }
+        }
     }
-
-    // Save (TODO Phase 3)
 
     public void SaveGame(bool isAutosave = false)
     {
-        // TODO Phase 3: implement full SaveGame
+        if (IsGameJoltSave == true) return;
+
+        String saveDir = Path.Combine(GameController.GamePath, "Save", FilePrefix);
+        Directory.CreateDirectory(saveDir);
+
+        File.WriteAllText(Path.Combine(saveDir, "Player.dat"), GetPlayerData(false));
+        File.WriteAllText(Path.Combine(saveDir, "Options.dat"), GetOptionsData());
+
+        System.Text.StringBuilder partySb = new();
+        foreach (Pokemon p in Pokemons)
+            partySb.AppendLine(p.GetSaveData());
+        File.WriteAllText(Path.Combine(saveDir, "Party.dat"), partySb.ToString());
+
+        System.Text.StringBuilder itemsSb = new();
+        foreach (PlayerInventory.ItemContainer slot in Inventory)
+            itemsSb.AppendLine("{" + slot.ItemID + "|" + slot.Amount + "}");
+        foreach (Items.MailItem.MailData mail in Mails)
+            itemsSb.AppendLine("Mail|" + Items.MailItem.GetStringFromMail(mail));
+        File.WriteAllText(Path.Combine(saveDir, "Items.dat"), itemsSb.ToString());
+
+        File.WriteAllText(Path.Combine(saveDir, "Berries.dat"), BerryData);
+        File.WriteAllText(Path.Combine(saveDir, "Apricorns.dat"), ApricornData);
+        File.WriteAllText(Path.Combine(saveDir, "Box.dat"), BoxData);
+        File.WriteAllText(Path.Combine(saveDir, "Daycare.dat"), DaycareData);
+        File.WriteAllText(Path.Combine(saveDir, "HallOfFame.dat"), HallOfFameData);
+        File.WriteAllText(Path.Combine(saveDir, "ItemData.dat"), ItemData);
+        File.WriteAllText(Path.Combine(saveDir, "NPC.dat"), NPCData);
+        File.WriteAllText(Path.Combine(saveDir, "Pokedex.dat"), PokedexData);
+        File.WriteAllText(Path.Combine(saveDir, "Register.dat"), RegisterData);
+        File.WriteAllText(Path.Combine(saveDir, "RoamingPokemon.dat"), RoamingPokemonData);
+        File.WriteAllText(Path.Combine(saveDir, "SecretBase.dat"), SecretBaseData);
+    }
+
+    public String GetPlayerData(bool online)
+    {
+        System.Text.StringBuilder sb = new();
+        sb.AppendLine("Name|" + Name);
+        sb.AppendLine("Position|" + StartPosition.X.ToString("G", System.Globalization.CultureInfo.InvariantCulture) + "," +
+                                    StartPosition.Y.ToString("G", System.Globalization.CultureInfo.InvariantCulture) + "," +
+                                    StartPosition.Z.ToString("G", System.Globalization.CultureInfo.InvariantCulture));
+        sb.AppendLine("LastPokemonPosition|" + LastPokemonPosition.X.ToString("G", System.Globalization.CultureInfo.InvariantCulture) + "," +
+                                               LastPokemonPosition.Y.ToString("G", System.Globalization.CultureInfo.InvariantCulture) + "," +
+                                               LastPokemonPosition.Z.ToString("G", System.Globalization.CultureInfo.InvariantCulture));
+        sb.AppendLine("MapFile|" + StartMap);
+        sb.AppendLine("RivalName|" + RivalName);
+        sb.AppendLine("RivalSkin|" + RivalSkin);
+        sb.AppendLine("Money|" + Money);
+        sb.AppendLine("Badges|" + String.Join(",", Badges));
+        sb.AppendLine("Rotation|" + StartRotation.ToString("G", System.Globalization.CultureInfo.InvariantCulture));
+        sb.AppendLine("Gender|" + Gender);
+        TimeSpan elapsed = PlayTime + (DateTime.Now - GameStart);
+        sb.AppendLine("Playtime|" + elapsed.Days + "," + elapsed.Hours + "," + elapsed.Minutes + "," + elapsed.Seconds);
+        sb.AppendLine("OT|" + OT);
+        sb.AppendLine("Points|" + Points);
+        sb.AppendLine("HasPokedex|" + HasPokedex);
+        sb.AppendLine("HasPokegear|" + HasPokegear);
+        sb.AppendLine("FOV|" + StartFOV.ToString("G", System.Globalization.CultureInfo.InvariantCulture));
+        sb.AppendLine("FreeCamera|" + StartFreeCameraMode);
+        sb.AppendLine("ThirdPerson|" + StartThirdPerson);
+        sb.AppendLine("Skin|" + Skin);
+        sb.AppendLine("BattleAnimations|" + ShowBattleAnimations);
+        sb.AppendLine("RunMode|" + RunMode);
+        sb.AppendLine("RunToggled|" + RunToggled);
+        sb.AppendLine("BoxAmount|" + BoxAmount);
+        sb.AppendLine("LastRestPlace|" + LastRestPlace);
+        sb.AppendLine("LastRestPlacePosition|" + LastRestPlacePosition);
+        sb.AppendLine("RepelSteps|" + RepelSteps);
+        if (String.IsNullOrEmpty(ScriptDelayItems) == false)
+        {
+            sb.AppendLine("ScriptDelayItems|" + ScriptDelayItems);
+        }
+        sb.AppendLine("ScriptDelaySteps|" + ScriptDelaySteps);
+        sb.AppendLine("ScriptDelayDisplaySteps|" + ScriptDelayDisplaySteps);
+        sb.AppendLine("LastSavePlace|" + LastSavePlace);
+        sb.AppendLine("LastSavePlacePosition|" + LastSavePlacePosition);
+        sb.AppendLine("Difficulty|" + DifficultyMode);
+        sb.AppendLine("BattleStyle|" + BattleStyle);
+        sb.AppendLine("SaveCreated|" + SaveCreated);
+        if (String.IsNullOrEmpty(NewFilePrefix) == false)
+        {
+            sb.AppendLine("Autosave|" + NewFilePrefix);
+        }
+        sb.AppendLine("DaycareSteps|" + DaycareSteps);
+        sb.AppendLine("GameMode|" + GameMode);
+        if (PokeFiles.Count > 0)
+        {
+            sb.AppendLine("PokeFiles|" + String.Join(",", PokeFiles));
+        }
+        sb.AppendLine("VisitedMaps|" + VisitedMaps);
+        sb.AppendLine("TempSurfSkin|" + TempSurfSkin);
+        sb.AppendLine("Surfing|" + StartSurfing);
+        sb.AppendLine("BP|" + BP);
+        sb.AppendLine("Coins|" + Coins);
+        sb.AppendLine("GTSStars|" + GTSStars);
+        sb.AppendLine("ShowModels|" + ShowModelsInBattle);
+        sb.AppendLine("SandboxMode|" + SandBoxMode);
+        if (EarnedAchievements.Count > 0)
+        {
+            sb.AppendLine("EarnedAchievements|" + String.Join(",", EarnedAchievements));
+        }
+        sb.AppendLine("ExpAll|" + EnableExpAll);
+        return sb.ToString();
+    }
+
+    public String GetOptionsData()
+    {
+        System.Text.StringBuilder sb = new();
+        sb.AppendLine("FOV|" + StartFOV.ToString("G", System.Globalization.CultureInfo.InvariantCulture));
+        sb.AppendLine("TextSpeed|" + TextBox.TextSpeed);
+        sb.AppendLine("MouseSpeed|" + StartRotationSpeed);
+        return sb.ToString();
     }
 
     // Utility methods
@@ -838,12 +967,14 @@ public class Player : HashSecureBase
 
     public bool CanCatchPokemon()
     {
-        // TODO Phase 5: proper box-capacity check (mirrors VB Player.CanCatchPokemon)
         if (Pokemons.Count < 6)
-        {
             return true;
+        foreach (StorageSystemScreen.Box box in StorageSystemScreen.LoadBoxes())
+        {
+            if (box.pokemon.Count < 30)
+                return true;
         }
-        return true; // assume box space available while storage system is stubbed
+        return false;
     }
 
     public void ResetNewLevel()
@@ -855,7 +986,7 @@ public class Player : HashSecureBase
 
     public void DrawLevelUp()
     {
-        // TODO Phase 8: wire up full GameJolt emblem draw
+        // TODO Phase 9: wire up full GameJolt emblem draw
         if (IsGameJoltSave == false)
         {
             return;
@@ -967,7 +1098,7 @@ public class Player : HashSecureBase
         ResetNewLevel();
     }
 
-    // Step events (TODO Phase 4)
+    // Step events (TODO Phase 12)
 
     public void HealParty()
     {
@@ -1001,17 +1132,17 @@ public class Player : HashSecureBase
 
     public void StepEvent(int stepAmount)
     {
-        // TODO Phase 4: implement full step event system
+        // TODO Phase 12: implement full step event system
     }
 
     public void CheckItemCountScriptDelay(String itemID)
     {
-        // TODO Phase 4: implement
+        // TODO Phase 12: implement
     }
 
     public void AddPoints(int amount, String reason)
     {
-        // TODO Phase 8: add mystery event multiplier and full GameJolt handling
+        // TODO Phase 9: add mystery event multiplier and full GameJolt handling
         Points += amount;
     }
 }

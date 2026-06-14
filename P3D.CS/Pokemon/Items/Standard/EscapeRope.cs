@@ -16,6 +16,6 @@ public class EscapeRope : Item
 
     public override void Use()
     {
-        // TODO Phase 4: escape rope warp logic (requires Level.CanDig, ActionScript)
+        // TODO Phase 12: escape rope warp logic (requires Level.CanDig, ActionScript)
     }
 }

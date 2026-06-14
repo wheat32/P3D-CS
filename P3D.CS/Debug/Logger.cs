@@ -144,7 +144,7 @@ public static class Logger
                 : "False";
 
             String gameInformation =
-                $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENTSTAGE} version: {GameController.GAMEVERSION} ({GameController.RELEASEVERSION}){Environment.NewLine}" +
+                $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENT_STAGE} version: {GameController.GAME_VERSION} ({GameController.RELEASE_VERSION}) - .NET 10 port v. {GameController.PORT_VERSION}{Environment.NewLine}" +
                 $"Content Packs: {contentPacks}{Environment.NewLine}" +
                 $"Active GameMode: {gameMode}{Environment.NewLine}" +
                 $"{onlineInfo}{Environment.NewLine}" +
@@ -252,7 +252,8 @@ public static class Logger
             return $"\"CRASHLOG_{logPath}\" " +
                    $"\"ERRORTYPE_{informationItem.ErrorType}\" " +
                    $"\"ERRORID_{informationItem.ErrorID}\" " +
-                   $"\"GAMEVERSION_{GameController.GAMEDEVELOPMENTSTAGE} {GameController.GAMEVERSION}\" " +
+                   $"\"GAMEVERSION_{GameController.GAMEDEVELOPMENT_STAGE} {GameController.GAME_VERSION}\" " +
+                   $"\"PORTVERSION_{GameController.PORT_VERSION}\" " +
                    $"\"CODESOURCE_{ex.Source}\" " +
                    $"\"TOPSTACK_{ErrorInformation.GetStackItem(ex.StackTrace ?? "", 0)}\"";
         }
@@ -267,7 +268,8 @@ public static class Logger
 
     public static void Debug(String message)
     {
-        String stackTraceEntry = Environment.StackTrace.SplitAtNewline()[3];
+        String[] stackFrames = Environment.StackTrace.SplitAtNewline();
+        String stackTraceEntry = stackFrames[stackFrames.Length > 3 ? 3 : stackFrames.Length - 1];
 
         stackTraceEntry = stackTraceEntry.TrimStart();
         stackTraceEntry = stackTraceEntry[(stackTraceEntry.IndexOf(' ') + 1)..];

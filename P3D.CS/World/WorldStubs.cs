@@ -4,7 +4,7 @@ using P3D.Items;
 
 namespace P3D;
 
-// TODO Phase 4: full Particle port
+// TODO Phase 12: full Particle port
 public class Particle : Entity
 {
     public enum Behaviors { Default, Rising, LeftToRight, Sinking }
@@ -22,12 +22,13 @@ public class Particle : Entity
     public void MoveWithCamera(Vector3 diff) { }
 }
 
-// TODO Phase 4: full OwnPlayer port
+// TODO Phase 12: full OwnPlayer port
 public class OwnPlayer : NPC
 {
     public String SkinName { get; set; } = String.Empty;
     public bool UsingGameJoltTexture { get; set; }
     public bool DoAnimation;
+    public Texture2D? Texture { get; set; }
 
     public OwnPlayer(float x, float y, float z, Texture2D[] textures, String skin,
                      int facing, int moveType, String script, String name, int id)
@@ -38,7 +39,7 @@ public class OwnPlayer : NPC
     public new void UpdateEntity() { }
 }
 
-// TODO Phase 4: full OverworldPokemon port
+// TODO Phase 12: full OverworldPokemon port
 public class OverworldPokemon : Entity
 {
     public bool warped;
@@ -48,10 +49,11 @@ public class OverworldPokemon : Entity
 
     public OverworldPokemon(float x, float y, float z) { }
     public void ChangeRotation() { }
+    public void ForceTextureChange() { }
     public bool IsVisible() => Visible;
 }
 
-// TODO Phase 8: full NetworkPokemon port
+// TODO Phase 9: full NetworkPokemon port
 public class NetworkPokemon : Entity
 {
 }
@@ -111,18 +113,19 @@ public class Shader
     }
 }
 
-// TODO Phase 4: full RoamingPokemon port
+// TODO Phase 12: full RoamingPokemon port
 public class RoamingPokemon
 {
     public String WorldID = String.Empty;
     public String ScriptPath = String.Empty;
+    public String MusicLoop = String.Empty;
 
     public static void ShiftRoamingPokemon(int shift) { }
     public static String RemoveRoamingPokemon(RoamingPokemon storage) => String.Empty;
     public static String ReplaceRoamingPokemon(RoamingPokemon storage) => String.Empty;
 }
 
-// TODO Phase 4: full PokemonEncounterDataStruct port
+// TODO Phase 12: full PokemonEncounterDataStruct port
 public struct PokemonEncounterDataStruct
 {
     public Vector3 Position;
@@ -131,7 +134,7 @@ public struct PokemonEncounterDataStruct
     public String PokeFile;
 }
 
-// TODO Phase 4: full WarpDataStruct port
+// TODO Phase 12: full WarpDataStruct port
 public struct WarpDataStruct
 {
     public String WarpDestination;

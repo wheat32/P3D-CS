@@ -5,6 +5,9 @@ main_menu_continue,Devam et
 main_menu_load_game,Kayitli Oyun
 main_menu_new_game,Yeni Oyun
 main_menu_quit_game,Oyundan Çik
+main_menu_quit_line1,Oyundan
+main_menu_quit_line2,Çık
+main_menu_online_disabled,(Devre Dışı)
 LoadScreen:
 load_menu_name,Isim
 load_menu_badges,Rozetler

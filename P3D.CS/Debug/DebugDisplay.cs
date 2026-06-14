@@ -69,7 +69,7 @@ public static class DebugDisplay
             : "";
 
         String text =
-            $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENTSTAGE} {GameController.GAMEVERSION}" +
+            $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENT_STAGE} {GameController.GAME_VERSION} (.NET 10 v. {GameController.PORT_VERSION})" +
             $" / FPS: {Math.Round(Core.GameInstance.FPSMonitor.Value, 0)}{debugSuffix}{Environment.NewLine}" +
             cameraInfo +
             $"E: {_drawnVertices}/{_maxVertices} ({_maxVisibleVertices}){Environment.NewLine}" +

@@ -26,7 +26,7 @@ public class SkyDome
 
     public SkyDome()
     {
-        _skydomeModel = Core.Content.Load<Model>(@"SkyDomeResource\SkyDome");
+        _skydomeModel = Core.Content.Load<Model>("SkyDomeResource/SkyDome");
 
         TextureUp = TextureManager.GetTexture(@"SkyDomeResource\Sky_Day");
         TextureDown = TextureManager.GetTexture(@"SkyDomeResource\Stars");

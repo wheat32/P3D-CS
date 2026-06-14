@@ -1,6 +1,6 @@
 namespace P3D.BattleSystem;
 
-// TODO Phase 5: full GameModeAttackLoader port
+// TODO Phase 12: full GameModeAttackLoader port
 public static partial class GameModeAttackLoader
 {
     public static Attack GetAttackByID(int id)

@@ -16,7 +16,20 @@ public class GuardSpec : XItem
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 5: battle guard logic (requires BattleScreen)
-        return false;
+        Screen s = Core.CurrentScreen;
+        while (s.Identification != Screen.Identifications.BattleScreen && s.PreScreen != null)
+            s = s.PreScreen;
+        if (s.Identification != Screen.Identifications.BattleScreen)
+            return false;
+        BattleScreen bs = (BattleScreen)s;
+        if (bs.FieldEffects.GuardSpec.Self > 0)
+        {
+            Screen.TextBox.Show("Guard Spec. is already active!", []);
+            return false;
+        }
+        bs.FieldEffects.GuardSpec = (5, bs.FieldEffects.GuardSpec.Opponent);
+        Screen.TextBox.Show("Guard Spec. protected " + bs.SelfPokemon!.GetDisplayName() + "!", []);
+        RemoveItem();
+        return true;
     }
 }

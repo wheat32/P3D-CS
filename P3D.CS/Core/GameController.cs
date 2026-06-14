@@ -16,11 +16,14 @@ public class Classified
 /// <summary>Controls the game's main workflow.</summary>
 public class GameController : Game
 {
-    public const String GAMEVERSION = "0.61";
-    public const String RELEASEVERSION = "108";
-    public const String GAMEDEVELOPMENTSTAGE = "Indev";
+    public const String GAME_VERSION = "0.61";
+    public const String RELEASE_VERSION = "108";
+    public const String GAMEDEVELOPMENT_STAGE = "Indev";
     public const String GAMENAME = "Pokémon 3D";
     public const String DEVELOPER_NAME = "P3D Team";
+    
+    // Variable(s) for the C# port
+    public const String PORT_VERSION = "0.1.0";
 
 #if DEBUG
     public const bool IS_DEBUG_ACTIVE = true;

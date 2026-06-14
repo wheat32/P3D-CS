@@ -12,16 +12,18 @@ public class FontContainer
         FontName = fontName;
         SpriteFont = font;
 
-        switch (fontName.ToLower())
+        char preferred = fontName.ToLower() switch
         {
-            case "braille":
-            case "voltorbflipfont":
-                SpriteFont.DefaultCharacter = ' ';
-                break;
-
-            default:
-                SpriteFont.DefaultCharacter = '?';
-                break;
+            "braille" or "voltorbflipfont" => ' ',
+            _ => '?'
+        };
+        if (SpriteFont.Characters.Contains(preferred))
+        {
+            SpriteFont.DefaultCharacter = preferred;
+        }
+        else if (SpriteFont.Characters.Contains(' '))
+        {
+            SpriteFont.DefaultCharacter = ' ';
         }
     }
 }

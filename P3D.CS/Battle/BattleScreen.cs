@@ -2611,7 +2611,7 @@ public class BattleScreen : Screen
     {
         String lockData = "{}";
         BattleRoundConst oppStep = Battle.GetOppStep(this, Battle.OwnStep);
-        if (Battle.SelectedMoveOpp == false)
+        if (Battle.selectedMoveOpp == false)
         {
             if (oppStep.StepType.Equals(BattleRoundConst.StepTypes.Move))
             {

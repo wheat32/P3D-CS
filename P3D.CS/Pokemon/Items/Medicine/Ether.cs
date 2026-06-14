@@ -16,7 +16,7 @@ public class Ether : MedicineItem
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 6: PP restore logic (requires ChooseAttackScreen)
+        // TODO Phase 12: PP restore logic (requires ChooseAttackScreen)
         return false;
     }
 }

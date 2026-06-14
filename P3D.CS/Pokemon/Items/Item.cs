@@ -325,7 +325,7 @@ public abstract class Item
     {
         if (id.Contains("gm") == true)
         {
-            // TODO Phase 7: GameModeItemLoader.GetItemByID(id)
+            // TODO Phase 12: GameModeItemLoader.GetItemByID(id)
             return null;
         }
 

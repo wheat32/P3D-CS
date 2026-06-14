@@ -85,7 +85,7 @@ public class Whirlwind : Attack
                         {
                             i = Core.Random.Next(0, battleScreen.Trainer.Pokemons.Count);
                         }
-                        battleScreen.Battle.SwitchOutOpponent(battleScreen, i, "", false);
+                        battleScreen.Battle.SwitchOutOpp(battleScreen, i, "", false);
                     }
                     else
                     {
@@ -101,7 +101,7 @@ public class Whirlwind : Attack
                         {
                             i = Core.Random.Next(0, Core.Player.Pokemons.Count);
                         }
-                        battleScreen.Battle.SwitchOutSelf(battleScreen, i, -1);
+                        battleScreen.Battle.SwitchOutOwn(battleScreen, i, -1);
                     }
                     else
                     {

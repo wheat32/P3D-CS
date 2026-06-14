@@ -33,6 +33,16 @@ public class GameOptions
         set => _interfaceScale = value;
     }
 
+    // VB.NET stores booleans as integers ("0" = false, "-1"/"1" = true) in option files.
+    private static bool ParseBool(String value)
+    {
+        if (int.TryParse(value, out int intVal))
+        {
+            return intVal != 0;
+        }
+        return bool.Parse(value);
+    }
+
     public void LoadOptions()
     {
         KeyBindings.CreateKeySave(false);
@@ -76,8 +86,8 @@ public class GameOptions
                     break;
 
                 case "muted":
-                    SoundManager.Muted = bool.Parse(value);
-                    MusicManager.Muted = bool.Parse(value);
+                    SoundManager.Muted = ParseBool(value);
+                    MusicManager.Muted = ParseBool(value);
                     break;
 
                 case "renderdistance":
@@ -89,15 +99,15 @@ public class GameOptions
                     break;
 
                 case "showboundingboxes":
-                    Entity.drawViewBox = bool.Parse(value);
+                    Entity.drawViewBox = ParseBool(value);
                     break;
 
                 case "showdebugconsole":
-                    Logger.DisplayLog = bool.Parse(value);
+                    Logger.DisplayLog = ParseBool(value);
                     break;
 
                 case "showgui":
-                    ShowGUI = bool.Parse(value);
+                    ShowGUI = ParseBool(value);
                     break;
 
                 case "graphicstyle":
@@ -135,16 +145,16 @@ public class GameOptions
                     break;
 
                 case "viewbobbing":
-                    ViewBobbing = bool.Parse(value);
+                    ViewBobbing = ParseBool(value);
                     break;
 
                 case "lightingenabled":
                 case "lightningenabled":
-                    LightingEnabled = bool.Parse(value);
+                    LightingEnabled = ParseBool(value);
                     break;
 
                 case "gamepadenabled":
-                    GamePadEnabled = bool.Parse(value);
+                    GamePadEnabled = ParseBool(value);
                     break;
 
                 case "gamepadinvertrightstick":
@@ -154,11 +164,11 @@ public class GameOptions
                     break;
 
                 case "startedofflinegame":
-                    StartedOfflineGame = bool.Parse(value);
+                    StartedOfflineGame = ParseBool(value);
                     break;
 
                 case "prefermultisampling":
-                    Core.GraphicsManager.PreferMultiSampling = bool.Parse(value);
+                    Core.GraphicsManager.PreferMultiSampling = ParseBool(value);
                     break;
 
                 case "windowsize":
@@ -192,7 +202,7 @@ public class GameOptions
                     break;
 
                 case "updatedisabled":
-                    UpdateDisabled = bool.Parse(value);
+                    UpdateDisabled = ParseBool(value);
                     break;
 
                 case "interfacescale":

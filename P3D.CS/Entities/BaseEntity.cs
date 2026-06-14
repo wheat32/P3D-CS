@@ -1,6 +1,6 @@
 namespace P3D;
 
-// TODO Phase 4: full BaseEntity port
+// TODO Phase 12: full BaseEntity port
 public abstract class BaseEntity
 {
     public enum EntityTypes

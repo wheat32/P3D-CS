@@ -670,7 +670,7 @@ public class BattleMenu
                 _tempBattleScreen = battleScreen;
 
                 Player.Temp.PokemonScreenIndex = battleScreen.SelfPokemonIndex;
-                PartyScreen selScreen = new PartyScreen(Core.CurrentScreen, Item.GetItemByID(5.ToString()), ShowPokemonMenu, Localization.GetString("party_screen_ChoosePokemon", "Choose Pokémon"), false)
+                PartyScreen selScreen = new PartyScreen(Core.CurrentScreen, Item.GetItemByID(5.ToString()), i => ShowPokemonMenu(i), Localization.GetString("party_screen_ChoosePokemon", "Choose Pokémon"), false)
                 {
                     Mode = Screens.UI.ISelectionScreen.ScreenMode.Selection,
                     CanExit = false,
@@ -878,7 +878,7 @@ public class BattleMenu
         _tempBattleScreen = battleScreen;
 
         Player.Temp.PokemonScreenIndex = battleScreen.SelfPokemonIndex;
-        PartyScreen selScreen = new PartyScreen(Core.CurrentScreen, Item.GetItemByID(5.ToString()), ShowPokemonMenu, Localization.GetString("party_screen_ChoosePokemon", "Choose Pokémon"), true)
+        PartyScreen selScreen = new PartyScreen(Core.CurrentScreen, Item.GetItemByID(5.ToString()), i => ShowPokemonMenu(i), Localization.GetString("party_screen_ChoosePokemon", "Choose Pokémon"), true)
         {
             Mode = Screens.UI.ISelectionScreen.ScreenMode.Selection,
             CanExit = true,
@@ -1442,7 +1442,7 @@ public class BattleMenu
 
                 if (item.BattleSelectPokemon == true)
                 {
-                    PartyScreen selScreen = new PartyScreen(Core.CurrentScreen, item, item.UseOnPokemon, Localization.GetString("global_use", "Use") + " " + item.OneLineName(), true)
+                    PartyScreen selScreen = new PartyScreen(Core.CurrentScreen, item, i => item.UseOnPokemon(i), Localization.GetString("global_use", "Use") + " " + item.OneLineName(), true)
                     {
                         Mode = Screens.UI.ISelectionScreen.ScreenMode.Selection,
                         CanExit = true,

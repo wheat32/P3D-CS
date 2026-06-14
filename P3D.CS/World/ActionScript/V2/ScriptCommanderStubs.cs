@@ -361,7 +361,7 @@ namespace P3D.ScriptVersion2
                     IsReady = true;
                     break;
                 case "showpokemon":
-                    Screen.PokemonImageView.Show(Int(argument.GetSplit(0)), ScriptConversion.ToBoolean(argument.GetSplit(1)), ScriptConversion.ToBoolean(argument.GetSplit(2)));
+                    Screen.PokemonImageView.Show(argument.GetSplit(0), ScriptConversion.ToBoolean(argument.GetSplit(1)), ScriptConversion.ToBoolean(argument.GetSplit(2)));
                     IsReady = true;
                     CanContinue = false;
                     break;
@@ -1043,7 +1043,7 @@ namespace P3D.ScriptVersion2
                 case "replacetextures":
                 {
                     String path = argument.GetSplit(0, ",");
-                    ContentPackManager.Load(GameController.GamePath + GameModeManager.ActiveGameMode.ContentPath + "Data\\" + path + ".dat", true);
+                    ContentPackManager.Load(GameModeManager.GetContentFilePath(Path.Combine("Data", path + ".dat")), true);
                     if (argument.Split(',').Length == 1 || (argument.Split(',').Length > 1 && ScriptConversion.ToBoolean(argument.GetSplit(1, ",")) == true))
                     {
                         Screen.Level.WarpData.WarpDestination = Screen.Level.LevelFile;

@@ -68,7 +68,7 @@ public class BatonPass : Attack
                 {
                     battleScreen.FieldEffects.UsedBatonPass.Self = true;
 
-                    battleScreen.Battle.SwitchOutSelf(battleScreen, battleScreen.FieldEffects.BatonPassIndex.Self, -1);
+                    battleScreen.Battle.SwitchOutOwn(battleScreen, battleScreen.FieldEffects.BatonPassIndex.Self, -1);
                     battleScreen.FieldEffects.BatonPassIndex.Self = -1;
                 }
                 else
@@ -94,7 +94,7 @@ public class BatonPass : Attack
                         {
                             battleScreen.FieldEffects.UsedBatonPass.Opponent = true;
 
-                            battleScreen.Battle.SwitchOutOpponent(battleScreen, battleScreen.FieldEffects.BatonPassIndex.Opponent);
+                            battleScreen.Battle.SwitchOutOpp(battleScreen, battleScreen.FieldEffects.BatonPassIndex.Opponent);
                             battleScreen.FieldEffects.BatonPassIndex.Opponent = -1;
                         }
                         else
@@ -113,7 +113,7 @@ public class BatonPass : Attack
                     {
                         battleScreen.FieldEffects.UsedBatonPass.Opponent = true;
 
-                        battleScreen.Battle.SwitchOutOpponent(battleScreen, GetPokemonIndex(battleScreen, own));
+                        battleScreen.Battle.SwitchOutOpp(battleScreen, GetPokemonIndex(battleScreen, own));
                     }
                     else
                     {

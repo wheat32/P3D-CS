@@ -16,6 +16,6 @@ public class OldRod : KeyItem
 
     public override void Use()
     {
-        // TODO Phase 4: fishing encounter logic (requires Level/Spawner)
+        // TODO Phase 12: fishing encounter logic (requires Level/Spawner)
     }
 }

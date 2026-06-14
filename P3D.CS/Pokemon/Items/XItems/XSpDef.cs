@@ -16,7 +16,15 @@ public class XSpDef : XItem
 
     public override bool UseOnPokemon(int pokeIndex)
     {
-        // TODO Phase 5: battle stat boost (requires BattleScreen)
-        return false;
+        Screen s = Core.CurrentScreen;
+        while (s.Identification != Screen.Identifications.BattleScreen && s.PreScreen != null)
+            s = s.PreScreen;
+        if (s.Identification != Screen.Identifications.BattleScreen)
+            return false;
+        BattleScreen bs = (BattleScreen)s;
+        if (bs.Battle.RaiseStat(true, true, bs, "Special Defense", 1, String.Empty, "x sp def") == false)
+            return false;
+        RemoveItem();
+        return true;
     }
 }

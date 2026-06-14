@@ -1,6 +1,6 @@
 namespace P3D;
 
-// TODO Phase 4: full Spawner port (requires Level system, .poke file loading, roaming encounter logic)
+// TODO Phase 12: full Spawner port (requires Level system, .poke file loading, roaming encounter logic)
 public class Spawner
 {
     public enum EncounterMethods

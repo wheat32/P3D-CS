@@ -73,7 +73,7 @@ public class PartingShot : Attack
             {
                 if (Core.Player.CountFightablePokemon > 1 && battleScreen.FieldEffects.SwapIndex.Self != battleScreen.SelfPokemonIndex && battleScreen.FieldEffects.SwapIndex.Self != -1)
                 {
-                    battleScreen.Battle.SwitchOutSelf(battleScreen, battleScreen.FieldEffects.SwapIndex.Self, -1);
+                    battleScreen.Battle.SwitchOutOwn(battleScreen, battleScreen.FieldEffects.SwapIndex.Self, -1);
                     battleScreen.FieldEffects.SwapIndex.Self = -1;
                 }
                 else
@@ -97,7 +97,7 @@ public class PartingShot : Attack
                         if (battleScreen.Trainer.CountUseablePokemon > 1 && battleScreen.FieldEffects.SwapIndex.Opponent != battleScreen.OpponentPokemonIndex && battleScreen.FieldEffects.SwapIndex.Opponent != -1)
                         {
 
-                            battleScreen.Battle.SwitchOutOpponent(battleScreen, battleScreen.FieldEffects.SwapIndex.Opponent);
+                            battleScreen.Battle.SwitchOutOpp(battleScreen, battleScreen.FieldEffects.SwapIndex.Opponent);
                             battleScreen.FieldEffects.SwapIndex.Opponent = -1;
                         }
                         else
@@ -115,7 +115,7 @@ public class PartingShot : Attack
                     if (battleScreen.Trainer.CountUseablePokemon > 1)
                     {
 
-                        battleScreen.Battle.SwitchOutOpponent(battleScreen, GetPokemonIndex(battleScreen, own));
+                        battleScreen.Battle.SwitchOutOpp(battleScreen, GetPokemonIndex(battleScreen, own));
                     }
                     else
                     {

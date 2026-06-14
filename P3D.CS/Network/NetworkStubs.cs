@@ -1,18 +1,19 @@
 namespace P3D;
 
-// TODO Phase 8: full NetworkPlayer port
+// TODO Phase 9: full NetworkPlayer port
 public class NetworkPlayer : Entity
 {
     public static void ScreenRegionChanged() { }
+    public static String GetTexturePath(String skin) => "Textures\\NPC\\" + skin;
 }
 
-// TODO Phase 8: full OnlineStatus port
+// TODO Phase 9: full OnlineStatus port
 public static class OnlineStatus
 {
     public static void Draw() { }
 }
 
-// TODO Phase 8: full Chat port
+// TODO Phase 9: full Chat port
 public static class Chat
 {
     public class ChatMessage

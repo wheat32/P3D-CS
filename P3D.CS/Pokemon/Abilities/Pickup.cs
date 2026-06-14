@@ -43,7 +43,7 @@ public class Pickup : Ability
 
     private static int GetLevelStep(Pokemon p) => (int)Math.Ceiling(p.Level / 10.0);
 
-    // TODO Phase 5: populate item tables from VB source
+    // TODO Phase 12: populate item tables from VB source
     private static List<int> Get30(Pokemon p) => [];
     private static List<int> Get10(Pokemon p) => [];
     private static List<int> Get4(Pokemon p) => [];

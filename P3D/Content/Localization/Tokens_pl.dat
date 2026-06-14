@@ -237,6 +237,9 @@ start_screen_tostart,, aby zacząć.
 Main Menu:
 main_menu_newgame_line1,Nowa
 main_menu_newgame_line2,gra
+main_menu_quit_line1,Wyjdź
+main_menu_quit_line2,z Gry
+main_menu_online_disabled,(Wyłączone)
 main_menu_options,Opcje
 main_menu_gamejolt_ChangeToMale,Zmień na chłopca
 main_menu_gamejolt_ChangeToFemale,Zmień na dziewczynkę

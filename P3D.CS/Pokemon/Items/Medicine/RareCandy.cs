@@ -16,6 +16,6 @@ public class RareCandy : MedicineItem
 
     public override void Use()
     {
-        // TODO Phase 4/6: full Rare Candy logic
+        // TODO Phase 12: full Rare Candy logic
     }
 }

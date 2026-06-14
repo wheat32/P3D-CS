@@ -237,6 +237,9 @@ start_screen_tostart,to start.
 Main Menu:
 main_menu_newgame_line1,Main
 main_menu_newgame_line2,Baru
+main_menu_quit_line1,Keluar
+main_menu_quit_line2,Permainan
+main_menu_online_disabled,(Nonaktif)
 main_menu_options,Pengaturan
 main_menu_gamejolt_ChangeToMale,Change to male
 main_menu_gamejolt_ChangeToFemale,Change to female

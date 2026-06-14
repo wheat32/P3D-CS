@@ -55,9 +55,8 @@ public static class Core
     {
         GameInstance = gameReference;
 
-        Window.Title = CommandLineArgHandler.ForceGraphics == true
-            ? $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENTSTAGE} {GameController.GAMEVERSION} (FORCED GRAPHICS)"
-            : $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENTSTAGE} {GameController.GAMEVERSION}";
+        Window.Title = $"{GameController.GAMENAME} {GameController.GAMEDEVELOPMENT_STAGE} {GameController.GAME_VERSION} - .NET 10 v. {GameController.PORT_VERSION}" +
+            (CommandLineArgHandler.ForceGraphics == true ? "(FORCED GRAPHICS)" : String.Empty);
 
         GameOptions = new GameOptions();
         GameOptions.LoadOptions();

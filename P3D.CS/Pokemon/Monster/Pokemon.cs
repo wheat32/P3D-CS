@@ -45,7 +45,7 @@ public partial class Pokemon
         get
         {
             int shinyRate = 4096;
-            // TODO Phase 3: mystery event multiplier and ShinyCharm logic
+            // TODO Phase 12: mystery event multiplier and ShinyCharm logic
             return shinyRate;
         }
     }
@@ -132,7 +132,7 @@ public partial class Pokemon
     {
         get
         {
-            // TODO Phase 3: item type override via PokemonForms.GetTypeAdditionFromItem
+            // TODO Phase 12: item type override via PokemonForms.GetTypeAdditionFromItem
             return field;
         }
         set;
@@ -585,17 +585,179 @@ public partial class Pokemon
                 case "ismale":
                     IsMale = decimal.Parse(value.Replace(".", ",").Replace(",", GameController.DecSeparator));
                     break;
-                case "isgenderless": IsGenderless = bool.Parse(value); break;
-                case "devolution": Devolution = value; break;
-                // TODO Phase 3: remaining definition fields (HP, types, abilities, etc.)
-                default: break;
+                case "isgenderless":
+                    IsGenderless = bool.Parse(value);
+                    break;
+                case "devolution":
+                    Devolution = value;
+                    break;
+                case "eggpokemon":
+                    EggPokemon = value;
+                    break;
+                case "basehp":
+                    baseHP = int.Parse(value);
+                    break;
+                case "baseattack":
+                    baseAttack = int.Parse(value);
+                    break;
+                case "basedefense":
+                    baseDefense = int.Parse(value);
+                    break;
+                case "basespattack":
+                    baseSpAttack = int.Parse(value);
+                    break;
+                case "basespdefense":
+                    baseSpDefense = int.Parse(value);
+                    break;
+                case "basespeed":
+                    baseSpeed = int.Parse(value);
+                    break;
+                case "ability1":
+                    if (int.TryParse(value, out int a1id))
+                    {
+                        Ability? ab1 = Ability.GetAbilityByID(a1id);
+                        if (ab1 != null)
+                        {
+                            newAbilities.Add(ab1);
+                        }
+                    }
+                    break;
+                case "ability2":
+                    if (int.TryParse(value, out int a2id))
+                    {
+                        Ability? ab2 = Ability.GetAbilityByID(a2id);
+                        if (ab2 != null)
+                        {
+                            newAbilities.Add(ab2);
+                        }
+                    }
+                    break;
+                case "hiddenability":
+                    if (int.TryParse(value, out int haid))
+                    {
+                        hiddenAbility = Ability.GetAbilityByID(haid);
+                    }
+                    break;
+                case "eggmoves":
+                    EggMoves.Clear();
+                    foreach (String em in value.Split(','))
+                    {
+                        if (int.TryParse(em.Trim(), out int emID))
+                        {
+                            EggMoves.Add(emID);
+                        }
+                    }
+                    break;
+                case "machines":
+                    machines.Clear();
+                    foreach (String m in value.Split(','))
+                    {
+                        if (int.TryParse(m.Trim(), out int mID))
+                        {
+                            machines.Add(mID);
+                        }
+                    }
+                    break;
+                case "fphp":
+                    GiveEVHP = int.Parse(value);
+                    break;
+                case "fpattack":
+                    GiveEVAttack = int.Parse(value);
+                    break;
+                case "fpdefense":
+                    GiveEVDefense = int.Parse(value);
+                    break;
+                case "fpspattack":
+                    GiveEVSpAttack = int.Parse(value);
+                    break;
+                case "fpspdefense":
+                    GiveEVSpDefense = int.Parse(value);
+                    break;
+                case "fpspeed":
+                    GiveEVSpeed = int.Parse(value);
+                    break;
+                case "canfly":
+                    CanFly = "1".Equals(value);
+                    break;
+                case "canswim":
+                    CanSwim = "1".Equals(value);
+                    break;
+                case "pokedex":
+                {
+                    String[] pd = value.Split('\\');
+                    pokedexEntry = new PokedexEntry
+                    {
+                        text     = pd.Length > 0 ? pd[0] : String.Empty,
+                        category = pd.Length > 1 ? pd[1] : String.Empty,
+                        species  = pd.Length > 1 ? pd[1] : String.Empty,
+                        height   = pd.Length > 2 && float.TryParse(pd[2].Replace(".", GameController.DecSeparator), out float ph) ? ph : 0f,
+                        weight   = pd.Length > 3 && float.TryParse(pd[3].Replace(".", GameController.DecSeparator), out float pw) ? pw : 0f,
+                        color    = pd.Length > 4 ? pd[4] : String.Empty,
+                    };
+                    break;
+                }
+                case "move":
+                {
+                    String[] mv = value.Split(',');
+                    if (mv.Length >= 2 && int.TryParse(mv[0].Trim(), out int lvl) && int.TryParse(mv[1].Trim(), out int moveID))
+                    {
+                        BattleSystem.Attack atk = BattleSystem.GameModeAttackLoader.GetAttackByID(moveID);
+                        if (attackLearns.ContainsKey(lvl) == false)
+                        {
+                            attackLearns[lvl] = [];
+                        }
+                        attackLearns[lvl].Add(atk);
+                    }
+                    break;
+                }
+                case "evolutioncondition":
+                {
+                    String[] ec = value.Split(',');
+                    if (ec.Length >= 4)
+                    {
+                        EvolutionCondition cond = new EvolutionCondition
+                        {
+                            Evolution = ec[0].Trim(),
+                            Trigger = ec[1].Trim() switch
+                            {
+                                "Level" => EvolutionCondition.EvolutionTrigger.LevelUp,
+                                "Trade" or "Trading" => EvolutionCondition.EvolutionTrigger.Trade,
+                                "UseItem" or "ItemUse" => EvolutionCondition.EvolutionTrigger.UseItem,
+                                "Happiness" => EvolutionCondition.EvolutionTrigger.Happiness,
+                                _ => EvolutionCondition.EvolutionTrigger.Other
+                            }
+                        };
+                        cond.Conditions.Add(new EvolutionCondition.Condition
+                        {
+                            ConditionType = ec[3].Trim() switch
+                            {
+                                "Level"      => EvolutionCondition.ConditionTypes.Level,
+                                "Item"       => EvolutionCondition.ConditionTypes.Item,
+                                "HoldItem"   => EvolutionCondition.ConditionTypes.HoldItem,
+                                "Move"       => EvolutionCondition.ConditionTypes.Move,
+                                "Pokemon"    => EvolutionCondition.ConditionTypes.Pokemon,
+                                "Friendship" => EvolutionCondition.ConditionTypes.Friendship,
+                                "Time"       => EvolutionCondition.ConditionTypes.Time,
+                                _            => EvolutionCondition.ConditionTypes.Other
+                            },
+                            Argument = ec[2].Trim()
+                        });
+                        evolutionConditions.Add(cond);
+                    }
+                    break;
+                }
+                case "tradevalue":
+                    TradeValue = int.Parse(value);
+                    break;
+                default:
+                    break;
             }
         }
     }
 
     public void LoadData(String inputData)
     {
-        // TODO Phase 3: full LoadData implementation using ScriptVersion2/ScriptCommander
+        // TODO Phase 12: full LoadData implementation using ScriptVersion2/ScriptCommander
         Dictionary<String, String> tags = ParseTags(inputData);
         bool loadedHP = false;
         bool loadedAttacks = false;
@@ -1205,7 +1367,70 @@ public partial class Pokemon
     {
         if (_textures.Count <= index || _textures[index] == null)
         {
-            // TODO Phase 7: full texture loading via TextureManager when ported
+            String suffix = PokemonForms.GetFrontBackSpriteFileSuffix(this);
+            Texture2D? tex = null;
+            switch (index)
+            {
+                case 0: case 1: case 2: case 3:
+                {
+                    Texture2D sheet;
+                    if (TextureManager.TextureExist(@"Pokemon\Sprites\" + Number + suffix) == true)
+                        sheet = TextureManager.GetTexture(@"Pokemon\Sprites\" + Number + suffix);
+                    else if (TextureManager.TextureExist(@"Pokemon\Sprites\" + Number) == true)
+                        sheet = TextureManager.GetTexture(@"Pokemon\Sprites\" + Number);
+                    else
+                        sheet = TextureManager.GetTexture(@"Pokemon\Sprites\" + AnimationName);
+                    int hw = sheet.Width / 2;
+                    int hh = sheet.Height / 2;
+                    int rx = (index == 1 || index == 3) ? hw : 0;
+                    int ry = (index == 2 || index == 3) ? hh : 0;
+                    tex = TextureManager.GetTexture(sheet, new Rectangle(rx, ry, hw, hh));
+                    break;
+                }
+                case 4:
+                {
+                    Vector2 v = PokemonForms.GetMenuImagePositionVec(this);
+                    Size s = PokemonForms.GetMenuImageSize(this);
+                    String sheet = PokemonForms.GetSheetName(this);
+                    int shinyOff = IsShiny == true ? TextureManager.GetTexture(@"GUI\PokemonMenu\" + sheet).Width / 2 : 0;
+                    tex = TextureManager.GetTexture(@"GUI\PokemonMenu\" + sheet,
+                        new Rectangle((int)v.X * s.Width + shinyOff, (int)v.Y * s.Height, s.Width, s.Height), String.Empty);
+                    break;
+                }
+                case 5:
+                {
+                    int s = TextureManager.GetTexture(@"GUI\PokemonMenu\OtherForms").Width / 32;
+                    if (Number == 490)
+                        tex = TextureManager.GetTexture(@"GUI\PokemonMenu\OtherForms", new Rectangle(s * 2, 0, s, s), String.Empty);
+                    else
+                        tex = EggCreator.CreateEggSprite(this,
+                            TextureManager.GetTexture(@"GUI\PokemonMenu\OtherForms", new Rectangle(s, 0, s, s), String.Empty),
+                            TextureManager.GetTexture(@"Pokemon\Egg\Templates\Menu"));
+                    break;
+                }
+                case 6:
+                    tex = Number == 490
+                        ? TextureManager.GetTexture(@"Pokemon\Egg\Egg_manaphy_front")
+                        : EggCreator.CreateEggSprite(this,
+                            TextureManager.GetTexture(@"Pokemon\Egg\Egg_front"),
+                            TextureManager.GetTexture(@"Pokemon\Egg\Templates\Front"));
+                    break;
+                case 7:
+                    tex = Number == 490
+                        ? TextureManager.GetTexture(@"Pokemon\Egg\Egg_manaphy_back")
+                        : EggCreator.CreateEggSprite(this,
+                            TextureManager.GetTexture(@"Pokemon\Egg\Egg_back"),
+                            TextureManager.GetTexture(@"Pokemon\Egg\Templates\Back"));
+                    break;
+                case 8:
+                    tex = TextureManager.GetTexture(@"Pokemon\Overworld\Normal\" + Number + PokemonForms.GetOverworldAddition(this));
+                    break;
+                case 9:
+                    tex = TextureManager.GetTexture(@"Pokemon\Overworld\Shiny\" + Number + PokemonForms.GetOverworldAddition(this));
+                    break;
+            }
+            if (index < _textures.Count)
+                _textures[index] = tex;
         }
         return _textures.Count > index ? _textures[index] : null;
     }
@@ -1298,13 +1523,22 @@ public partial class Pokemon
         {
             return;
         }
-        // TODO Phase 5: full EV gain logic with item bonuses
-        EVHP = (EVHP + defeated.GiveEVHP).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
-        EVAttack = (EVAttack + defeated.GiveEVAttack).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
-        EVDefense = (EVDefense + defeated.GiveEVDefense).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
-        EVSpAttack = (EVSpAttack + defeated.GiveEVSpAttack).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
-        EVSpDefense = (EVSpDefense + defeated.GiveEVSpDefense).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
-        EVSpeed = (EVSpeed + defeated.GiveEVSpeed).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
+        String heldItem = Item?.Name?.ToLower() ?? String.Empty;
+        float multiplier = 1.0f;
+        if (heldItem == "macho brace")
+            multiplier = 2.0f;
+        int bonusHP = heldItem == "power weight" ? 4 : 0;
+        int bonusAtk = heldItem == "power bracer" ? 4 : 0;
+        int bonusDef = heldItem == "power belt" ? 4 : 0;
+        int bonusSpAtk = heldItem == "power lens" ? 4 : 0;
+        int bonusSpDef = heldItem == "power band" ? 4 : 0;
+        int bonusSpd = heldItem == "power anklet" ? 4 : 0;
+        EVHP = (EVHP + (int)(defeated.GiveEVHP * multiplier) + bonusHP).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
+        EVAttack = (EVAttack + (int)(defeated.GiveEVAttack * multiplier) + bonusAtk).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
+        EVDefense = (EVDefense + (int)(defeated.GiveEVDefense * multiplier) + bonusDef).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
+        EVSpAttack = (EVSpAttack + (int)(defeated.GiveEVSpAttack * multiplier) + bonusSpAtk).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
+        EVSpDefense = (EVSpDefense + (int)(defeated.GiveEVSpDefense * multiplier) + bonusSpDef).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
+        EVSpeed = (EVSpeed + (int)(defeated.GiveEVSpeed * multiplier) + bonusSpd).Clamp(EV_RANGE.Min, EV_SINGLE_MAX);
     }
 
     public bool HasHMMove()

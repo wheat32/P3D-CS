@@ -14,6 +14,6 @@ public class LeppaBerry : Berry
 
     public override void Use()
     {
-        // TODO Phase 6: PP restore berry logic
+        // TODO Phase 12: PP restore berry logic
     }
 }

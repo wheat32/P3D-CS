@@ -16,6 +16,6 @@ public class Itemfinder : KeyItem
 
     public override void Use()
     {
-        // TODO Phase 4: item finder logic (requires Level/Entity system)
+        // TODO Phase 12: item finder logic (requires Level/Entity system)
     }
 }

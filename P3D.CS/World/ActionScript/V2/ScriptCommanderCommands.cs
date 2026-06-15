@@ -1163,6 +1163,7 @@ namespace P3D.ScriptVersion2
                     {
                         if (steps < 0) { if (targetNPC.Speed > 0) { targetNPC.Speed *= -1; } }
                         else { if (targetNPC.Speed < 0) { targetNPC.Speed *= -1; } }
+                        targetNPC.CanMove = true;
                         targetNPC.Moved += steps.ToPositive();
                         Started = true;
                     }
@@ -1243,6 +1244,7 @@ namespace P3D.ScriptVersion2
                     Screen.Level.UpdateEntities();
                     if (steps < 0) { if (targetNPC.Speed > 0) { targetNPC.Speed *= -1; } }
                     else { if (targetNPC.Speed < 0) { targetNPC.Speed *= -1; } }
+                    targetNPC.CanMove = true;
                     targetNPC.Moved += steps.ToPositive();
                     targetNPC.MoveAsync = true;
                     IsReady = true;
@@ -1259,6 +1261,7 @@ namespace P3D.ScriptVersion2
                     {
                         if (steps < 0) { if (targetNPC.Speed > 0) { targetNPC.Speed *= -1; } }
                         else { if (targetNPC.Speed < 0) { targetNPC.Speed *= -1; } }
+                        targetNPC.CanMove = true;
                         targetNPC.Moved += steps.ToPositive();
                         Started = true;
                     }
@@ -1278,6 +1281,7 @@ namespace P3D.ScriptVersion2
                     targetNPC.isDancing = true;
                     if (steps < 0) { if (targetNPC.Speed > 0) { targetNPC.Speed *= -1; } }
                     else { if (targetNPC.Speed < 0) { targetNPC.Speed *= -1; } }
+                    targetNPC.CanMove = true;
                     targetNPC.Moved += steps.ToPositive();
                     targetNPC.MoveAsync = true;
                     IsReady = true;

@@ -30,7 +30,8 @@ public static class DebugFileWatcher
 
     private static String GetProjectPath()
     {
-        return new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent!.Parent!.FullName;
+        // bin/Debug/net10.0/ → 3 parents to reach project root
+        return new DirectoryInfo(AppDomain.CurrentDomain.BaseDirectory).Parent!.Parent!.Parent!.FullName;
     }
 
     public static void StartWatching()
@@ -43,6 +44,11 @@ public static class DebugFileWatcher
 
         String projectPath = GetProjectPath();
         String contentPath = Path.Combine(projectPath, "Content");
+
+        if (Directory.Exists(contentPath) == false)
+        {
+            return;
+        }
 
         _watcher = new FileSystemWatcher
         {

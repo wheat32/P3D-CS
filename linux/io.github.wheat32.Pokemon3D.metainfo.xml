@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.wheat32.Pokemon3D</id>
+  <name>Pokémon 3D</name>
+  <summary>A C#/.NET 10 port of Pokémon 3D</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>LicenseRef-proprietary</project_license>
+  <description>
+    <p>
+      A C#/.NET 10 port of Pokémon 3D, originally created by JonimusPrime. This port
+      targets modern Linux, Windows, and macOS systems using MonoGame 3.8.
+    </p>
+  </description>
+  <launchable type="desktop-id">io.github.wheat32.Pokemon3D.desktop</launchable>
+  <url type="homepage">https://github.com/wheat32/P3D-CS</url>
+  <url type="bugtracker">https://github.com/wheat32/P3D-CS/issues</url>
+  <content_rating type="oars-1.1">
+    <content_attribute id="social-chat">mild</content_attribute>
+  </content_rating>
+  <categories>
+    <category>Game</category>
+    <category>RolePlaying</category>
+  </categories>
+  <requires>
+    <internet>always</internet>
+  </requires>
+</component>

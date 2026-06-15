@@ -518,7 +518,7 @@ public class OverworldCamera : Camera
         }
     }
 
-    public void UpdateFrustum()
+    public virtual void UpdateFrustum()
     {
         Matrix rotation = Matrix.CreateRotationX(Pitch) * Matrix.CreateRotationY(Yaw);
         Vector3 fPosition = new Vector3(_cPosition.X, _cPosition.Y + GetBobbing(), _cPosition.Z);
@@ -527,7 +527,7 @@ public class OverworldCamera : Camera
         BoundingFrustum = new BoundingFrustum(Matrix.CreateLookAt(fPosition, lookAt, Vector3.Up) * Projection);
     }
 
-    public void UpdateViewMatrix()
+    public virtual void UpdateViewMatrix()
     {
         Matrix rotation = Matrix.CreateRotationX(Pitch) * Matrix.CreateRotationY(Yaw);
         Vector3 transformed = Vector3.Transform(new Vector3(0f, 0f, -1f), rotation);

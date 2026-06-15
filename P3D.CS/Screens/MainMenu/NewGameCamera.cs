@@ -15,7 +15,7 @@ public class NewGameCamera : OverworldCamera
         Pitch = startPitch;
 
         Matrix rotation = Matrix.CreateRotationX(Pitch) * Matrix.CreateRotationY(Yaw);
-        Vector3 transformed = Vector3.Transform(new Vector3(0, 0, 0), rotation);
+        Vector3 transformed = Vector3.Transform(new Vector3(0, 0, -1), rotation);
         Vector3 lookAt = new Vector3(Position.X, Position.Y, Position.Z) + transformed;
 
         View = Matrix.CreateLookAt(Position, lookAt, Vector3.Up);
@@ -39,10 +39,11 @@ public class NewGameCamera : OverworldCamera
 
     public override void Update()
     {
-        Ray = CreateRay();
-        UpdateViewMatrix();
         UpdateMatrices();
-        UpdateFrustum();
+        Ray = CreateRay();
+        // UpdateFrustum() uses OverworldCamera._cPosition which is never set here;
+        // build the frustum directly from the View we just computed.
+        BoundingFrustum = new BoundingFrustum(View * Projection);
     }
 
     public Ray CreateRay()
@@ -68,5 +69,19 @@ public class NewGameCamera : OverworldCamera
         Vector3 transformed = Vector3.Transform(new Vector3(0, 0, -1), rotation);
         Vector3 lookAt = Position + transformed;
         View = Matrix.CreateLookAt(Position, lookAt, Vector3.Up);
+    }
+
+    // OverworldCamera.UpdateViewMatrix/UpdateFrustum both use the private _cPosition field
+    // (which is never set in the NewGameCamera context) instead of the public Position.
+    // Override both so script commands (DoCamera) always use Position.
+    public override void UpdateViewMatrix()
+    {
+        UpdateMatrices();
+    }
+
+    public override void UpdateFrustum()
+    {
+        UpdateMatrices(); // ensure View is current before building the frustum
+        BoundingFrustum = new BoundingFrustum(View * Projection);
     }
 }

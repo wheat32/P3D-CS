@@ -99,7 +99,7 @@ internal static class MainGameFunctions
             DateTime now = DateTime.Now;
             String fileName = $"{now.Year}-{now.Month:D2}-{now.Day:D2}_{now.Hour:D2}.{now.Minute:D2}.{now.Second:D2}.png";
 
-            String screenshotsDir = Path.Combine(GameController.GamePath, "screenshots");
+            String screenshotsDir = AppPaths.ScreenshotsDir;
             Directory.CreateDirectory(screenshotsDir);
 
             PresentationParameters pp = Core.GraphicsDevice.PresentationParameters;

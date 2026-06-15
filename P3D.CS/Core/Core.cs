@@ -140,7 +140,7 @@ public static class Core
 
         GameOptions.LoadOptions();
 
-        String tempDir = Path.Combine(GameController.GamePath, "Temp");
+        String tempDir = Path.Combine(AppPaths.CacheDir, "temp");
         if (Directory.Exists(tempDir) == true)
         {
             try

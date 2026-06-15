@@ -48,7 +48,7 @@ public static class KeyBindings
 
     public static void LoadKeys()
     {
-        String keysPath = Path.Combine(GameController.GamePath, "Save", "Keyboard.dat");
+        String keysPath = Path.Combine(AppPaths.ConfigDir, "Keyboard.dat");
         if (File.Exists(keysPath) == false)
         {
             return;
@@ -219,13 +219,8 @@ public static class KeyBindings
     /// <summary>Creates the default Keyboard.dat file.</summary>
     public static void CreateKeySave(bool force)
     {
-        String saveDir = Path.Combine(GameController.GamePath, "Save");
-        if (Directory.Exists(saveDir) == false)
-        {
-            return;
-        }
-
-        String keysPath = Path.Combine(saveDir, "Keyboard.dat");
+        Directory.CreateDirectory(AppPaths.ConfigDir);
+        String keysPath = Path.Combine(AppPaths.ConfigDir, "Keyboard.dat");
         if (File.Exists(keysPath) == true && force == false)
         {
             return;
@@ -269,12 +264,6 @@ public static class KeyBindings
     /// <summary>Saves the current keyboard configuration to Keyboard.dat.</summary>
     public static void SaveKeys()
     {
-        String saveDir = Path.Combine(GameController.GamePath, "Save");
-        if (Directory.Exists(saveDir) == false)
-        {
-            return;
-        }
-
         String s = String.Join(Environment.NewLine, new[]
         {
             $"[MoveForward]={GetKeyName(ForwardMoveKey)}",
@@ -306,7 +295,7 @@ public static class KeyBindings
             $"[OnlineStatus]={GetKeyName(OnlineStatusKey)}"
         });
 
-        File.WriteAllText(Path.Combine(saveDir, "Keyboard.dat"), s);
+        File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "Keyboard.dat"), s);
         Logger.Debug("---Saved Keybindings---");
     }
 

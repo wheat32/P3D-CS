@@ -14,8 +14,14 @@
 
 #---------------------------------- Content ---------------------------------#
 
-# Effects: deferred — require Wine+d3dcompiler_47 on Linux (Phase 11 shader setup)
-# #begin Effects/BackdropShader.fx / Effects/GaussianBlur.fx
+# Effects: pre-compiled XNBs committed; recompile with Wine+d3dcompiler_47 if source changes
+#   MGFXC_WINE_PATH=~/.wine dotnet mgcb /platform:DesktopGL /importer:EffectImporter /processor:EffectProcessor /build:Effects/BackdropShader.fx /build:Effects/GaussianBlur.fx
+
+#begin Effects/BackdropShader.xnb
+/copy:Effects/BackdropShader.xnb
+
+#begin Effects/GaussianBlur.xnb
+/copy:Effects/GaussianBlur.xnb
 
 #begin Fonts/BMP/Braille.png
 /importer:TextureImporter
@@ -90,7 +96,57 @@
 /processorParam:TextureFormat=Color
 /build:Fonts/BMP/VoltorbFlipFont.png
 
-# Models: deferred — require Assimp/libdl.so fix on Linux (Phase 11)
-# Models/BattlePike, Models/boat, Models/boat2, Models/building,
-# Models/Environment, Models/Pokemon/143, Models/SeaPlane,
-# Models/Snorlax, Models/truck2, SkyDomeResource/SkyDome.obj
+# Models: pre-compiled XNBs committed; TextureFormat=NoChange (no NVTT required).
+# To recompile: dotnet mgcb /platform:DesktopGL /processor:ModelProcessor
+#   /processorParam:TextureFormat=NoChange /build:<file>
+
+#begin SkyDomeResource/SkyDome.xnb
+/copy:SkyDomeResource/SkyDome.xnb
+
+#begin SkyDomeResource/default_0.xnb
+/copy:SkyDomeResource/default_0.xnb
+
+#begin Models/BattlePike/BattlePike.xnb
+/copy:Models/BattlePike/BattlePike.xnb
+
+#begin Models/boat/ferry.xnb
+/copy:Models/boat/ferry.xnb
+
+#begin Models/boat/SSAqua.xnb
+/copy:Models/boat/SSAqua.xnb
+
+#begin Models/boat2/Boat.xnb
+/copy:Models/boat2/Boat.xnb
+
+#begin Models/building/KolbenTower.xnb
+/copy:Models/building/KolbenTower.xnb
+
+#begin Models/Environment/arena_colleseum.xnb
+/copy:Models/Environment/arena_colleseum.xnb
+
+#begin Models/Environment/MtSilver/Mountain.xnb
+/copy:Models/Environment/MtSilver/Mountain.xnb
+
+#begin Models/Environment/Test_floor/Test_floor.xnb
+/copy:Models/Environment/Test_floor/Test_floor.xnb
+
+#begin Models/Pokemon/143/Normal.xnb
+/copy:Models/Pokemon/143/Normal.xnb
+
+#begin Models/Pokemon/143/Shiny.xnb
+/copy:Models/Pokemon/143/Shiny.xnb
+
+#begin Models/SeaPlane/SeaPlane.xnb
+/copy:Models/SeaPlane/SeaPlane.xnb
+
+#begin Models/SeaPlane/SeaPlane_Propeller.xnb
+/copy:Models/SeaPlane/SeaPlane_Propeller.xnb
+
+#begin Models/Snorlax/Normal.xnb
+/copy:Models/Snorlax/Normal.xnb
+
+#begin Models/Snorlax/Shiny.xnb
+/copy:Models/Snorlax/Shiny.xnb
+
+#begin Models/truck2/Truck.xnb
+/copy:Models/truck2/Truck.xnb

@@ -85,7 +85,7 @@ public class BaseModel
 
         if (isEqual == true)
         {
-            if (entity.TextureIndex[0] > -1)
+            if (entity.TextureIndex[0] > -1 && textures[entity.TextureIndex[0]] != null)
             {
                 ApplyTexture(textures[entity.TextureIndex[0]]);
                 Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, 0, faceCount);
@@ -97,7 +97,7 @@ public class BaseModel
             for (int i = 0; i < VertexBuffer.VertexCount - 2; i += 3)
             {
                 int face = i / 3;
-                if (entity.TextureIndex[face] > -1)
+                if (entity.TextureIndex[face] > -1 && textures[entity.TextureIndex[face]] != null)
                 {
                     ApplyTexture(textures[entity.TextureIndex[face]]);
                     Core.GraphicsDevice.DrawPrimitives(PrimitiveType.TriangleList, i, 1);

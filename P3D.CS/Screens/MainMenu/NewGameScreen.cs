@@ -374,9 +374,7 @@ public class NewGameScreen : Screen
 
         if (folderPath.ToLower() == "autosave") folderPath = "autosave0";
 
-        String savePath = GameController.GamePath + @"\Save\";
-
-        while (Directory.Exists(savePath + folderPath) == true)
+        while (Directory.Exists(Path.Combine(AppPaths.SaveDir, folderPath)) == true)
         {
             if (folderPath != _name)
                 folderPath = folderPath.Remove(folderPath.Length - folderPrefix.ToString().Length, folderPrefix.ToString().Length);
@@ -384,8 +382,7 @@ public class NewGameScreen : Screen
             folderPrefix += 1;
         }
 
-        if (Directory.Exists(GameController.GamePath + @"\Save") == false)
-            Directory.CreateDirectory(GameController.GamePath + @"\Save");
+        Directory.CreateDirectory(AppPaths.SaveDir);
 
         Core.Player.FilePrefix = folderPath;
         Core.Player.GameStart = DateTime.Now;
@@ -405,24 +402,25 @@ public class NewGameScreen : Screen
         Core.Player.AddVisitedMap(_startMap);
         Core.Player.SaveCreated = GameController.GAMEDEVELOPMENT_STAGE + " " + GameController.GAME_VERSION;
 
-        Directory.CreateDirectory(savePath + folderPath);
+        String slotDir = Path.Combine(AppPaths.SaveDir, folderPath);
+        Directory.CreateDirectory(slotDir);
 
-        File.WriteAllText(savePath + folderPath + @"\Player.dat", GetPlayerData());
-        File.WriteAllText(savePath + folderPath + @"\Pokedex.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Items.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Register.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Berries.dat", Core.Player.BerryData);
-        File.WriteAllText(savePath + folderPath + @"\Apricorns.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Daycare.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Party.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\ItemData.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Options.dat", Core.Player.GetOptionsData());
-        File.WriteAllText(savePath + folderPath + @"\Box.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\NPC.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\HallOfFame.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\SecretBase.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\RoamingPokemon.dat", String.Empty);
-        File.WriteAllText(savePath + folderPath + @"\Statistics.dat", String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Player.dat"), GetPlayerData());
+        File.WriteAllText(Path.Combine(slotDir, "Pokedex.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Items.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Register.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Berries.dat"), Core.Player.BerryData);
+        File.WriteAllText(Path.Combine(slotDir, "Apricorns.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Daycare.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Party.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "ItemData.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Options.dat"), Core.Player.GetOptionsData());
+        File.WriteAllText(Path.Combine(slotDir, "Box.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "NPC.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "HallOfFame.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "SecretBase.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "RoamingPokemon.dat"), String.Empty);
+        File.WriteAllText(Path.Combine(slotDir, "Statistics.dat"), String.Empty);
 
         Core.Player.IsGameJoltSave = false;
         Core.Player.LoadGame(folderPath);

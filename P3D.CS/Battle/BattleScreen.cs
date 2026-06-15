@@ -2412,14 +2412,11 @@ public class BattleScreen : Screen
 
         if (GameController.IS_DEBUG_ACTIVE == true)
         {
-            if (System.IO.Directory.Exists(GameController.GamePath + @"\PvP Log\") == false)
-            {
-                System.IO.Directory.CreateDirectory(GameController.GamePath + @"\PvP Log\");
-            }
+            String pvpLogDir = Path.Combine(AppPaths.CacheDir, "pvp-log");
+            Directory.CreateDirectory(pvpLogDir);
             String shownData = data.Replace("}{", "}" + Environment.NewLine + "{")
                 .Replace("}|{", "}|" + Environment.NewLine + Environment.NewLine + "{");
-            System.IO.File.WriteAllText(
-                GameController.GamePath + @"\PvP Log\HostEndRoundData.dat", shownData);
+            File.WriteAllText(Path.Combine(pvpLogDir, "HostEndRoundData.dat"), shownData);
         }
 
         while (cData.Length > 0)
@@ -2510,14 +2507,11 @@ public class BattleScreen : Screen
         if (s.Identification == Identifications.BattleScreen
             && GameController.IS_DEBUG_ACTIVE == true)
         {
-            if (System.IO.Directory.Exists(GameController.GamePath + @"\PvP Log\") == false)
-            {
-                System.IO.Directory.CreateDirectory(GameController.GamePath + @"\PvP Log\");
-            }
+            String pvpLogDir = Path.Combine(AppPaths.CacheDir, "pvp-log");
+            Directory.CreateDirectory(pvpLogDir);
             String shownData = data.Replace("}{", "}" + Environment.NewLine + "{")
                 .Replace("}|{", "}|" + Environment.NewLine + Environment.NewLine + "{");
-            System.IO.File.WriteAllText(
-                GameController.GamePath + @"\PvP Log\HostData.dat", shownData);
+            File.WriteAllText(Path.Combine(pvpLogDir, "HostData.dat"), shownData);
         }
 
         while (cData.Length > 0)
@@ -2575,14 +2569,11 @@ public class BattleScreen : Screen
 
         if (GameController.IS_DEBUG_ACTIVE == true)
         {
-            if (System.IO.Directory.Exists(GameController.GamePath + @"\PvP Log\") == false)
-            {
-                System.IO.Directory.CreateDirectory(GameController.GamePath + @"\PvP Log\");
-            }
+            String pvpLogDir = Path.Combine(AppPaths.CacheDir, "pvp-log");
+            Directory.CreateDirectory(pvpLogDir);
             String shownData = data.Replace("}{", "}" + Environment.NewLine + "{")
                 .Replace("}|{", "}|" + Environment.NewLine + Environment.NewLine + "{");
-            System.IO.File.WriteAllText(
-                GameController.GamePath + @"\PvP Log\ClientCommand.dat", shownData);
+            File.WriteAllText(Path.Combine(pvpLogDir, "ClientCommand.dat"), shownData);
         }
 
         Screen s = Core.CurrentScreen;
@@ -2642,14 +2633,11 @@ public class BattleScreen : Screen
 
         if (GameController.IS_DEBUG_ACTIVE == true)
         {
-            if (System.IO.Directory.Exists(GameController.GamePath + @"\PvP Log\") == false)
-            {
-                System.IO.Directory.CreateDirectory(GameController.GamePath + @"\PvP Log\");
-            }
+            String pvpLogDir = Path.Combine(AppPaths.CacheDir, "pvp-log");
+            Directory.CreateDirectory(pvpLogDir);
             String shownData = d.Replace("}{", "}" + Environment.NewLine + "{")
                 .Replace("}|{", "}|" + Environment.NewLine + Environment.NewLine + "{");
-            System.IO.File.WriteAllText(
-                GameController.GamePath + @"\PvP Log\SentEndRoundData.dat", shownData);
+            File.WriteAllText(Path.Combine(pvpLogDir, "SentEndRoundData.dat"), shownData);
         }
         Logger.Debug("[Battle]: Sent End Round data");
         Core.ServersManager.ServerConnection.SendPackage(
@@ -2686,14 +2674,11 @@ public class BattleScreen : Screen
         Logger.Debug("[Battle]: Sent Host Query");
         if (GameController.IS_DEBUG_ACTIVE == true)
         {
-            if (System.IO.Directory.Exists(GameController.GamePath + @"\PvP Log\") == false)
-            {
-                System.IO.Directory.CreateDirectory(GameController.GamePath + @"\PvP Log\");
-            }
+            String pvpLogDir = Path.Combine(AppPaths.CacheDir, "pvp-log");
+            Directory.CreateDirectory(pvpLogDir);
             String shownData = d.Replace("}{", "}" + Environment.NewLine + "{")
                 .Replace("}|{", "}|" + Environment.NewLine + Environment.NewLine + "{");
-            System.IO.File.WriteAllText(
-                GameController.GamePath + @"\PvP Log\SentHostQuery.dat", shownData);
+            File.WriteAllText(Path.Combine(pvpLogDir, "SentHostQuery.dat"), shownData);
         }
         Core.ServersManager.ServerConnection.SendPackage(
             new P3D.Servers.Package(

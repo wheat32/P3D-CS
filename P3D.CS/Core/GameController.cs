@@ -14,7 +14,7 @@ public class Classified
 }
 
 /// <summary>Controls the game's main workflow.</summary>
-public class GameController : Game
+public class GameController : Game, GameDevCommon.IGame
 {
     public const String GAME_VERSION = "0.61";
     public const String RELEASE_VERSION = "108";
@@ -41,8 +41,14 @@ public class GameController : Game
 
     private static bool _gameHacked;
 
+    private readonly GameDevCommon.ComponentManager _componentManager = new();
+
+    Game GameDevCommon.IGame.GetGame() => this;
+    GameDevCommon.ComponentManager GameDevCommon.IGame.GetComponentManager() => _componentManager;
+
     public GameController()
     {
+        GameDevCommon.GameInstanceProvider.SetInstance(this);
         _windowChange = false;
         InactiveSleepTime = TimeSpan.Zero;
         Graphics = new GraphicsDeviceManager(this);

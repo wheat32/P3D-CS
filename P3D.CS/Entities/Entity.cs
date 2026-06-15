@@ -524,6 +524,7 @@ public class Entity : BaseEntity
     public virtual void Render()
     {
         UpdateModel();
+        Draw(BaseModel, Textures, setRasterizerState: true, model: Model);
     }
 
     public virtual void ClickFunction() { }

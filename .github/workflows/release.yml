@@ -1,0 +1,319 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v0.1.0). Must already exist as a git tag.'
+        required: true
+        type: string
+      prerelease:
+        description: 'Mark as pre-release'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  version:
+    name: Extract versions
+    runs-on: ubuntu-latest
+    outputs:
+      game_version: ${{ steps.v.outputs.game_version }}
+      port_version: ${{ steps.v.outputs.port_version }}
+      tag: ${{ steps.v.outputs.tag }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read versions from source
+        id: v
+        run: |
+          GAME=$(grep -oP 'GAME_VERSION = "\K[^"]+' P3D.CS/Core/GameController.cs)
+          PORT=$(grep -oP 'PORT_VERSION = "\K[^"]+' P3D.CS/Core/GameController.cs)
+          TAG="${{ inputs.tag || github.ref_name }}"
+          echo "game_version=$GAME" >> $GITHUB_OUTPUT
+          echo "port_version=$PORT" >> $GITHUB_OUTPUT
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+
+  linux-x64:
+    name: Release (Linux x64)
+    needs: version
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_STEM: Pokemon3D-${{ needs.version.outputs.game_version }}-net10-v${{ needs.version.outputs.port_version }}-Linux-x64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - run: dotnet restore P3D.sln
+      - run: dotnet tool restore
+      - run: dotnet build lib/P3D.FontPipeline/P3D.FontPipeline.csproj --configuration Release --no-restore
+      - run: dotnet publish P3D.CS/P3D.CS.csproj --configuration Release --runtime linux-x64 --self-contained true -o publish
+
+      - name: Package
+        run: |
+          mv publish "$ARTIFACT_STEM"
+          tar -czf "${ARTIFACT_STEM}.tar.gz" "$ARTIFACT_STEM"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-x64
+          path: "*.tar.gz"
+
+  win-x64:
+    name: Release (Windows x64)
+    needs: version
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_STEM: Pokemon3D-${{ needs.version.outputs.game_version }}-net10-v${{ needs.version.outputs.port_version }}-Windows-x64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-win-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-win-
+
+      - run: dotnet restore P3D.sln
+      - run: dotnet tool restore
+      - run: dotnet build lib/P3D.FontPipeline/P3D.FontPipeline.csproj --configuration Release --no-restore
+      - run: dotnet publish P3D.CS/P3D.CS.csproj --configuration Release --runtime win-x64 --self-contained true -o publish
+
+      - name: Package
+        run: |
+          mv publish "$ARTIFACT_STEM"
+          zip -r "${ARTIFACT_STEM}.zip" "$ARTIFACT_STEM"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: win-x64
+          path: "*.zip"
+
+  osx-x64:
+    name: Release (macOS x64)
+    needs: version
+    runs-on: macos-13
+    env:
+      ARTIFACT_STEM: Pokemon3D-${{ needs.version.outputs.game_version }}-net10-v${{ needs.version.outputs.port_version }}-macOS-x64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - run: dotnet restore P3D.sln
+      - run: dotnet tool restore
+      - run: dotnet build lib/P3D.FontPipeline/P3D.FontPipeline.csproj --configuration Release --no-restore
+      - run: dotnet publish P3D.CS/P3D.CS.csproj --configuration Release --runtime osx-x64 --self-contained true -o publish
+
+      - name: Package
+        run: |
+          mv publish "$ARTIFACT_STEM"
+          tar -czf "${ARTIFACT_STEM}.tar.gz" "$ARTIFACT_STEM"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: osx-x64
+          path: "*.tar.gz"
+
+  osx-arm64:
+    name: Release (macOS arm64)
+    needs: version
+    runs-on: macos-latest
+    env:
+      ARTIFACT_STEM: Pokemon3D-${{ needs.version.outputs.game_version }}-net10-v${{ needs.version.outputs.port_version }}-macOS-arm64
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-
+
+      - run: dotnet restore P3D.sln
+      - run: dotnet tool restore
+      - run: dotnet build lib/P3D.FontPipeline/P3D.FontPipeline.csproj --configuration Release --no-restore
+      - run: dotnet publish P3D.CS/P3D.CS.csproj --configuration Release --runtime osx-arm64 --self-contained true -o publish
+
+      - name: Package
+        run: |
+          mv publish "$ARTIFACT_STEM"
+          tar -czf "${ARTIFACT_STEM}.tar.gz" "$ARTIFACT_STEM"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: osx-arm64
+          path: "*.tar.gz"
+
+  flatpak:
+    name: Release (Flatpak)
+    needs: version
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_NAME: Pokemon3D-${{ needs.version.outputs.game_version }}-net10-v${{ needs.version.outputs.port_version }}.flatpak
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-flatpak-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-flatpak-
+
+      - run: dotnet restore P3D.sln
+      - run: dotnet tool restore
+      - run: dotnet build lib/P3D.FontPipeline/P3D.FontPipeline.csproj --configuration Release --no-restore
+      - run: dotnet publish P3D.CS/P3D.CS.csproj --configuration Release --runtime linux-x64 --self-contained true -o linux/publish
+
+      - name: Install Flatpak tools
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y flatpak flatpak-builder
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+      - name: Install Flatpak runtime and SDK
+        run: flatpak install --user -y flathub org.freedesktop.Platform//24.08 org.freedesktop.Sdk//24.08
+
+      - name: Build Flatpak
+        run: flatpak-builder --user --force-clean --repo=flatpak-repo flatpak-build linux/io.github.wheat32.Pokemon3D.yml
+
+      - name: Bundle Flatpak
+        run: flatpak build-bundle flatpak-repo "$ARTIFACT_NAME" io.github.wheat32.Pokemon3D
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: "*.flatpak"
+
+  appimage:
+    name: Release (AppImage)
+    needs: version
+    runs-on: ubuntu-latest
+    env:
+      ARTIFACT_NAME: Pokemon3D-${{ needs.version.outputs.game_version }}-net10-v${{ needs.version.outputs.port_version }}.AppImage
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+            10.0.x
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-appimage-${{ hashFiles('**/*.csproj') }}
+          restore-keys: ${{ runner.os }}-nuget-appimage-
+
+      - run: dotnet restore P3D.sln
+      - run: dotnet tool restore
+      - run: dotnet build lib/P3D.FontPipeline/P3D.FontPipeline.csproj --configuration Release --no-restore
+      - run: dotnet publish P3D.CS/P3D.CS.csproj --configuration Release --runtime linux-x64 --self-contained true -o AppDir/usr/lib/pokemon3d
+
+      - name: Set up AppDir
+        run: |
+          cp linux/AppRun AppDir/AppRun
+          chmod +x AppDir/AppRun
+          cp linux/io.github.wheat32.Pokemon3D.desktop AppDir/
+          cp linux/io.github.wheat32.Pokemon3D.png AppDir/io.github.wheat32.Pokemon3D.png
+          mkdir -p AppDir/usr/share/applications AppDir/usr/share/metainfo AppDir/usr/share/icons/hicolor/256x256/apps
+          cp linux/io.github.wheat32.Pokemon3D.desktop AppDir/usr/share/applications/
+          cp linux/io.github.wheat32.Pokemon3D.png AppDir/usr/share/icons/hicolor/256x256/apps/
+          cp linux/io.github.wheat32.Pokemon3D.metainfo.xml AppDir/usr/share/metainfo/
+
+      - name: Download appimagetool
+        run: |
+          wget -q -O appimagetool https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool
+
+      - name: Build AppImage
+        run: APPIMAGE_EXTRACT_AND_RUN=1 ./appimagetool AppDir "$ARTIFACT_NAME"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: appimage
+          path: "*.AppImage"
+
+  release:
+    name: Create GitHub Release
+    needs: [version, linux-x64, win-x64, osx-x64, osx-arm64, flatpak, appimage]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: artifacts
+
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          PRERELEASE_FLAG=""
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" && "${{ inputs.prerelease }}" == "true" ]]; then
+            PRERELEASE_FLAG="--prerelease"
+          fi
+          gh release create \
+            "${{ needs.version.outputs.tag }}" \
+            --repo "${{ github.repository }}" \
+            --title "Pokémon 3D ${{ needs.version.outputs.game_version }} (.NET 10 Port v${{ needs.version.outputs.port_version }})" \
+            --generate-notes \
+            $PRERELEASE_FLAG \
+            artifacts/*

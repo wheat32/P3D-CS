@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Pokémon 3D
+GenericName=Pokémon Game
+Comment=A C#/.NET 10 port of Pokémon 3D
+Exec=pokemon3d
+Icon=io.github.wheat32.Pokemon3D
+Categories=Game;
+Keywords=pokemon;3d;roleplaying;
+StartupNotify=true

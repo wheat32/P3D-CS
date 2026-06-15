@@ -315,7 +315,7 @@ public class Player : HashSecureBase
         String[] data = IsGameJoltSave == true
             ? Core.GameJoltSave.Player.SplitAtNewline()
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Player.dat"))
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Player.dat"))
                 .SplitAtNewline();
 
         foreach (String line in data)
@@ -581,7 +581,7 @@ public class Player : HashSecureBase
         String[] data = IsGameJoltSave == true
             ? Core.GameJoltSave.Options.SplitAtNewline()
             : File.ReadAllLines(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Options.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Options.dat"));
 
         foreach (String line in data)
         {
@@ -619,7 +619,7 @@ public class Player : HashSecureBase
         String data = IsGameJoltSave == true
             ? Core.GameJoltSave.Items
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Items.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Items.dat"));
         if (String.IsNullOrEmpty(data) == true)
         {
             return;
@@ -649,7 +649,7 @@ public class Player : HashSecureBase
         BerryData = IsGameJoltSave == true
             ? Core.GameJoltSave.Berries
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Berries.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Berries.dat"));
     }
 
     private void LoadApricorns()
@@ -657,7 +657,7 @@ public class Player : HashSecureBase
         ApricornData = IsGameJoltSave == true
             ? Core.GameJoltSave.Apricorns
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Apricorns.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Apricorns.dat"));
     }
 
     private void LoadDaycare()
@@ -669,7 +669,7 @@ public class Player : HashSecureBase
         }
         else
         {
-            String path = Path.Combine(GameController.GamePath, "Save", FilePrefix, "Daycare.dat");
+            String path = Path.Combine(AppPaths.SaveDir, FilePrefix, "Daycare.dat");
             if (File.Exists(path) == true)
             {
                 DaycareData = File.ReadAllText(path);
@@ -682,7 +682,7 @@ public class Player : HashSecureBase
         PokedexData = IsGameJoltSave == true
             ? Core.GameJoltSave.Pokedex
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Pokedex.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Pokedex.dat"));
         if (String.IsNullOrEmpty(PokedexData) == true)
         {
             PokedexData = Pokedex.NewPokedex();
@@ -694,7 +694,7 @@ public class Player : HashSecureBase
         RegisterData = IsGameJoltSave == true
             ? Core.GameJoltSave.Register
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Register.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Register.dat"));
     }
 
     private void LoadItemData()
@@ -702,7 +702,7 @@ public class Player : HashSecureBase
         ItemData = IsGameJoltSave == true
             ? Core.GameJoltSave.ItemData
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "ItemData.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "ItemData.dat"));
     }
 
     private void LoadBoxData()
@@ -710,7 +710,7 @@ public class Player : HashSecureBase
         BoxData = IsGameJoltSave == true
             ? Core.GameJoltSave.Box
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Box.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Box.dat"));
     }
 
     private void LoadNPCData()
@@ -718,7 +718,7 @@ public class Player : HashSecureBase
         NPCData = IsGameJoltSave == true
             ? Core.GameJoltSave.NPC
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "NPC.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "NPC.dat"));
     }
 
     private void LoadHallOfFameData()
@@ -726,7 +726,7 @@ public class Player : HashSecureBase
         HallOfFameData = IsGameJoltSave == true
             ? Core.GameJoltSave.HallOfFame
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "HallOfFame.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "HallOfFame.dat"));
     }
 
     private void LoadSecretBaseData()
@@ -734,7 +734,7 @@ public class Player : HashSecureBase
         SecretBaseData = IsGameJoltSave == true
             ? Core.GameJoltSave.SecretBase
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "SecretBase.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "SecretBase.dat"));
     }
 
     private void LoadRoamingPokemonData()
@@ -742,7 +742,7 @@ public class Player : HashSecureBase
         RoamingPokemonData = IsGameJoltSave == true
             ? Core.GameJoltSave.RoamingPokemon
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "RoamingPokemon.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "RoamingPokemon.dat"));
     }
 
     private void LoadStatistics()
@@ -750,7 +750,7 @@ public class Player : HashSecureBase
         Statistics = IsGameJoltSave == true
             ? Core.GameJoltSave.Statistics
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Statistics.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Statistics.dat"));
     }
 
     private void LoadParty()
@@ -759,7 +759,7 @@ public class Player : HashSecureBase
         String data = IsGameJoltSave == true
             ? Core.GameJoltSave.Party
             : File.ReadAllText(
-                Path.Combine(GameController.GamePath, "Save", FilePrefix, "Party.dat"));
+                Path.Combine(AppPaths.SaveDir, FilePrefix, "Party.dat"));
         foreach (String line in data.SplitAtNewline())
         {
             if (line.StartsWith("{") == false) continue;
@@ -775,7 +775,7 @@ public class Player : HashSecureBase
     {
         if (IsGameJoltSave == true) return;
 
-        String saveDir = Path.Combine(GameController.GamePath, "Save", FilePrefix);
+        String saveDir = Path.Combine(AppPaths.SaveDir, FilePrefix);
         Directory.CreateDirectory(saveDir);
 
         File.WriteAllText(Path.Combine(saveDir, "Player.dat"), GetPlayerData(false));

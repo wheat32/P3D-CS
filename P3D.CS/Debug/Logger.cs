@@ -74,7 +74,13 @@ public static class Logger
 
             Debug("Logger: " + logString);
 
-            String logPath = Path.Combine(GameController.GamePath, "log.dat");
+            if (logType is LogTypes.ErrorMessage or LogTypes.Warning)
+                Console.Error.WriteLine(logString);
+            else
+                Console.WriteLine(logString);
+
+            Directory.CreateDirectory(AppPaths.CacheDir);
+            String logPath = Path.Combine(AppPaths.CacheDir, "log.dat");
             String existing = File.Exists(logPath) == true
                 ? File.ReadAllText(logPath)
                 : "";
@@ -241,7 +247,8 @@ public static class Logger
                 $"You should report this error.{Environment.NewLine}{Environment.NewLine}" +
                 "Go to \"http://pokemon3d.net/forum/forums/6/create-thread\" to report this crash there.";
 
-            String logPath = Path.Combine(GameController.GamePath, logName);
+            Directory.CreateDirectory(AppPaths.CacheDir);
+            String logPath = Path.Combine(AppPaths.CacheDir, logName);
             File.WriteAllText(logPath, content);
 
             // Cross-platform: write to stderr instead of showing a message box

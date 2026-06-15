@@ -45,7 +45,7 @@ VertexShaderOutput VertexShaderFunction(VertexShaderInput input)
     float4 viewPosition = mul(worldPosition, View);
 
     output.Position = mul(viewPosition, Projection);
-    output.Normal = mul(input.Normal, World);
+    output.Normal = float4(mul(input.Normal, (float3x3)World), 0.0);
     output.TexCoord = input.TexCoord;
 
     return output;
@@ -64,7 +64,7 @@ technique Texture
     {
 		// TODO: set renderstates here.
 
-        VertexShader = compile vs_5_0 VertexShaderFunction();
-        PixelShader = compile ps_5_0 TextureShaderFunction();
+        VertexShader = compile vs_3_0 VertexShaderFunction();
+        PixelShader = compile ps_3_0 TextureShaderFunction();
     }
 }

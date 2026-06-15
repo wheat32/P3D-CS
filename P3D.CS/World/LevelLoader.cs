@@ -374,7 +374,7 @@ public class LevelLoader
                         dictionary.Add(tagName, float.Parse(subTagValue));
                         break;
                     case "bool":
-                        dictionary.Add(tagName, bool.Parse(subTagValue));
+                        dictionary.Add(tagName, subTagValue == "1" || (subTagValue != "0" && bool.Parse(subTagValue)));
                         break;
                     case "intarr":
                     {
@@ -908,7 +908,7 @@ public class LevelLoader
 
         String texturePath = (String)GetTag(tags, "TexturePath")!;
         Microsoft.Xna.Framework.Rectangle textureRectangle = (Microsoft.Xna.Framework.Rectangle)GetTag(tags, "Texture")!;
-        Texture2D texture = TextureManager.GetTexture(texturePath, textureRectangle, "");
+        Texture2D texture = TextureManager.GetTexture(texturePath, textureRectangle);
 
         bool visible = true;
         if (TagExists(tags, "Visible") == true)
@@ -1002,7 +1002,7 @@ public class LevelLoader
                         else
                         {
                             Floor f = new Floor(position.X + x, position.Y, position.Z + z,
-                                [TextureManager.GetTexture(texturePath, textureRectangle, "")],
+                                [TextureManager.GetTexture(texturePath, textureRectangle)],
                                 [0, 0], false, rotation, new Vector3(1.0f),
                                 BaseModel.FloorModel, 0, "", visible, shader, hasSnow, hasIce, hasSand);
                             f.MapOrigin = _mapOrigin;
@@ -1058,7 +1058,7 @@ public class LevelLoader
         String texturePath = (String)GetTag(tags, "TexturePath")!;
         foreach (Microsoft.Xna.Framework.Rectangle textureRectangle in texList)
         {
-            textureList.Add(TextureManager.GetTexture(texturePath, textureRectangle, ""));
+            textureList.Add(TextureManager.GetTexture(texturePath, textureRectangle));
         }
         Texture2D[] textureArray = textureList.ToArray();
 
@@ -1611,7 +1611,7 @@ public class LevelLoader
 
         String texturePath = (String)GetTag(tags, "TexturePath")!;
         Microsoft.Xna.Framework.Rectangle textureRectangle = (Microsoft.Xna.Framework.Rectangle)GetTag(tags, "Texture")!;
-        Texture2D texture = TextureManager.GetTexture(texturePath, textureRectangle, "");
+        Texture2D texture = TextureManager.GetTexture(texturePath, textureRectangle);
 
         int animationSpeed = (int)GetTag(tags, "AnimationSpeed")!;
         int frameCount = (int)GetTag(tags, "FrameCount")!;

@@ -47,10 +47,10 @@ public class GameOptions
     {
         KeyBindings.CreateKeySave(false);
 
-        String saveDir = Path.Combine(GameController.GamePath, "Save");
-        Directory.CreateDirectory(saveDir);
+        Directory.CreateDirectory(AppPaths.SaveDir);
+        Directory.CreateDirectory(AppPaths.ConfigDir);
 
-        String optionsPath = Path.Combine(saveDir, "options.dat");
+        String optionsPath = Path.Combine(AppPaths.ConfigDir, "options.dat");
         if (File.Exists(optionsPath) == false)
         {
             CreateOptions();
@@ -265,7 +265,7 @@ public class GameOptions
             $"Extras|{String.Join(";", Extras)}"
         });
 
-        File.WriteAllText(Path.Combine(GameController.GamePath, "Save", "options.dat"), data);
+        File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "options.dat"), data);
         KeyBindings.SaveKeys();
 
         Logger.Debug("---Options saved---");
@@ -286,6 +286,6 @@ public class GameOptions
             "MaxOffsetLevel|0", "UpdateDisabled|0", "InterfaceScale|0", "Extras|"
         });
 
-        File.WriteAllText(Path.Combine(GameController.GamePath, "Save", "options.dat"), s);
+        File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "options.dat"), s);
     }
 }

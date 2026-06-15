@@ -307,6 +307,7 @@ lib/build/
 
 # MonoGame content build cache
 *.mgstats
+*.mgcontent
 
 # ignore binaries in p3d project
 p3d/**/*.exe

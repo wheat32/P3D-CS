@@ -306,9 +306,9 @@ public class AddServerScreen : Screen
     {
         if (IsValid() == String.Empty)
         {
-            List<String> data = File.ReadAllLines(GameController.GamePath + @"\Save\server_list.dat").ToList();
+            List<String> data = File.ReadAllLines(Path.Combine(AppPaths.ConfigDir, "server_list.dat")).ToList();
             data.Add(_identifyName + "," + _address);
-            File.WriteAllLines(GameController.GamePath + @"\Save\server_list.dat", data.ToArray());
+            File.WriteAllLines(Path.Combine(AppPaths.ConfigDir, "server_list.dat"), data.ToArray());
             Core.SetScreen(PreScreen);
         }
     }
@@ -317,9 +317,9 @@ public class AddServerScreen : Screen
     {
         if (_newServer == false)
         {
-            List<String> data = File.ReadAllLines(GameController.GamePath + @"\Save\server_list.dat").ToList();
+            List<String> data = File.ReadAllLines(Path.Combine(AppPaths.ConfigDir, "server_list.dat")).ToList();
             data.Add(_editServer!.ToString());
-            File.WriteAllLines(GameController.GamePath + @"\Save\server_list.dat", data.ToArray());
+            File.WriteAllLines(Path.Combine(AppPaths.ConfigDir, "server_list.dat"), data.ToArray());
         }
         Core.SetScreen(PreScreen);
     }

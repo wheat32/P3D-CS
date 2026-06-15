@@ -18,7 +18,7 @@ sampler colorMapTexture : register(s0);
 // Pixel Shaders.
 //-----------------------------------------------------------------------------
 
-float4 PS_MAIN(float4 position : SV_Position, float4 col : COLOR0, float2 uv : TEXCOORD0) : COLOR0
+float4 PS_MAIN(float2 uv : TEXCOORD0) : COLOR0
 {
     float4 color = float4(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -36,6 +36,6 @@ technique GaussianBlur
 {
     pass Pass1
     {
-        PixelShader = compile ps_4_0 PS_MAIN();
+        PixelShader = compile ps_3_0 PS_MAIN();
     }
 }

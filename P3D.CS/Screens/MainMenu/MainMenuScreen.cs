@@ -71,10 +71,7 @@ public class MainMenuScreen : Screen
 
         Level?.World.Initialize(Level.EnvironmentType, Level.WeatherType);
 
-        if (Directory.Exists(GameController.GamePath + @"\Save\") == false)
-        {
-            Directory.CreateDirectory(GameController.GamePath + @"\Save\");
-        }
+        Directory.CreateDirectory(AppPaths.SaveDir);
 
         GetSaves();
         GetLanguages();
@@ -144,19 +141,20 @@ public class MainMenuScreen : Screen
 
     private void GetSaves()
     {
-        if (File.Exists(GameController.GamePath + @"\Save\lastSession.id") == true)
+        String lastSessionPath = Path.Combine(AppPaths.ConfigDir, "lastSession.id");
+        if (File.Exists(lastSessionPath) == true)
         {
-            String idData = File.ReadAllText(GameController.GamePath + @"\Save\lastSession.id");
-            if (Directory.Exists(GameController.GamePath + @"\Save\" + idData) == false)
+            String idData = File.ReadAllText(lastSessionPath);
+            if (Directory.Exists(Path.Combine(AppPaths.SaveDir, idData)) == false)
             {
-                File.Delete(GameController.GamePath + @"\Save\lastSession.id");
+                File.Delete(lastSessionPath);
             }
         }
 
         _saves.Clear();
         _saveNames.Clear();
 
-        foreach (String folder in Directory.GetDirectories(GameController.GamePath + @"\Save"))
+        foreach (String folder in Directory.GetDirectories(AppPaths.SaveDir))
         {
             if (P3D.Player.IsSaveGameFolder(folder) == true)
             {
@@ -403,7 +401,7 @@ public class MainMenuScreen : Screen
             }
             else
             {
-                if ((i < 2 && _saves.Count == 0) || (i == 0 && Directory.Exists(GameController.GamePath + @"\Save\autosave") == false))
+                if ((i < 2 && _saves.Count == 0) || (i == 0 && Directory.Exists(Path.Combine(AppPaths.SaveDir, "autosave")) == false))
                 {
                     canvasTexture = TextureManager.GetTexture(@"GUI\Menus\Menu", new Rectangle(48, 0, 48, 48), String.Empty);
                 }
@@ -657,7 +655,7 @@ public class MainMenuScreen : Screen
 
     private void ContinueButton()
     {
-        if (_saves.Count > 0 && P3D.Player.IsSaveGameFolder(GameController.GamePath + @"\Save\autosave") == true)
+        if (_saves.Count > 0 && P3D.Player.IsSaveGameFolder(Path.Combine(AppPaths.SaveDir, "autosave")) == true)
         {
             Core.Player.IsGameJoltSave = false;
             Core.Player.LoadGame("autosave");
@@ -1798,7 +1796,7 @@ public class MainMenuScreen : Screen
         Directory.Delete(_saves[_loadMenuIndex[0]], true);
 
         bool deleteAutosave = false;
-        foreach (String f in Directory.GetDirectories(GameController.GamePath + @"\Save\"))
+        foreach (String f in Directory.GetDirectories(AppPaths.SaveDir))
         {
             if (File.Exists(f + @"\Player.dat") == true)
             {
@@ -1818,7 +1816,7 @@ public class MainMenuScreen : Screen
         }
         if (deleteAutosave == true)
         {
-            Directory.Delete(GameController.GamePath + @"\Save\autosave", true);
+            Directory.Delete(Path.Combine(AppPaths.SaveDir, "autosave"), true);
         }
 
         _tempLoadDisplay = String.Empty;

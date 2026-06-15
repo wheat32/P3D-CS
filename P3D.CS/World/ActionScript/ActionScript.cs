@@ -163,8 +163,7 @@ public class ActionScript
                     if (System.IO.File.Exists(path) == true)
                     {
                         String data = System.IO.File.ReadAllText(path);
-                        data = data.Replace(Environment.NewLine, "^");
-                        String[] scriptData = data.Split('^');
+                        String[] scriptData = data.SplitAtNewline();
                         AddScriptLines(scriptData);
                     }
                     else

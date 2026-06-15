@@ -255,13 +255,77 @@ public class NPC : Entity
         }
     }
 
-    public void Initialize(String name, int id, String facing, int moveType,
-                           bool interact, String script, List<Rectangle> collisions)
+    // Parameters match Entity.GetNewEntity's NPC call order:
+    // textureID, rotation, name, id, animateIdle, movement, moveRectangles
+    public void Initialize(String textureID, int rotation, String name, int id,
+                           bool animateIdle, String movement, List<Rectangle> moveRectangles)
     {
+        NPCID = id;
+        Name = name;
+        TextureID = textureID;
+        AnimateIdle = animateIdle;
+        Rotation = Entity.GetRotationFromInteger(rotation);
+        Movement = movement.ToLower() switch
+        {
+            "walk" => Movements.Walk,
+            "straight" => Movements.Straight,
+            "looking" => Movements.Looking,
+            "facerotation" => Movements.Turning,
+            _ => Movements.Still
+        };
+        MoveRectangles = moveRectangles;
         base.Initialize();
+        SetupSprite(textureID, "", false);
     }
 
-    public void SetupSprite(String textureID, String extra, bool update) { }
+    public void SetupSprite(String textureID, String extra, bool update)
+    {
+        TextureID = textureID;
+
+        String texturePath = @"Textures\NPC\";
+        if (TextureID.StartsWith("[POKEMON|N]"))
+        {
+            TextureID = TextureID.Remove(0, 11);
+            texturePath = @"Pokemon\Overworld\Normal\";
+        }
+        else if (TextureID.StartsWith("[POKEMON|S]"))
+        {
+            TextureID = TextureID.Remove(0, 11);
+            texturePath = @"Pokemon\Overworld\Shiny\";
+        }
+
+        if (TextureID.Equals("<player.skin>", StringComparison.OrdinalIgnoreCase))
+            TextureID = Core.Player.Skin;
+        else if (TextureID.Equals("<rival.skin>", StringComparison.OrdinalIgnoreCase))
+            TextureID = Core.Player.RivalSkin;
+
+        if (textureID.StartsWith(@"Pokemon\Overworld\") || textureID.StartsWith(@"Pokemon\Battle\"))
+            texturePath = "";
+
+        Texture2D fullTexture = TextureManager.GetTexture(texturePath + TextureID);
+
+        Microsoft.Xna.Framework.Vector2 frameSize;
+        if (Movement == Movements.Pokeball)
+        {
+            frameSize = new Microsoft.Xna.Framework.Vector2(fullTexture.Width, fullTexture.Height);
+        }
+        else if (fullTexture.Width == fullTexture.Height / 2)
+        {
+            frameSize = new Microsoft.Xna.Framework.Vector2(fullTexture.Width / 2, fullTexture.Height / 4);
+        }
+        else if (fullTexture.Width == fullTexture.Height)
+        {
+            frameSize = new Microsoft.Xna.Framework.Vector2(fullTexture.Width / 4, fullTexture.Height / 4);
+        }
+        else
+        {
+            frameSize = new Microsoft.Xna.Framework.Vector2(fullTexture.Width / 3, fullTexture.Height / 4);
+        }
+
+        // Use the first frame (standing, facing down)
+        Rectangle frameRect = new Rectangle(0, 0, (int)frameSize.X, (int)frameSize.Y);
+        Textures = [TextureManager.GetTexture(fullTexture, frameRect, 1)];
+    }
 
     public static void AddNPCData(String data) { }
     public static void RemoveNPCData(String id) { }

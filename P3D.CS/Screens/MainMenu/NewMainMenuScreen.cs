@@ -877,7 +877,7 @@ public class NewMainMenuScreen : Screen
             "ItemData.dat", "Items.dat", "NPC.dat", "Options.dat", "Party.dat", "Player.dat",
             "Pokedex.dat", "Register.dat", "RoamingPokemon.dat", "SecretBase.dat", "Statistics.dat"];
 
-        foreach (String path in Directory.GetDirectories(GameController.GamePath + @"\Save\"))
+        foreach (String path in Directory.GetDirectories(AppPaths.SaveDir))
         {
             bool exists = true;
             foreach (String file in files)

@@ -165,9 +165,7 @@ public class NewNewGameScreen : OverworldScreen
                 folderPath = "autosave0";
             }
 
-            String savePath = GameController.GamePath + @"\Save\";
-
-            while (Directory.Exists(savePath + folderPath) == true)
+            while (Directory.Exists(Path.Combine(AppPaths.SaveDir, folderPath)) == true)
             {
                 if (folderPath != Core.Player.Name)
                 {
@@ -177,10 +175,7 @@ public class NewNewGameScreen : OverworldScreen
                 folderPrefix += 1;
             }
 
-            if (Directory.Exists(GameController.GamePath + @"\Save") == false)
-            {
-                Directory.CreateDirectory(GameController.GamePath + @"\Save");
-            }
+            Directory.CreateDirectory(AppPaths.SaveDir);
 
             Core.Player.FilePrefix = folderPath;
             Core.Player.GameStart = DateTime.Now;
@@ -207,24 +202,25 @@ public class NewNewGameScreen : OverworldScreen
             }
             Core.Player.OT = ot;
 
-            Directory.CreateDirectory(savePath + folderPath);
+            String slotDir = Path.Combine(AppPaths.SaveDir, folderPath);
+            Directory.CreateDirectory(slotDir);
 
-            File.WriteAllText(savePath + folderPath + @"\Player.dat", Core.Player.GetPlayerData(false));
-            File.WriteAllText(savePath + folderPath + @"\Pokedex.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Items.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Register.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Berries.dat", Core.Player.BerryData);
-            File.WriteAllText(savePath + folderPath + @"\Apricorns.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Daycare.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Party.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\ItemData.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Options.dat", Core.Player.GetOptionsData());
-            File.WriteAllText(savePath + folderPath + @"\Box.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\NPC.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\HallOfFame.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\SecretBase.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\RoamingPokemon.dat", String.Empty);
-            File.WriteAllText(savePath + folderPath + @"\Statistics.dat", String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Player.dat"), Core.Player.GetPlayerData(false));
+            File.WriteAllText(Path.Combine(slotDir, "Pokedex.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Items.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Register.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Berries.dat"), Core.Player.BerryData);
+            File.WriteAllText(Path.Combine(slotDir, "Apricorns.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Daycare.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Party.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "ItemData.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Options.dat"), Core.Player.GetOptionsData());
+            File.WriteAllText(Path.Combine(slotDir, "Box.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "NPC.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "HallOfFame.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "SecretBase.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "RoamingPokemon.dat"), String.Empty);
+            File.WriteAllText(Path.Combine(slotDir, "Statistics.dat"), String.Empty);
         }
 
         private static String CreateBerryData()

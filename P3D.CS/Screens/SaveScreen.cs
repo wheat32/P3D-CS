@@ -262,7 +262,7 @@ public class SaveScreen : Screen
                 }
                 else
                 {
-                    String backupPath = System.IO.Path.Combine(GameController.GamePath, "Backup Save", Core.GameJoltSave.GameJoltID, "Encrypted", "Encrypted.dat");
+                    String backupPath = Path.Combine(AppPaths.SaveDir, "backup", Core.GameJoltSave.GameJoltID, "Encrypted", "Encrypted.dat");
                     if (System.IO.File.Exists(backupPath) == true)
                     {
                         System.IO.File.Delete(backupPath);

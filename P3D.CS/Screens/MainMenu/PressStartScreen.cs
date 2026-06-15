@@ -23,6 +23,7 @@ public class PressStartScreen : Screen
 
     private List<Screens.MainMenu.MainMenuEntity> _entities = [];
     private Screens.MainMenu.Scene.MainMenuCamera? _camera;
+    private GameDevCommon.Rendering.BasicShader? _shader;
     private Color _fromColor;
     private Color _toColor;
     private Color _textColor;
@@ -47,10 +48,7 @@ public class PressStartScreen : Screen
 
         Core.Player.Skin = "Hilbert";
 
-        if (Directory.Exists(GameController.GamePath + @"\Save\") == false)
-        {
-            Directory.CreateDirectory(GameController.GamePath + @"\Save\");
-        }
+        Directory.CreateDirectory(AppPaths.SaveDir);
 
         GameJolt.Emblem.ClearOnlineSpriteCache();
 
@@ -67,6 +65,10 @@ public class PressStartScreen : Screen
         Core.Player.Unload();
 
         _camera = new Screens.MainMenu.Scene.MainMenuCamera();
+
+        _shader = new GameDevCommon.Rendering.BasicShader();
+        if (_shader.Effect is Microsoft.Xna.Framework.Graphics.BasicEffect be)
+            be.LightingEnabled = false;
         World.setDaytime = -1;
         World.DayTimes dayTime = World.GetTime();
 
@@ -195,6 +197,21 @@ public class PressStartScreen : Screen
                 new Rectangle(0, _target.Height / 4 * 3, _target.Width, _target.Height / 4),
                 _toColor);
             _backgroundRenderer.End();
+
+            // Render 3D scene entities into the render target before blurring so the
+            // black silhouette sprites contrast against the gradient and get soft edges.
+            // SamplerState must be LinearWrap: SpriteBatch.Begin() sets LinearClamp, which
+            // would clamp the ground quad's 0–10 U-range to U=1 (solid edge instead of tiles).
+            if (_shader != null && _camera != null && _entities.Count > 0)
+            {
+                Core.GraphicsDevice.DepthStencilState = DepthStencilState.None;
+                Core.GraphicsDevice.BlendState = BlendState.AlphaBlend;
+                Core.GraphicsDevice.RasterizerState = RasterizerState.CullCounterClockwise;
+                Core.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;
+                _shader.Prepare(_camera);
+                foreach (var entity in _entities)
+                    _shader.Render(entity);
+            }
 
             Core.GraphicsDevice.SetRenderTarget(null);
 

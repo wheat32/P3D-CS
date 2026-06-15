@@ -56,9 +56,10 @@ public class BlackOutScreen : Screen
                 SoundManager.PlaySound("select");
                 if (Core.Player.IsGameJoltSave == false)
                 {
-                    if (System.IO.Directory.Exists(GameController.GamePath + @"\Save\" + Core.Player.FilePrefix) == true)
+                    String saveSlotDir = Path.Combine(AppPaths.SaveDir, Core.Player.FilePrefix);
+                    if (Directory.Exists(saveSlotDir) == true)
                     {
-                        System.IO.Directory.Delete(GameController.GamePath + @"\Save\" + Core.Player.FilePrefix, true);
+                        Directory.Delete(saveSlotDir, true);
                     }
                 }
                 else

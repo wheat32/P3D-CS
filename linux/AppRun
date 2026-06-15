@@ -1,0 +1,4 @@
+#!/bin/sh
+APPDIR="$(dirname "$(readlink -f "$0")")"
+export LD_LIBRARY_PATH="$APPDIR/usr/lib/pokemon3d:$LD_LIBRARY_PATH"
+exec "$APPDIR/usr/lib/pokemon3d/Pokemon3D" "$@"

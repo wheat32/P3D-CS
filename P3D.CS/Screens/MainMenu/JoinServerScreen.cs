@@ -40,15 +40,15 @@ public class JoinServerScreen : Screen
 
         _serverList.Add(localServer);
 
-        if (File.Exists(GameController.GamePath + @"\Save\server_list.dat") == false)
+        if (File.Exists(Path.Combine(AppPaths.ConfigDir, "server_list.dat")) == false)
         {
-            File.WriteAllText(GameController.GamePath + @"\Save\server_list.dat",
+            File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "server_list.dat"),
                 "Official Pokémon3D Server,karp.pokemon3d.net:15134");
         }
 
         if (_loadOnlineServers == true)
         {
-            String[] data = File.ReadAllLines(GameController.GamePath + @"\Save\server_list.dat");
+            String[] data = File.ReadAllLines(Path.Combine(AppPaths.ConfigDir, "server_list.dat"));
             if (data.Length > 0)
             {
                 foreach (String line in data)
@@ -458,19 +458,19 @@ public class JoinServerScreen : Screen
                 data += s.ToString();
             }
         }
-        File.WriteAllText(GameController.GamePath + @"\Save\server_list.dat", data);
+        File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "server_list.dat"), data);
     }
 
     public static void AddServerMessage(String m, String serverName)
     {
-        if (File.Exists(GameController.GamePath + @"\Save\server_list.dat") == false)
+        if (File.Exists(Path.Combine(AppPaths.ConfigDir, "server_list.dat")) == false)
         {
-            File.WriteAllText(GameController.GamePath + @"\Save\server_list.dat", String.Empty);
+            File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "server_list.dat"), String.Empty);
         }
 
         String newData = String.Empty;
 
-        String[] data = File.ReadAllLines(GameController.GamePath + @"\Save\server_list.dat");
+        String[] data = File.ReadAllLines(Path.Combine(AppPaths.ConfigDir, "server_list.dat"));
         foreach (String line in data)
         {
             if (newData != String.Empty)
@@ -488,7 +488,7 @@ public class JoinServerScreen : Screen
             }
         }
 
-        File.WriteAllText(GameController.GamePath + @"\Save\server_list.dat", newData);
+        File.WriteAllText(Path.Combine(AppPaths.ConfigDir, "server_list.dat"), newData);
     }
 
     public class Server : Servers.Server

@@ -21,7 +21,6 @@ public class OverworldCamera : Camera
     private const float MOUSE_CLAMP_NEAR_EDGE = 240f;
     private const float MOUSE_Y_CLAMP_NORMAL = 320f;
     private const float MOUSE_Y_CLAMP_NEAR_EDGE = 128f;
-    private const float MOUSE_EDGE_THRESHOLD_DIV = 15f;
     private const float DEFAULT_BOBBING_RIDING = 0.012f;
     private const float DEFAULT_BOBBING_RUNNING = 0.008f;
     private const float DEFAULT_BOBBING_WALKING = 0.004f;
@@ -539,21 +538,17 @@ public class OverworldCamera : Camera
     {
         if (GameController.IsActiveWindow() == false) return;
 
-        float horizontalCutoff = Core.windowSize.Width / MOUSE_EDGE_THRESHOLD_DIV;
-        float verticalCutoff = Core.windowSize.Height / MOUSE_EDGE_THRESHOLD_DIV;
+        // VB confined the OS cursor to the window via ClipCursor, so the mouse could only ever
+        // drift a little before recentering near an edge. There is no cross-platform equivalent,
+        // so the cursor is recentered every frame instead — this runs after ControlCamera() has
+        // already consumed this frame's delta, so look rotation is unaffected, and the cursor
+        // never has more than one frame's worth of movement to escape the window with.
+        int centerX = (int)(Core.windowSize.Width / 2);
+        int centerY = (int)(Core.windowSize.Height / 2);
 
-        if (_mouseState.X <= horizontalCutoff ||
-            _mouseState.X >= Core.windowSize.Width - horizontalCutoff ||
-            _mouseState.Y <= verticalCutoff ||
-            _mouseState.Y >= Core.windowSize.Height - verticalCutoff)
-        {
-            oldMousePos = new Vector2((int)(Core.windowSize.Width / 2), (int)(Core.windowSize.Height / 2));
-            Mouse.SetPosition((int)(Core.windowSize.Width / 2), (int)(Core.windowSize.Height / 2));
-        }
-        else
-        {
-            oldMousePos = _mouseState.Position.ToVector2();
-        }
+        oldMousePos = new Vector2(centerX, centerY);
+        Mouse.SetPosition(centerX, centerY);
+
         doMouseUpdate = true;
     }
 
@@ -1164,6 +1159,10 @@ public class OverworldCamera : Camera
                 if (entity.BoundingBox.Contains(new Vector3(position2D.X, position2D.Y - 1f, position2D.Z)) == ContainmentType.Contains)
                 {
                     entity.WalkOntoFunction();
+                    if (entity.EntityID.Equals("SlideBlock", StringComparison.OrdinalIgnoreCase))
+                    {
+                        cannotWalk = false;
+                    }
                 }
                 if (Screen.Level.Surfing == true)
                 {
@@ -1181,6 +1180,27 @@ public class OverworldCamera : Camera
                         {
                             entity.WalkIntoFunction();
                         }
+                    }
+                }
+            }
+
+            // Step-up fallback: if the player is standing inside a SlideBlock tile
+            // (e.g. warped to that Y level) and no floor exists one tile ahead, use the
+            // direction to position2D to construct a diagonal PlannedMovement so the
+            // camera rises smoothly over the single remaining tile.
+            if (cannotWalk == true)
+            {
+                Vector3 currentPos = new Vector3(Position.X, (float)Math.Floor(Position.Y), Position.Z);
+                foreach (Entity entity in Screen.Level.Entities)
+                {
+                    if (entity.EntityID.Equals("SlideBlock", StringComparison.OrdinalIgnoreCase) &&
+                        entity.BoundingBox.Contains(currentPos) == ContainmentType.Contains)
+                    {
+                        float dirX = position2D.X - Position.X;
+                        float dirZ = position2D.Z - Position.Z;
+                        PlannedMovement = new Vector3(dirX, 1.0f, dirZ);
+                        cannotWalk = false;
+                        break;
                     }
                 }
             }

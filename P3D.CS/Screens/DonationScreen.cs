@@ -16,7 +16,7 @@ public class DonationScreen : Screen
     {
         PreScreen = currentScreen;
         Identification = Identifications.DonationScreen;
-        _mainTexture = TextureManager.GetTexture("House", new Rectangle(83, 98, 10, 12), String.Empty);
+        _mainTexture = TextureManager.GetTexture("House", new Rectangle(83, 98, 10, 12));
         _scrollTexture = TextureManager.GetTexture("GUI\\Menus\\Menu");
     }
 

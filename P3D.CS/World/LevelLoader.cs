@@ -1104,7 +1104,9 @@ public class LevelLoader
             animationData = (List<List<int>>)GetTag(tags, "AnimationData")!;
         }
 
-        Vector3 rotation = Entity.GetRotationFromInteger((int)GetTag(tags, "Rotation")!);
+        // VB's CInt(Nothing) returns 0 when "Rotation" is absent (entities using RotationXYZ omit it).
+        int rotationTag = TagExists(tags, "Rotation") == true ? (int)GetTag(tags, "Rotation")! : 0;
+        Vector3 rotation = Entity.GetRotationFromInteger(rotationTag);
 
         if (TagExists(tags, "RotationXYZ") == true)
         {

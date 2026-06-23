@@ -350,7 +350,8 @@ public class Entity : BaseEntity
         if (Core.CurrentScreen != null)
         {
             cameraPosition = Screen.Camera?.CPosition ?? Vector3.Zero;
-            if (Core.CurrentScreen.Identification == Screen.Identifications.OverworldScreen)
+            if (Core.CurrentScreen.Identification == Screen.Identifications.OverworldScreen ||
+                Core.CurrentScreen.Identification == Screen.Identifications.NewGameScreen)
             {
                 actionScriptActive = ((OverworldScreen)Core.CurrentScreen).ActionScript.IsReady == false;
             }
@@ -366,7 +367,7 @@ public class Entity : BaseEntity
 
         if (Moved > 0f && CanMove == true)
         {
-            Moved -= Speed;
+            Moved -= Math.Abs(Speed);
             Vector3 movement = FaceDirection switch
             {
                 0 => new Vector3(0, 0, -1),
@@ -382,8 +383,8 @@ public class Entity : BaseEntity
             if (Moved <= 0f)
             {
                 Moved = 0f;
-                Position.X = (int)Position.X;
-                Position.Z = (int)Position.Z;
+                Position.X = Convert.ToInt32(Position.X);
+                Position.Z = Convert.ToInt32(Position.Z);
             }
         }
 

@@ -14,6 +14,32 @@ public static class TextureManager
     private static String ToOsPath(String root, String key, String ext = "") =>
         Path.Combine(root, key.Replace('\\', Path.DirectorySeparatorChar).Replace('/', Path.DirectorySeparatorChar)) + ext;
 
+    // VB relied on Windows case-insensitive NTFS; this helper makes it work on Linux too.
+    // Resolves each directory component case-insensitively so "textures/house.png" finds "Textures/House.png".
+    private static String? FindTextureFile(String path)
+    {
+        if (File.Exists(path)) return path;
+        String? dir = Path.GetDirectoryName(path);
+        String? fileName = Path.GetFileName(path);
+        if (dir == null || fileName == null) return null;
+        String? resolvedDir = ResolveDirectoryInsensitive(dir);
+        if (resolvedDir == null) return null;
+        return Directory.GetFiles(resolvedDir)
+            .FirstOrDefault(f => String.Equals(Path.GetFileName(f), fileName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static String? ResolveDirectoryInsensitive(String dir)
+    {
+        if (Directory.Exists(dir)) return dir;
+        String? parent = Path.GetDirectoryName(dir);
+        String? segment = Path.GetFileName(dir);
+        if (parent == null || String.IsNullOrEmpty(segment)) return null;
+        String? resolvedParent = ResolveDirectoryInsensitive(parent);
+        if (resolvedParent == null) return null;
+        return Directory.GetDirectories(resolvedParent)
+            .FirstOrDefault(d => String.Equals(Path.GetFileName(d), segment, StringComparison.OrdinalIgnoreCase));
+    }
+
     public static void InitializeTextures()
     {
         DefaultTexture = LoadDirect("GUI\\no_texture.png");
@@ -36,14 +62,15 @@ public static class TextureManager
             String contentRoot = Path.Combine(GameController.GamePath, cContent.RootDirectory);
             String xnbPath = ToOsPath(contentRoot, name, ".xnb");
             String pngPath = ToOsPath(contentRoot, name, ".png");
+            String? foundPngPath = FindTextureFile(pngPath);
 
             if (File.Exists(xnbPath) == false)
             {
-                if (File.Exists(pngPath) == true)
+                if (foundPngPath != null)
                 {
                     try
                     {
-                        using Stream stream = File.Open(pngPath, FileMode.OpenOrCreate);
+                        using Stream stream = File.Open(foundPngPath, FileMode.OpenOrCreate);
                         t = Texture2D.FromStream(Core.GraphicsDevice, stream);
                     }
                     catch (Exception)
@@ -54,7 +81,7 @@ public static class TextureManager
                 }
                 else
                 {
-                    Logger.Log(Logger.LogTypes.ErrorMessage, "TextureManager.vb: Texture \"" + ToOsPath(contentRoot, name) + "\" was not found!");
+                    Logger.Log(Logger.LogTypes.ErrorMessage, "TextureManager.cs: Texture \"" + ToOsPath(contentRoot, name) + "\" was not found!");
                     return DefaultTexture!;
                 }
             }
@@ -96,14 +123,15 @@ public static class TextureManager
                 String contentRoot2 = Path.Combine(GameController.GamePath, cContent.RootDirectory);
                 String xnbPath = ToOsPath(contentRoot2, tSource.TexturePath, ".xnb");
                 String pngPath = ToOsPath(contentRoot2, tSource.TexturePath, ".png");
+                String? foundPngPath = FindTextureFile(pngPath);
 
                 if (File.Exists(xnbPath) == false)
                 {
-                    if (File.Exists(pngPath) == true)
+                    if (foundPngPath != null)
                     {
                         try
                         {
-                            using Stream stream = File.Open(pngPath, FileMode.OpenOrCreate);
+                            using Stream stream = File.Open(foundPngPath, FileMode.OpenOrCreate);
                             t = Texture2D.FromStream(Core.GraphicsDevice, stream);
                         }
                         catch (Exception)
@@ -114,7 +142,7 @@ public static class TextureManager
                     }
                     else
                     {
-                        Logger.Log(Logger.LogTypes.ErrorMessage, "TextureManager.vb: Texture \"" + ToOsPath(contentRoot2, texturePath + name) + "\" was not found!");
+                        Logger.Log(Logger.LogTypes.ErrorMessage, "TextureManager.cs: Texture \"" + ToOsPath(contentRoot2, texturePath + name) + "\" was not found!");
                         return DefaultTexture!;
                     }
                 }
@@ -187,7 +215,7 @@ public static class TextureManager
         Rectangle tRectangle = new Rectangle(0, 0, texture.Width, texture.Height);
         if (tRectangle.Contains(rectangle) == false)
         {
-            Logger.Log(Logger.LogTypes.ErrorMessage, "TextureManager.vb: The rectangle for a texture was out of bounds!");
+            Logger.Log(Logger.LogTypes.ErrorMessage, "TextureManager.cs: The rectangle for a texture was out of bounds!");
             return DefaultTexture!;
         }
 
@@ -203,9 +231,9 @@ public static class TextureManager
     {
         ContentManager cContent = ContentPackManager.GetContentManager(name, ".xnb,.png");
         String contentRoot = Path.Combine(GameController.GamePath, cContent.RootDirectory);
-        if (File.Exists(ToOsPath(contentRoot, name, ".xnb")) == true)
+        if (FindTextureFile(ToOsPath(contentRoot, name, ".xnb")) != null)
             return true;
-        if (File.Exists(ToOsPath(contentRoot, name, ".png")) == true)
+        if (FindTextureFile(ToOsPath(contentRoot, name, ".png")) != null)
             return true;
         return false;
     }

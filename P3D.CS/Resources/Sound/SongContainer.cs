@@ -31,7 +31,9 @@ public class SongContainer
         }
     }
 
-    public bool IsLoop => Song.ToLower().Contains("intro\\") == false && Song.ToLower().Contains("_intro") == false;
+    // VB checked for a literal "intro\" (Windows path separator); use the OS separator so this also
+    // matches on Linux, where Song holds a forward-slash path.
+    public bool IsLoop => Song.ToLower().Contains("intro" + Path.DirectorySeparatorChar) == false && Song.ToLower().Contains("_intro") == false;
 
     public bool IsStandardSong => Origin == "Content";
 }

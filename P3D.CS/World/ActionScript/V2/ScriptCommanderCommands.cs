@@ -1290,7 +1290,14 @@ namespace P3D.ScriptVersion2
                 case "turn":
                 {
                     NPC? targetNPC = Screen.Level.GetNPC(Int(argument.GetSplit(0)));
-                    if (targetNPC != null) { targetNPC.faceRotation = Int(argument.GetSplit(1)); targetNPC.Update(); targetNPC.UpdateEntity(); }
+                    if (targetNPC != null)
+                    {
+                        int dir = Int(argument.GetSplit(1));
+                        targetNPC.faceRotation = dir;
+                        targetNPC.FaceDirection = dir;
+                        targetNPC.Update();
+                        targetNPC.UpdateEntity();
+                    }
                     IsReady = true;
                     break;
                 }

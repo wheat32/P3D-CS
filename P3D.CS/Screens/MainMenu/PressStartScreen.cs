@@ -194,6 +194,7 @@ public class PressStartScreen : Screen
                 new Rectangle(0, _target.Height / 2, _target.Width, _target.Height / 4),
                 _fromColor, _toColor, false, 10);
             Canvas.DrawRectangle(
+                _backgroundRenderer,
                 new Rectangle(0, _target.Height / 4 * 3, _target.Width, _target.Height / 4),
                 _toColor);
             _backgroundRenderer.End();

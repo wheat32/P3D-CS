@@ -162,7 +162,11 @@ public class GameController : Game, GameDevCommon.IGame
     }
 }
 
-/// <summary>Cross-platform cursor confinement stub.</summary>
+/// <summary>
+/// VB used the Win32 user32.dll ClipCursor API to confine the OS cursor to the window.
+/// That has no cross-platform equivalent; OverworldCamera.ResetCursor() recenters the
+/// cursor every frame instead, which is what actually keeps it inside the window.
+/// </summary>
 public static class CursorClipper
 {
     public static bool IsActivated { get; private set; }

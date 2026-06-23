@@ -52,17 +52,18 @@ public static partial class SoundManager
                 String nameNorm = name.Replace('\\', Path.DirectorySeparatorChar);
                 String xnbPath = Path.Combine(soundRoot, nameNorm + ".xnb");
                 String wavPath = Path.Combine(soundRoot, nameNorm + ".wav");
+                String? foundWavPath = FindSoundFile(wavPath);
 
                 if (File.Exists(xnbPath) == false)
                 {
-                    if (File.Exists(wavPath) == true)
+                    if (foundWavPath != null)
                     {
-                        using Stream stream = File.Open(wavPath, FileMode.OpenOrCreate);
+                        using Stream stream = File.Open(foundWavPath, FileMode.OpenOrCreate);
                         sound = SoundEffect.FromStream(stream);
                     }
                     else
                     {
-                        Logger.Log(Logger.LogTypes.Warning, "SoundManager.vb: Sound at \"" + Path.Combine(soundRoot, nameNorm) + "\" was not found!");
+                        Logger.Log(Logger.LogTypes.Warning, "SoundManager.cs: Sound at \"" + Path.Combine(soundRoot, nameNorm) + "\" was not found!");
                         return false;
                     }
                 }
@@ -80,7 +81,7 @@ public static partial class SoundManager
         }
         catch (Exception)
         {
-            Logger.Log(Logger.LogTypes.Warning, "SoundManager.vb: File at \"Sounds\\" + name + "\" is not a valid sound file. They have to be a PCM wave file, mono or stereo, 8 or 16 bit and have to have a sample rate between 8k and 48k Hz.");
+            Logger.Log(Logger.LogTypes.Warning, "SoundManager.cs: File at \"Sounds\\" + name + "\" is not a valid sound file. They have to be a PCM wave file, mono or stereo, 8 or 16 bit and have to have a sample rate between 8k and 48k Hz.");
             return false;
         }
         return true;
@@ -150,7 +151,7 @@ public static partial class SoundManager
             return _sounds[name.ToLower()];
         if (TryAddGameModeSound(name.ToLower()) == true)
             return _sounds[name.ToLower()];
-        Logger.Log(Logger.LogTypes.Warning, "SoundManager.vb: Cannot find sound file \"" + name + "\". Return nothing.");
+        Logger.Log(Logger.LogTypes.Warning, "SoundManager.cs: Cannot find sound file \"" + name + "\". Return nothing.");
         return null;
     }
 
@@ -160,8 +161,34 @@ public static partial class SoundManager
         String defaultPath = Path.Combine(GameController.GamePath, "Content", "Sounds", nameNorm + ".wav");
         String[] gmParts = GameModeManager.ActiveGameMode.ContentPath.Split(new char[] { '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
         String modePath = Path.Combine([GameController.GamePath, ..gmParts, "Sounds", nameNorm + ".wav"]);
-        if (File.Exists(modePath) == true || File.Exists(defaultPath) == true)
+        if (FindSoundFile(modePath) != null || FindSoundFile(defaultPath) != null)
             return AddSound(name, false);
         return false;
+    }
+
+    // VB relied on Windows case-insensitive NTFS; this helper makes it work on Linux too.
+    // Resolves each directory component case-insensitively so "Sounds/pc/turnon.wav" finds "Sounds/PC/TurnOn.wav".
+    private static String? FindSoundFile(String path)
+    {
+        if (File.Exists(path)) return path;
+        String? dir = Path.GetDirectoryName(path);
+        String? fileName = Path.GetFileName(path);
+        if (dir == null || fileName == null) return null;
+        String? resolvedDir = ResolveDirectoryInsensitive(dir);
+        if (resolvedDir == null) return null;
+        return Directory.GetFiles(resolvedDir)
+            .FirstOrDefault(f => String.Equals(Path.GetFileName(f), fileName, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static String? ResolveDirectoryInsensitive(String dir)
+    {
+        if (Directory.Exists(dir)) return dir;
+        String? parent = Path.GetDirectoryName(dir);
+        String? segment = Path.GetFileName(dir);
+        if (parent == null || String.IsNullOrEmpty(segment)) return null;
+        String? resolvedParent = ResolveDirectoryInsensitive(parent);
+        if (resolvedParent == null) return null;
+        return Directory.GetDirectories(resolvedParent)
+            .FirstOrDefault(d => String.Equals(Path.GetFileName(d), segment, StringComparison.OrdinalIgnoreCase));
     }
 }

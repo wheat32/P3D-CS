@@ -1041,9 +1041,9 @@ namespace P3D.ScriptVersion2
 
             switch (command.ToLower())
             {
-                case "selectedskin": return global::Screens.MainMenu.NewNewGameScreen.CharacterSelectionScreen.SelectedSkin;
-                case "selectedname": return global::Screens.MainMenu.NewNewGameScreen.CharacterSelectionScreen.SelectedName;
-                case "selectedgender": return global::Screens.MainMenu.NewNewGameScreen.CharacterSelectionScreen.SelectedGender;
+                case "selectedskin": return NewNewGameScreen.CharacterSelectionScreen.SelectedSkin;
+                case "selectedname": return NewNewGameScreen.CharacterSelectionScreen.SelectedName;
+                case "selectedgender": return NewNewGameScreen.CharacterSelectionScreen.SelectedGender;
             }
             return DefaultNull;
         }

@@ -552,9 +552,13 @@ namespace P3D.ScriptVersion2
                     CanContinue = false;
                     break;
                 case "skinselection":
-                    if (global::Screens.MainMenu.NewNewGameScreen.CharacterSelectionScreen.SelectedSkin.Equals("") == false)
+                    if (NewNewGameScreen.CharacterSelectionScreen.SelectedSkin.Equals("") == false)
                     {
                         IsReady = true;
+                    }
+                    else
+                    {
+                        Core.SetScreen(new NewNewGameScreen.CharacterSelectionScreen(Core.CurrentScreen));
                     }
                     break;
                 default:
@@ -1036,7 +1040,7 @@ namespace P3D.ScriptVersion2
                 case "endnewgame":
                 {
                     String[] args = argument.Split(',');
-                    global::Screens.MainMenu.NewNewGameScreen.EndNewGame(args[0], Sng(args[1]), Sng(args[2]), Sng(args[3]), Int(args[4]));
+                    NewNewGameScreen.EndNewGame(args[0], Sng(args[1]), Sng(args[2]), Sng(args[3]), Int(args[4]));
                     IsReady = true;
                     break;
                 }

@@ -99,6 +99,7 @@ public class ActionScript
                     {
                         Logger.Debug("Unlock Camera");
                         ((OverworldCamera)Screen.Camera).YawLocked = false;
+                        ScriptBlock.TriggeredScriptBlock = false;
                         GameJolt.PokegearScreen.Call_Flag = String.Empty;
                     }
                     if (reDelay > 0.0f)

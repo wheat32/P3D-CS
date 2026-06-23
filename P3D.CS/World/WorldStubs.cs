@@ -33,10 +33,32 @@ public class OwnPlayer : NPC
     public OwnPlayer(float x, float y, float z, Texture2D[] textures, String skin,
                      int facing, int moveType, String script, String name, int id)
     {
+        Position = new Vector3(x, y, z);
+        FaceDirection = facing;
+        faceRotation = facing;
+        EntityID = "OwnPlayer";
+        Rotation = GetRotationFromInteger(facing);
+        BaseModel = BaseModel.BillModel;
+        base.Initialize();
+        if (!String.IsNullOrEmpty(skin))
+            SetTexture(skin, false);
     }
 
-    public void SetTexture(String skin, bool useGameJolt) { }
-    public new void UpdateEntity() { }
+    public void SetTexture(String skin, bool useGameJolt)
+    {
+        SkinName = skin;
+        UsingGameJoltTexture = useGameJolt;
+        if (!String.IsNullOrEmpty(skin))
+            SetupSprite(skin, "", false);
+    }
+
+    // override (not new) so virtual dispatch through Entity/NPC references works.
+    public override void UpdateEntity()
+    {
+        if (Screen.Camera != null)
+            Position = new Vector3(Screen.Camera.Position.X, Screen.Camera.Position.Y, Screen.Camera.Position.Z);
+        base.UpdateEntity();
+    }
 }
 
 // TODO Phase 12: full OverworldPokemon port

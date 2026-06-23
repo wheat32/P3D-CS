@@ -1116,7 +1116,7 @@ public partial class PokegearScreen : Screen
         _initializedFrontier = true;
 
         String file = GameModeManager.GetContentFilePath("Data\\badges.dat");
-        Security.FileValidation.CheckFileValid(file, false, "Badge.vb");
+        Security.FileValidation.CheckFileValid(file, false, "Badge.cs");
         String[] data = System.IO.File.ReadAllLines(file);
 
         foreach (String line in data)

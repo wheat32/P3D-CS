@@ -156,6 +156,10 @@ public static class MusicManager
 
                     if (song != null)
                     {
+                        // Volume must be restored before PlaySong reads it, otherwise the new
+                        // song starts at the stale faded-out (0) volume until the next UpdateVolume
+                        // call — which is skipped entirely while the window is unfocused.
+                        Volume = _muted ? 0.0f : 1.0f;
                         PlaySong(song);
                         if (_isFadingIn == true)
                         {
@@ -163,8 +167,10 @@ public static class MusicManager
                             _introEndTime = DateTime.Now + song.Duration;
                             _isIntroStarted = true;
                         }
-                        Volume = _muted ? 0.0f : 1.0f;
-                        _isCurrentlyFading = false;
+                        // Do NOT clear _isCurrentlyFading here — leave it true so the
+                        // playlist-advance check below cannot fire on the same frame as
+                        // PlaySong().  The else branch clears it next frame once
+                        // MediaPlayer.State has transitioned to Playing.
                     }
                     else
                     {
@@ -181,17 +187,41 @@ public static class MusicManager
                     _isCurrentlyFading = false;
             }
 
-            // advance playlist when current song ends
-            if (_isCurrentlyFading == false && MediaPlayer.State == MediaState.Stopped && Playlist.Count > 1)
+            // Intro → loop transition: use whichever fires first — the expected end time
+            // OR the MediaPlayer actually stopping — so an intro that ends slightly early
+            // or slightly late still transitions without a gap.
+            if (_isIntroStarted == true && Playlist.Count > 1 &&
+                (DateTime.Now >= _introEndTime || MediaPlayer.State == MediaState.Stopped))
             {
+                _isIntroStarted = false;
                 Playlist.RemoveAt(0);
                 SongContainer? next = Playlist[0];
                 if (next != null)
                 {
+                    Logger.Debug("Play song (intro end) [" + next.Name + "]");
+                    _currentSongName = next.Name;
+                    _currentSong = next;
+                    MediaPlayer.IsRepeating = false;  // Use manual restart below
+                    try { MediaPlayer.Play(next.LoadedSong); } catch (Exception) { }
+                }
+            }
+            // State-based advance: playlist sequences AND manual loop restart.
+            // Manual restart (Count == 1, IsLoop) avoids the OGG encoder-delay gap that
+            // MediaPlayer.IsRepeating produces on DesktopGL/SDL2.
+            else if (_isCurrentlyFading == false && _isIntroStarted == false &&
+                     MediaPlayer.State == MediaState.Stopped)
+            {
+                if (Playlist.Count > 1)
+                {
+                    Playlist.RemoveAt(0);
+                }
+                SongContainer? next = Playlist.Count > 0 ? Playlist[0] : null;
+                if (next != null && (Playlist.Count > 1 || (next.IsLoop && EnableLooping)))
+                {
                     Logger.Debug("Play song [" + next.Name + "]");
                     _currentSongName = next.Name;
                     _currentSong = next;
-                    MediaPlayer.IsRepeating = next.IsLoop && EnableLooping;
+                    MediaPlayer.IsRepeating = false;
                     try { MediaPlayer.Play(next.LoadedSong); } catch (Exception) { }
                 }
             }
@@ -416,7 +446,7 @@ public static class MusicManager
         String audioType = String.Empty;
         foreach (String ext in new[] { ".ogg", ".mp3", ".wma" })
         {
-            if (File.Exists(contentPath + ext) || File.Exists(gamemodePath + ext) || File.Exists(defaultPath + ext))
+            if (FindSongFile(contentPath + ext) != null || FindSongFile(gamemodePath + ext) != null || FindSongFile(defaultPath + ext) != null)
             {
                 audioType = ext;
                 break;
@@ -425,18 +455,15 @@ public static class MusicManager
 
         if (audioType != String.Empty)
         {
-            if (File.Exists(contentPath + audioType) || File.Exists(gamemodePath + audioType) || File.Exists(defaultPath + audioType))
-            {
-                if (AddSong(key, false) == true)
-                    return _songs[key];
-            }
+            if (AddSong(key, false) == true)
+                return _songs[key];
         }
         else
         {
             if (GameController.IS_DEBUG_ACTIVE == true)
-                Logger.Debug("MusicManager.vb: Cannot find music file \"" + songName + "\". Return nothing.");
+                Logger.Debug("MusicManager.cs: Cannot find music file \"" + songName + "\". Return nothing.");
             else if (songName.Contains("intro\\") == false && logIfNotFound == true)
-                Logger.Log(Logger.LogTypes.Warning, "MusicManager.vb: Cannot find music file \"" + songName + "\". Return nothing.");
+                Logger.Log(Logger.LogTypes.Warning, "MusicManager.cs: Cannot find music file \"" + songName + "\". Return nothing.");
         }
 
         return null;
@@ -448,6 +475,31 @@ public static class MusicManager
         if (SongAliasMap.TryGetValue(key, out String? alias) == true)
             key = alias.ToLowerInvariant();
         return key;
+    }
+
+    // VB relied on Windows case-insensitive NTFS; this helper makes it work on Linux too.
+    private static String? FindSongFile(String path)
+    {
+        if (File.Exists(path)) return path;
+        String? dir = Path.GetDirectoryName(path);
+        String? name = Path.GetFileName(path);
+        if (dir == null || name == null) return null;
+        String? resolvedDir = ResolveDirectoryInsensitive(dir);
+        if (resolvedDir == null) return null;
+        return Directory.GetFiles(resolvedDir)
+            .FirstOrDefault(f => String.Equals(Path.GetFileName(f), name, StringComparison.OrdinalIgnoreCase));
+    }
+
+    private static String? ResolveDirectoryInsensitive(String dir)
+    {
+        if (Directory.Exists(dir)) return dir;
+        String? parent = Path.GetDirectoryName(dir);
+        String? segment = Path.GetFileName(dir);
+        if (parent == null || String.IsNullOrEmpty(segment)) return null;
+        String? resolvedParent = ResolveDirectoryInsensitive(parent);
+        if (resolvedParent == null) return null;
+        return Directory.GetDirectories(resolvedParent)
+            .FirstOrDefault(d => String.Equals(Path.GetFileName(d), segment, StringComparison.OrdinalIgnoreCase));
     }
 
     private static bool AddSong(String name, bool forceReplace)
@@ -474,20 +526,20 @@ public static class MusicManager
 
                 foreach (String ext in new[] { ".ogg", ".mp3", ".wma" })
                 {
-                    if (File.Exists(Path.Combine(songRoot, nameNorm + ext)) == true)
+                    String? found = FindSongFile(Path.Combine(songRoot, nameNorm + ext));
+                    if (found != null)
                     {
                         audioType = ext;
+                        songFilePath = found;
                         break;
                     }
                 }
 
                 if (audioType == null)
                 {
-                    Logger.Log(Logger.LogTypes.Warning, "MusicManager.vb: Song at \"" + Path.Combine(songRoot, nameNorm) + "\" was not found!");
+                    Logger.Log(Logger.LogTypes.Warning, "MusicManager.cs: Song at \"" + Path.Combine(songRoot, nameNorm) + "\" was not found!");
                     return false;
                 }
-
-                songFilePath = Path.Combine(songRoot, nameNorm + audioType);
                 if (removeSong == true) _songs.Remove(GetSongName(name));
 
                 TimeSpan duration = GetSongDuration(songFilePath);
@@ -496,7 +548,7 @@ public static class MusicManager
         }
         catch (Exception)
         {
-            Logger.Log(Logger.LogTypes.Warning, "MusicManager.vb: File at \"Songs\\" + name + "\" is not a valid song file!");
+            Logger.Log(Logger.LogTypes.Warning, "MusicManager.cs: File at \"Songs\\" + name + "\" is not a valid song file!");
             return false;
         }
         return true;

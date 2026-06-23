@@ -39,7 +39,8 @@ public static class KeyCharConverter
     {
         bool shift = KeyBoardHandler.KeyDown(Keys.LeftShift) ||
                      KeyBoardHandler.KeyDown(Keys.RightShift);
-        bool caps = (System.Console.CapsLock);
+        // Console.CapsLock throws PlatformNotSupportedException outside Windows.
+        bool caps = OperatingSystem.IsWindows() && System.Console.CapsLock;
 
         switch (key)
         {
